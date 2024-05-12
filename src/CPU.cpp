@@ -41,7 +41,7 @@ void CPU::LDASetStatus()
    N = (A & 0b10000000) > 0; /// is this correct?
 }
 
-void CPU::Execute(u32 _cycles, Mem &_mem)
+s32 CPU::Execute(u32 _cycles, Mem &_mem)
 {
    while(_cycles)
    {
@@ -71,7 +71,7 @@ void CPU::Execute(u32 _cycles, Mem &_mem)
          if(zeroPageAddress > _mem.MAX_MEM)
          {
             std::cout << "instrukcja LDA ZPX przekroczyla obszar pamieci";
-            return;
+            return _cycles;
          }
          A = ReadByte(_cycles, zeroPageAddress, _mem);
          LDASetStatus();
@@ -95,4 +95,5 @@ void CPU::Execute(u32 _cycles, Mem &_mem)
       break;
       }
    }
+   return _cycles;
 }

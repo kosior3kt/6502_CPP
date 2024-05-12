@@ -43,7 +43,7 @@ struct CPU
 
       void LDASetStatus();
 
-      void Execute(u32 _cycles, Mem &_mem);
+      s32 Execute(u32 _cycles, Mem &_mem);
 };
 
 #endif
