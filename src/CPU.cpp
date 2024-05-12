@@ -22,12 +22,9 @@ Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
    // 6502 is little endian - so the first is the least significant byte
    Word data = _mem[PC];
    data |= (_mem[PC] << 8);
-
    PC += 2;
    _cycles -= 2;
-
    /// good old endiannes ifdef here (if you care ofc...)
-
    return data;
 }
 
