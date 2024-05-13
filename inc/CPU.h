@@ -2,6 +2,7 @@
 #define __CPU__
 
 #include "memory.h"
+#include <map>
 
 struct CPU
 {
@@ -30,8 +31,17 @@ struct CPU
 
       static constexpr Byte INS_LDA_IM  = 0xA9;
       static constexpr Byte INS_LDA_ZP  = 0xA5;
+      static constexpr Byte INS_LDA_ABS  = 0xAD;
       static constexpr Byte INS_LDA_ZPX = 0xB5;
       static constexpr Byte INS_JSR     = 0x20;
+
+      std::map<Byte, uint8_t> numberOfCyclesByInstruction_{
+         {INS_LDA_IM, 2},
+         {INS_LDA_ZP, 3},
+         {INS_LDA_ABS, 4},
+         {INS_LDA_ZPX, 4},
+         {INS_JSR, 6},
+      };
 
       void Reset(Mem &_mem);
 
@@ -41,9 +51,11 @@ struct CPU
 
       Byte ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem);
 
+      Byte ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem);
+
       void LDASetStatus();
 
-      s32 Execute(u32 _cycles, Mem &_mem);
+      s32 execute(u32 _cycles, Mem &_mem);
 };
 
 #endif

@@ -35,13 +35,20 @@ Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
    return data;
 }
 
+Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
+{
+   Byte data = _mem[_addr];
+   --_cycles;
+   return data;
+}
+
 void CPU::LDASetStatus()
 {
    Z = (A == 0);
    N = (A & 0b10000000) > 0; /// is this correct?
 }
 
-s32 CPU::Execute(u32 _cycles, Mem &_mem)
+s32 CPU::execute(u32 _cycles, Mem &_mem)
 {
    while(_cycles)
    {
@@ -77,6 +84,15 @@ s32 CPU::Execute(u32 _cycles, Mem &_mem)
          LDASetStatus();
       }
       break;
+
+      case INS_LDA_ABS:
+      {
+         Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+         A = ReadByte(_cycles, address, _mem);
+         LDASetStatus();
+      }
+      break;
+
       case INS_JSR:
 
       {
@@ -89,8 +105,10 @@ s32 CPU::Execute(u32 _cycles, Mem &_mem)
       break;
 
       default:
-      {
-         printf("Not handled %d\n", inst);
+      {  
+         ///TODO: decide later if we want to panic or sth in such case
+         printf("Not handled %d\n", inst);   
+         return _cycles;
       }
       break;
       }

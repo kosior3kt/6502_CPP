@@ -12,7 +12,7 @@ int main()
    
    createInlineProgram(mem);
 
-   cpu.Execute(16, mem);
+   cpu.execute(16, mem);
 
    ///start - test 
    std::cout<<cpu.A<<std::endl;

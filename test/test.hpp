@@ -10,13 +10,13 @@ class TEST_6502 : public testing::Test
 public:
    CPU cpu_;
    Mem mem_;
-   CPU copyCPU;
+   CPU copyCPU_;
 
 protected:
 
    virtual void SetUp(){
       cpu_.Reset(mem_);
-      copyCPU = cpu_;
+      copyCPU_ = cpu_;
    }
 
    virtual void TearDown(){
@@ -24,7 +24,7 @@ protected:
 };
 
 namespace testHelper{
-   static bool flagsUnchanged(const CPU& _original, const CPU& _copy){
+   static bool basicFlagsUnused(const CPU& _original, const CPU& _copy){
       return (_original.C == _copy.C &&
       _original.B == _copy.B &&
       _original.I == _copy.I &&
