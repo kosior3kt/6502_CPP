@@ -1,24 +1,21 @@
-
-add_library(Memory
-   memory.cpp
-   memory.h
-   )
-target_include_directories(Memory
-   PUBLIC
-   ${CMAKE_CURRENT_SOURCE_DIR}/../inc/
-   )
+set(CPU_SOURCES memory.cpp CPU.cpp)
 
 add_library(CPU
-   CPU.cpp
-   CPU.h
-   )
-
-target_link_libraries(CPU
-   Memory
+   ${CPU_SOURCES}
    )
 
 add_executable(${PROJECT_NAME} 
    main.cpp
+   )
+
+target_include_directories(CPU
+   PUBLIC
+   ${INC}
+   )
+
+target_include_directories(${PROJECT_NAME}
+   PUBLIC
+   ${INC}
    )
 
 target_link_libraries(${PROJECT_NAME}
