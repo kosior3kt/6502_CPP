@@ -36,15 +36,29 @@ struct CPU
       static constexpr Byte INS_LDA_ZPX  = 0xB5;
       static constexpr Byte INS_LDA_ABSY = 0xB9;
       static constexpr Byte INS_LDA_ABSX = 0xBD;
+      static constexpr Byte INS_LDA_INDX = 0xA1;
+      static constexpr Byte INS_LDA_INDY = 0xB1;
       static constexpr Byte INS_JSR      = 0x20;
 
-      std::map<Byte, uint8_t> numberOfCyclesByInstruction_{
-         {  INS_LDA_IM, 2 },
-         {  INS_LDA_ZP, 3 },
-         { INS_LDA_ABS, 4 },
-         { INS_LDA_ABS, 4 },
-         { INS_LDA_ZPX, 4 },
-         {     INS_JSR, 6 },
+      struct canBeExceeded
+      {
+            bool can;
+            uint8_t value;
+            canBeExceeded(bool _b, uint8_t _v) :
+                can(_b),
+                value(_v){};
+      };
+
+      std::map<Byte, canBeExceeded> numberOfCyclesByInstruction_{
+         {   INS_LDA_IM, canBeExceeded(false, 2) },
+         {   INS_LDA_ZP, canBeExceeded(false, 3) },
+         {  INS_LDA_ABS, canBeExceeded(false, 4) },
+         { INS_LDA_ABSX,  canBeExceeded(true, 4) },
+         { INS_LDA_ABSY,  canBeExceeded(true, 4) },
+         { INS_LDA_INDX, canBeExceeded(false, 6) },
+         { INS_LDA_INDY,  canBeExceeded(true, 5) },
+         {  INS_LDA_ZPX, canBeExceeded(false, 4) },
+         {      INS_JSR, canBeExceeded(false, 6) },
       };
 
       void Reset(Mem &_mem);
