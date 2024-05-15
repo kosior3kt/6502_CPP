@@ -93,8 +93,33 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
       }
       break;
 
-      case INS_JSR:
+      case INS_LDA_ABSX:
+      {
+         Byte eaLow = FetchByte(_cycles, _mem);
+         Byte eaHigh = FetchByte(_cycles, _mem);
+         Word address =  eaLow + (eaHigh << 8);   ///Little endian daddyy
+         address += X;
+         //address = address % Mem::MAX_MEM;   ///Does it make sense??? (spoiler - it didn't)
+         if(eaLow + X > 0xFF) --_cycles;
+         A = ReadByte(_cycles, address, _mem);
+         LDASetStatus();
+      }
+      break;
 
+      case INS_LDA_ABSY:
+      {
+         Byte eaLow = FetchByte(_cycles, _mem);
+         Byte eaHigh = FetchByte(_cycles, _mem);
+         Word address =  eaLow + (eaHigh << 8);   ///Little endian daddyy
+         address += Y;
+         //address = address % Mem::MAX_MEM;   ///Does it make sense???
+         if(eaLow + Y > 0xFF) --_cycles;
+         A = ReadByte(_cycles, address, _mem);
+         LDASetStatus();
+      }
+      break;
+
+      case INS_JSR:
       {
          Word subRoutineAddr = FetchWord(_cycles, _mem);
          _mem.writeWord(_cycles, SP + 1, PC - 1);
