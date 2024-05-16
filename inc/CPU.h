@@ -71,6 +71,10 @@ struct CPU
 
       Byte ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem);
 
+      Byte ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
+
+      Byte ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
+
       void LDASetStatus();
 
       s32 execute(u32 _cycles, Mem &_mem);

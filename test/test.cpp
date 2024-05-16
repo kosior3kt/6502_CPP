@@ -1,5 +1,10 @@
 #include "test.hpp"
 
+TEST_F(TEST_6502, MemoryDumpTest)
+{
+   mem_.debug_dumpMemory("dupa.txt");
+}
+
 TEST_F(TEST_6502, LDA_IM)
 {
    constexpr uint8_t ASSIGNED_CYCLES = 2;
@@ -224,3 +229,41 @@ TEST_F(TEST_6502, LDAY_AbsoluteAddressing_withPageCrossing)
    EXPECT_FALSE((int)cpu_.N);
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
 }
+
+TEST_F(TEST_6502, LDA_IndirectAdressingY)
+{
+   cpu_.Y = 0x02;
+   mem_.debug_set(0xFFFC, CPU::INS_LDA_INDY);
+   mem_.debug_set(0xFFFD, 0x004);
+   mem_.debug_set(0x0006, 0x10); /// 0x02 + 0x04 = 0x06
+   mem_.debug_set(0x0007, 0x05); ///we take 2 bits from there and sum up the result
+   mem_.debug_set(0x0510, 0x69); 
+   mem_.debug_set(0x1005, 0x69); 
+
+   auto cyclesLeft = cpu_.execute(5, mem_);
+
+   EXPECT_EQ(cyclesLeft, 0);
+   EXPECT_EQ((int)cpu_.A, 0x69);
+   EXPECT_FALSE((int)cpu_.Z);
+   EXPECT_FALSE((int)cpu_.N);
+   EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+}
+
+TEST_F(TEST_6502, LDA_IndirectAdressingX)
+{
+   cpu_.X = 0x02;
+   mem_.debug_set(0xFFFC, CPU::INS_LDA_INDX);
+   mem_.debug_set(0xFFFD, 0x004);
+   mem_.debug_set(0x0006, 0x10); /// 0x02 + 0x04 = 0x06
+   mem_.debug_set(0x0007, 0x05); ///we take 2 bits from there and sum up the result
+   mem_.debug_set(0x0510, 0x69); 
+
+   auto cyclesLeft = cpu_.execute(5, mem_);
+
+   EXPECT_EQ(cyclesLeft, 0);
+   EXPECT_EQ((int)cpu_.A, 0x69);
+   EXPECT_FALSE((int)cpu_.Z);
+   EXPECT_FALSE((int)cpu_.N);
+   EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+}
+

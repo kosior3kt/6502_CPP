@@ -42,6 +42,26 @@ Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
    return data;
 }
 
+Byte CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+{
+   assert(_addr + 0x0001 < Mem::MAX_MEM);
+   Word ea;
+   Byte eaLow = ReadByte(_cycles, _addr, _mem);
+   Byte eaHigh = ReadByte(_cycles, _addr, _mem);
+   ea = eaLow + (eaHigh << 8);
+   return ea;
+}
+
+Byte CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
+{
+   assert(_addr + 0x0001 < Mem::MAX_MEM);
+   Word ea;
+   Byte eaLow = ReadByte(_cycles, _addr, _mem);
+   Byte eaHigh = ReadByte(_cycles, _addr, _mem);
+   ea = eaLow + (eaHigh << 8);
+   return ea;
+}
+
 void CPU::LDASetStatus()
 {
    Z = (A == 0);
@@ -53,7 +73,7 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    while(_cycles)
    {
       Byte inst = FetchByte(_cycles, _mem);
-      switch(inst)
+      switch(inst)   ///TODO: abstaract this later into a std::map<INS, 'function pointer'>, so that it isnt such a massive boi
       {
       case INS_LDA_IM:
       {
@@ -87,7 +107,8 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
 
       case INS_LDA_ABS:
       {
-         Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+         Word address
+             = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
          A = ReadByte(_cycles, address, _mem);
          LDASetStatus();
       }
@@ -95,12 +116,14 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
 
       case INS_LDA_ABSX:
       {
-         Byte eaLow = FetchByte(_cycles, _mem);
-         Byte eaHigh = FetchByte(_cycles, _mem);
-         Word address =  eaLow + (eaHigh << 8);   ///Little endian daddyy
+         Byte eaLow   = FetchByte(_cycles, _mem);
+         Byte eaHigh  = FetchByte(_cycles, _mem);
+         Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
          address += X;
-         //address = address % Mem::MAX_MEM;   ///Does it make sense??? (spoiler - it didn't)
-         if(eaLow + X > 0xFF) --_cycles;
+         // address = address % Mem::MAX_MEM;   ///Does it make sense???
+         // (spoiler - it didn't)
+         if(eaLow + X > 0xFF)
+            --_cycles;
          A = ReadByte(_cycles, address, _mem);
          LDASetStatus();
       }
@@ -108,12 +131,13 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
 
       case INS_LDA_ABSY:
       {
-         Byte eaLow = FetchByte(_cycles, _mem);
-         Byte eaHigh = FetchByte(_cycles, _mem);
-         Word address =  eaLow + (eaHigh << 8);   ///Little endian daddyy
+         Byte eaLow   = FetchByte(_cycles, _mem);
+         Byte eaHigh  = FetchByte(_cycles, _mem);
+         Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
          address += Y;
-         //address = address % Mem::MAX_MEM;   ///Does it make sense???
-         if(eaLow + Y > 0xFF) --_cycles;
+         // address = address % Mem::MAX_MEM;   ///Does it make sense???
+         if(eaLow + Y > 0xFF)
+            --_cycles;
          A = ReadByte(_cycles, address, _mem);
          LDASetStatus();
       }
@@ -129,10 +153,32 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
       }
       break;
 
+      case INS_LDA_INDX:
+      {
+         Word adress = FetchByte(_cycles, _mem) + X;
+         Byte eaLow = ReadByte(_cycles, adress, _mem);
+         Byte eaHigh = ReadByte(_cycles, ++adress, _mem);
+         Word ea = eaLow + (eaHigh << 8);
+         A = ReadByte(_cycles, ea, _mem);
+         LDASetStatus();
+      }
+      break;
+
+      case INS_LDA_INDY:
+      {         
+         Word adress = FetchByte(_cycles, _mem) + Y;
+         Byte eaLow = ReadByte(_cycles, adress, _mem);
+         Byte eaHigh = ReadByte(_cycles, ++adress, _mem);      ///TODO: abstract this lateron, and find out why this is supposed to be able to cross page
+         Word ea = eaLow + (eaHigh << 8);
+         A = ReadByte(_cycles, ea, _mem);
+         LDASetStatus();
+      }
+      break;
+
       default:
-      {  
-         ///TODO: decide later if we want to panic or sth in such case
-         printf("Not handled %d\n", inst);   
+      {
+         /// TODO: decide later if we want to panic or sth in such case
+         printf("Not handled %d\n", inst);
          return _cycles;
       }
       break;

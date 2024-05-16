@@ -1,9 +1,10 @@
 #ifndef __MEMORY__
 #define __MEMORY__
 
-#include "../inc/defines.h"
+#include "defines.h"
 #include <cassert>
 #include <iostream>
+#include <fstream>
 
 struct Mem
 {
@@ -22,6 +23,8 @@ struct Mem
       void writeWord(u32& _cycles, const u32& _addr, const Word& _val);
 
       void debug_set(const u32& _addr, const u32& _val);
+
+      void debug_dumpMemory(const std::string& _fileName);
 };
 
 #endif

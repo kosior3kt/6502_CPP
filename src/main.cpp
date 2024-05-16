@@ -1,28 +1,28 @@
 #include "CPU.h"
 
-void createInlineProgram(Mem&);
+void createInlineProgram(Mem &);
 
 int main()
 {
-   ///start - boot
+   /// start - boot
    Mem mem;
    CPU cpu;
    cpu.Reset(mem);
-   ///end - boot
-   
+   /// end - boot
+
    createInlineProgram(mem);
 
    cpu.execute(16, mem);
 
-   ///start - test 
-   std::cout<<cpu.A<<std::endl;
-   ///end - test
+   /// start - test
+   std::cout << cpu.A << std::endl;
+   /// end - test
 
    return 0;
 }
 
-
-void createInlineProgram(Mem& _mem){
+void createInlineProgram(Mem &_mem)
+{
    // start - inline program
    _mem.debug_set(0xFFFC, CPU::INS_JSR);
    _mem.debug_set(0xFFFD, 0x42);
