@@ -231,14 +231,13 @@ TEST_F(TEST_6502, LDAY_AbsoluteAddressing_withPageCrossing)
 }
 
 TEST_F(TEST_6502, LDA_IndirectAdressingY)
-{
-   cpu_.Y = 0x02;
+{  
+   cpu_.Y = 0x01;
    mem_.debug_set(0xFFFC, CPU::INS_LDA_INDY);
    mem_.debug_set(0xFFFD, 0x004);
-   mem_.debug_set(0x0006, 0x10); /// 0x02 + 0x04 = 0x06
-   mem_.debug_set(0x0007, 0x05); ///we take 2 bits from there and sum up the result
-   mem_.debug_set(0x0510, 0x69); 
-   mem_.debug_set(0x1005, 0x69); 
+   mem_.debug_set(0x0004, 0x10); /// looking first at the original location
+   mem_.debug_set(0x0005, 0x05); /// now we need to add Y to the lower byte
+   mem_.debug_set(0x0511, 0x69); /// 0x05 ++ (0x10 + 0x01) = 0x0511  , or is it other way around?
 
    auto cyclesLeft = cpu_.execute(5, mem_);
 
@@ -249,8 +248,26 @@ TEST_F(TEST_6502, LDA_IndirectAdressingY)
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
 }
 
+TEST_F(TEST_6502, LDA_IndirectAdressingY_withPageCrossing)
+{  
+   cpu_.Y = 0xFF;
+   mem_.debug_set(0xFFFC, CPU::INS_LDA_INDY);
+   mem_.debug_set(0xFFFD, 0x04);
+   mem_.debug_set(0x0004, 0x01); /// looking first at the original location and add it to Y => 0xFF + 0x01 = 0x100 + additional cycle
+   mem_.debug_set(0x0005, 0x01); /// now higher byte => 0x0100 + 0x01 (high) = 0x0200
+   mem_.debug_set(0x0200, 0x69); /// 
+
+   auto cyclesLeft = cpu_.execute(6, mem_);
+
+   EXPECT_EQ(cyclesLeft, 0);
+   EXPECT_EQ((int)cpu_.A, 0x69);
+   EXPECT_FALSE((int)cpu_.Z);
+   EXPECT_FALSE((int)cpu_.N);
+   EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+}
+
 TEST_F(TEST_6502, LDA_IndirectAdressingX)
-{
+{  ///yeah, this is different than the Y version on purpose (apparently)
    cpu_.X = 0x02;
    mem_.debug_set(0xFFFC, CPU::INS_LDA_INDX);
    mem_.debug_set(0xFFFD, 0x004);
@@ -258,7 +275,7 @@ TEST_F(TEST_6502, LDA_IndirectAdressingX)
    mem_.debug_set(0x0007, 0x05); ///we take 2 bits from there and sum up the result
    mem_.debug_set(0x0510, 0x69); 
 
-   auto cyclesLeft = cpu_.execute(5, mem_);
+   auto cyclesLeft = cpu_.execute(6, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((int)cpu_.A, 0x69);

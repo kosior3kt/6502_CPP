@@ -159,6 +159,7 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
          Byte eaLow = ReadByte(_cycles, adress, _mem);
          Byte eaHigh = ReadByte(_cycles, ++adress, _mem);
          Word ea = eaLow + (eaHigh << 8);
+         --_cycles;  ///have to add this here
          A = ReadByte(_cycles, ea, _mem);
          LDASetStatus();
       }
@@ -166,10 +167,11 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
 
       case INS_LDA_INDY:
       {         
-         Word adress = FetchByte(_cycles, _mem) + Y;
+         Word adress = FetchByte(_cycles, _mem);
          Byte eaLow = ReadByte(_cycles, adress, _mem);
-         Byte eaHigh = ReadByte(_cycles, ++adress, _mem);      ///TODO: abstract this lateron, and find out why this is supposed to be able to cross page
-         Word ea = eaLow + (eaHigh << 8);
+         Byte eaHigh = ReadByte(_cycles, ++adress, _mem);      ///TODO: abstract this later on, and find out why this is supposed to be able to cross page
+         if(eaLow + Y > 0xFF) --_cycles;
+         Word ea = eaLow + (eaHigh << 8) + Y;
          A = ReadByte(_cycles, ea, _mem);
          LDASetStatus();
       }
