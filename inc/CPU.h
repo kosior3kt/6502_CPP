@@ -21,15 +21,6 @@ struct CPU
       Byte V : 1; // status flag
       Byte N : 1; // status flag
 
-      /// not used for now
-      enum class INS : Byte
-      {
-         LDA_IM      = 0xA9,
-         INS_LDA_ZP  = 0xA5,
-         INS_LDA_ZPX = 0xB5,
-         INS_JSR     = 0x20,
-      };
-
       enum class Register : uint8_t
       {
          A,
@@ -37,7 +28,7 @@ struct CPU
          Y
       };
 
-      ///LDE instructions
+      /// LDA instructions
       static constexpr Byte INS_LDA_IM   = 0xA9;
       static constexpr Byte INS_LDA_ZP   = 0xA5;
       static constexpr Byte INS_LDA_ABS  = 0xAD;
@@ -46,11 +37,16 @@ struct CPU
       static constexpr Byte INS_LDA_ABSX = 0xBD;
       static constexpr Byte INS_LDA_INDX = 0xA1;
       static constexpr Byte INS_LDA_INDY = 0xB1;
-      static constexpr Byte INS_JSR      = 0x20;
 
-      ///LDX instructions
+      /// MISC instructions
+      static constexpr Byte INS_JSR = 0x20;
+
+      /// LDX instructions
       static constexpr Byte INS_LDX_IM   = 0xA2;
-
+      static constexpr Byte INS_LDX_ZP   = 0xA6;
+      static constexpr Byte INS_LDX_ZPY  = 0xB6;
+      static constexpr Byte INS_LDX_ABS  = 0xAE;
+      static constexpr Byte INS_LDX_ABSY = 0xBE;
 
       struct canBeExceeded
       {
@@ -93,25 +89,28 @@ struct CPU
 
       s32 execute(u32 _cycles, Mem &_mem);
 
-
    private:
-      ///place for all the function for instructis
+      /// place for all the function for instructis
 
-      ///LDA
-      void LDA_IM(u32 &_cycles, Mem& _mem);
-      void LDA_ZP(u32 &_cycles, Mem& _mem);
-      void LDA_ABS(u32 &_cycles, Mem& _mem);
-      void LDA_ZPX(u32 &_cycles, Mem& _mem);
-      void LDA_ABSY(u32 &_cycles, Mem& _mem);
-      void LDA_ABSX(u32 &_cycles, Mem& _mem);
-      void LDA_INDX(u32 &_cycles, Mem& _mem);
-      void LDA_INDY(u32 &_cycles, Mem& _mem);
+      /// LDA
+      void LDA_IM(u32 &_cycles, Mem &_mem);
+      void LDA_ZP(u32 &_cycles, Mem &_mem);
+      void LDA_ZPX(u32 &_cycles, Mem &_mem);
+      void LDA_ABS(u32 &_cycles, Mem &_mem);
+      void LDA_ABSY(u32 &_cycles, Mem &_mem);
+      void LDA_ABSX(u32 &_cycles, Mem &_mem);
+      void LDA_INDX(u32 &_cycles, Mem &_mem);
+      void LDA_INDY(u32 &_cycles, Mem &_mem);
 
-      ///MISC 
-      void JSR(u32 &_cycles, Mem& _mem);
+      /// MISC
+      void JSR(u32 &_cycles, Mem &_mem);
 
-      ///LDX
-      void LDX_IM(u32 &_cycles, Mem& _mem);
+      /// LDX
+      void LDX_IM(u32 &_cycles, Mem &_mem);
+      void LDX_ZP(u32 &_cycles, Mem &_mem);
+      void LDX_ZPY(u32 &_cycles, Mem &_mem);
+      void LDX_ABS(u32 &_cycles, Mem &_mem);
+      void LDX_ABSY(u32 &_cycles, Mem &_mem);
 };
 
 #endif

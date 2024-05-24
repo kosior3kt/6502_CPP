@@ -3,7 +3,6 @@
 //////////////////////////////////// LDA
 void CPU::LDA_IM(u32 &_cycles, Mem &_mem)
 {
-
    Byte val = FetchByte(_cycles, _mem);
    A        = val;
    LDASetStatus();
@@ -11,7 +10,6 @@ void CPU::LDA_IM(u32 &_cycles, Mem &_mem)
 
 void CPU::LDA_ZP(u32 &_cycles, Mem &_mem)
 {
-
    Byte zeroPageAddress = FetchByte(_cycles, _mem);
    A                    = ReadByte(_cycles, zeroPageAddress, _mem);
    LDASetStatus();
@@ -32,7 +30,6 @@ void CPU::LDA_ZPX(u32 &_cycles, Mem &_mem)
 
 void CPU::LDA_ABS(u32 &_cycles, Mem &_mem)
 {
-
    Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
    A            = ReadByte(_cycles, address, _mem);
    LDASetStatus();
@@ -67,7 +64,6 @@ void CPU::LDA_ABSY(u32 &_cycles, Mem &_mem)
 
 void CPU::LDA_INDX(u32 &_cycles, Mem &_mem)
 {
-
    Word adress = FetchByte(_cycles, _mem) + X;
    Byte eaLow  = ReadByte(_cycles, adress, _mem);
    Byte eaHigh = ReadByte(_cycles, ++adress, _mem);
@@ -79,7 +75,6 @@ void CPU::LDA_INDX(u32 &_cycles, Mem &_mem)
 
 void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
 {
-
    Word adress = FetchByte(_cycles, _mem);
    Byte eaLow  = ReadByte(_cycles, adress, _mem);
    Byte eaHigh = ReadByte(
@@ -96,7 +91,6 @@ void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
 /////////////////////////////////////// MISC
 void CPU::JSR(u32 &_cycles, Mem &_mem)
 {
-
    Word subRoutineAddr = FetchWord(_cycles, _mem);
    _mem.writeWord(_cycles, SP + 1, PC - 1);
    //_mem.writeWord(_cycles, SP , PC - 1);
@@ -107,8 +101,47 @@ void CPU::JSR(u32 &_cycles, Mem &_mem)
 /////////////////////////////////////// LDX
 void CPU::LDX_IM(u32 &_cycles, Mem &_mem)
 {
-
    Byte val = FetchByte(_cycles, _mem);
    X        = val;
+   LDXSetStatus();
+}
+
+void CPU::LDX_ZP(u32 &_cycles, Mem &_mem)
+{
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   X                    = ReadByte(_cycles, zeroPageAddress, _mem);
+   LDXSetStatus();
+}
+
+void CPU::LDX_ZPY(u32 &_cycles, Mem &_mem)
+{
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   zeroPageAddress += Y;
+   if(zeroPageAddress > _mem.MAX_MEM)
+   {
+      std::cout << "instrukcja LDA ZPY przekroczyla obszar pamieci";
+      return;
+   }
+   X = ReadByte(_cycles, zeroPageAddress, _mem);
+   LDXSetStatus();
+}
+
+void CPU::LDX_ABS(u32 &_cycles, Mem &_mem)
+{
+   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+   X            = ReadByte(_cycles, address, _mem);
+   LDXSetStatus();
+}
+
+void CPU::LDX_ABSY(u32 &_cycles, Mem &_mem)
+{
+   Byte eaLow   = FetchByte(_cycles, _mem);
+   Byte eaHigh  = FetchByte(_cycles, _mem);
+   Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
+   address += Y;
+   // address = address % Mem::MAX_MEM;   ///Does it make sense???
+   if(eaLow + Y > 0xFF)
+      --_cycles;
+   X = ReadByte(_cycles, address, _mem);
    LDXSetStatus();
 }
