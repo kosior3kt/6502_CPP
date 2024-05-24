@@ -122,6 +122,12 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
          break;
       }
 
+      case INS_NULL:
+      {
+         ///TODO: decide if this is the kind of behaviour we want
+         return _cycles;
+      }
+
       default:
       {
          /// TODO: decide later if we want to panic or sth in such case

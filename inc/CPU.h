@@ -28,6 +28,9 @@ struct CPU
          Y
       };
 
+      /// Empty instruction
+      static constexpr Byte INS_NULL = 0x00;
+
       /// LDA instructions
       static constexpr Byte INS_LDA_IM   = 0xA9;
       static constexpr Byte INS_LDA_ZP   = 0xA5;
@@ -38,7 +41,7 @@ struct CPU
       static constexpr Byte INS_LDA_INDX = 0xA1;
       static constexpr Byte INS_LDA_INDY = 0xB1;
 
-      /// MISC instructions
+      /// JSR instruction
       static constexpr Byte INS_JSR = 0x20;
 
       /// LDX instructions
@@ -101,7 +104,8 @@ struct CPU
    private:
       /// place for all the function for instructis
 
-      /// LDA
+      /// LDA - instruction LDA loads value from given memory location into the
+      /// A register. It has 8 different adression modes - they are below
       void LDA_IM(u32 &_cycles, Mem &_mem);
       void LDA_ZP(u32 &_cycles, Mem &_mem);
       void LDA_ZPX(u32 &_cycles, Mem &_mem);
@@ -111,22 +115,31 @@ struct CPU
       void LDA_INDX(u32 &_cycles, Mem &_mem);
       void LDA_INDY(u32 &_cycles, Mem &_mem);
 
-      /// MISC
+      /// JSR - this instruction jumps to the subrutine  (and preasumably
+      /// returns)
       void JSR(u32 &_cycles, Mem &_mem);
 
-      /// LDX
+      /// LDX  - instruction LDX loads value from given memory location into
+      /// the X register. It has 5 different adressing modes
       void LDX_IM(u32 &_cycles, Mem &_mem);
       void LDX_ZP(u32 &_cycles, Mem &_mem);
       void LDX_ZPY(u32 &_cycles, Mem &_mem);
       void LDX_ABS(u32 &_cycles, Mem &_mem);
       void LDX_ABSY(u32 &_cycles, Mem &_mem);
 
-      /// LDX
+      /// LDY - instruction LDX loads value from given memory location into the
+      /// Y register. It has 5 different adressing modes
       void LDY_IM(u32 &_cycles, Mem &_mem);
       void LDY_ZP(u32 &_cycles, Mem &_mem);
       void LDY_ZPX(u32 &_cycles, Mem &_mem);
       void LDY_ABS(u32 &_cycles, Mem &_mem);
       void LDY_ABSX(u32 &_cycles, Mem &_mem);
+
+      /// INC - instruction INC increments value in the given memory locatino
+
+      /// INX - this instruction increments value stored in the X register
+
+      /// INY - this instruction increments value stored in the Y register
 };
 
 #endif

@@ -45,7 +45,7 @@ Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
 Byte CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
-   Word ea;
+   Word ea; ///ea => effective address
    Byte eaLow = ReadByte(_cycles, _addr, _mem);
    Byte eaHigh = ReadByte(_cycles, _addr, _mem);
    ea = eaLow + (eaHigh << 8);
