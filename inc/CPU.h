@@ -48,6 +48,13 @@ struct CPU
       static constexpr Byte INS_LDX_ABS  = 0xAE;
       static constexpr Byte INS_LDX_ABSY = 0xBE;
 
+      /// LDY instructions
+      static constexpr Byte INS_LDY_IM   = 0xA0;
+      static constexpr Byte INS_LDY_ZP   = 0xA4;
+      static constexpr Byte INS_LDY_ZPX  = 0xB4;
+      static constexpr Byte INS_LDY_ABS  = 0xAC;
+      static constexpr Byte INS_LDY_ABSX = 0xBC;
+
       struct canBeExceeded
       {
             bool can;
@@ -87,6 +94,8 @@ struct CPU
 
       void LDXSetStatus();
 
+      void LDYSetStatus();
+
       s32 execute(u32 _cycles, Mem &_mem);
 
    private:
@@ -111,6 +120,13 @@ struct CPU
       void LDX_ZPY(u32 &_cycles, Mem &_mem);
       void LDX_ABS(u32 &_cycles, Mem &_mem);
       void LDX_ABSY(u32 &_cycles, Mem &_mem);
+
+      /// LDX
+      void LDY_IM(u32 &_cycles, Mem &_mem);
+      void LDY_ZP(u32 &_cycles, Mem &_mem);
+      void LDY_ZPX(u32 &_cycles, Mem &_mem);
+      void LDY_ABS(u32 &_cycles, Mem &_mem);
+      void LDY_ABSX(u32 &_cycles, Mem &_mem);
 };
 
 #endif

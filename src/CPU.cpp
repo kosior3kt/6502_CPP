@@ -92,6 +92,36 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
          break;
       }
 
+      case INS_LDY_IM:
+      {
+         LDY_IM(_cycles, _mem);
+         break;
+      }
+
+      case INS_LDY_ZP:
+      {
+         LDY_ZP(_cycles, _mem);
+         break;
+      }
+
+      case INS_LDY_ZPX:
+      {
+         LDY_ZPX(_cycles, _mem);
+         break;
+      }
+
+      case INS_LDY_ABS:
+      {
+         LDY_ABS(_cycles, _mem);
+         break;
+      }
+
+      case INS_LDY_ABSX:
+      {
+         LDY_ABSX(_cycles, _mem);
+         break;
+      }
+
       default:
       {
          /// TODO: decide later if we want to panic or sth in such case

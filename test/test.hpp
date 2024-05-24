@@ -58,7 +58,6 @@ class TEST_6502 : public testing::Test
          case Register::X:
          {
             EXPECT_EQ((int)cpu_.X, 0x69);
-
             break;
          }
          case Register::Y:

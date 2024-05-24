@@ -74,3 +74,8 @@ void CPU::LDXSetStatus()
    N = (X & 0b10000000) > 0; /// is this correct?
 }
 
+void CPU::LDYSetStatus()
+{
+   Z = (Y == 0);
+   N = (Y & 0b10000000) > 0; /// is this correct?
+}

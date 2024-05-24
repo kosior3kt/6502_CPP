@@ -147,3 +147,54 @@ void CPU::LDX_ABSY(u32 &_cycles, Mem &_mem)
    X = ReadByte(_cycles, address, _mem);
    LDXSetStatus();
 }
+
+
+//////////////////////////////////// LDY
+
+void CPU::LDY_IM(u32 &_cycles, Mem &_mem)
+{
+   Byte val = FetchByte(_cycles, _mem);
+   Y        = val;
+   LDYSetStatus();
+}
+
+void CPU::LDY_ZP(u32 &_cycles, Mem &_mem)
+{
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   Y                    = ReadByte(_cycles, zeroPageAddress, _mem);
+   LDYSetStatus();
+}
+
+void CPU::LDY_ZPX(u32 &_cycles, Mem &_mem)
+{
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   zeroPageAddress += X;
+   _cycles--;
+   if(zeroPageAddress > _mem.MAX_MEM)
+   {
+      std::cout << "instrukcja LDA ZPY przekroczyla obszar pamieci";
+      return;
+   }
+   Y = ReadByte(_cycles, zeroPageAddress, _mem);
+   LDYSetStatus();
+}
+
+void CPU::LDY_ABS(u32 &_cycles, Mem &_mem)
+{
+   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+   Y            = ReadByte(_cycles, address, _mem);
+   LDYSetStatus();
+}
+
+void CPU::LDY_ABSX(u32 &_cycles, Mem &_mem)
+{
+   Byte eaLow   = FetchByte(_cycles, _mem);
+   Byte eaHigh  = FetchByte(_cycles, _mem);
+   Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
+   address += X;
+   // address = address % Mem::MAX_MEM;   ///Does it make sense???
+   if(eaLow + X > 0xFF)
+      --_cycles;
+   Y = ReadByte(_cycles, address, _mem);
+   LDYSetStatus();
+}
