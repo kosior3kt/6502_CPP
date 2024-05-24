@@ -2,35 +2,84 @@
 #define __TEST__
 
 #include "CPU.h"
+
 #include <gtest/gtest.h>
 
+namespace testHelper
+{
+   static bool basicFlagsUnused(const CPU &_original, const CPU &_copy)
+   {
+      return (
+          _original.C == _copy.C && _original.B == _copy.B
+          && _original.I == _copy.I && _original.D == _copy.D
+          && _original.V == _copy.V
+      );
+   };
+}
 
 class TEST_6502 : public testing::Test
 {
-public:
-   CPU cpu_;
-   Mem mem_;
-   CPU copyCPU_;
+   public:
+      CPU cpu_;
+      Mem mem_;
+      CPU copyCPU_;
 
-protected:
+      enum class Register
+      {
+         A,
+         X,
+         Y
+      };
 
-   virtual void SetUp(){
-      cpu_.Reset(mem_);
-      copyCPU_ = cpu_;
-   }
+   protected:
+      virtual void SetUp()
+      {
+         cpu_.Reset(mem_);
+         copyCPU_ = cpu_;
+      }
 
-   virtual void TearDown(){
-   }
+      virtual void TearDown() {}
+
+   public:
+      void test_LD(Byte _oper, Register _reg)
+      {
+         constexpr uint8_t ASSIGNED_CYCLES = 2;
+         mem_.debug_set(0xFFFC, _oper);
+         mem_.debug_set(0xFFFD, 0x69);
+         auto cyclesLeft = cpu_.execute(ASSIGNED_CYCLES, mem_);
+
+         switch(_reg)
+         {
+         case Register::A:
+         {
+            EXPECT_EQ((int)cpu_.A, 0x69);
+            break;
+         }
+         case Register::X:
+         {
+            EXPECT_EQ((int)cpu_.X, 0x69);
+
+            break;
+         }
+         case Register::Y:
+         {
+            EXPECT_EQ((int)cpu_.Y, 0x69);
+            break;
+         }
+         default:
+            break;
+         }
+         EXPECT_EQ(cyclesLeft, 0);
+         EXPECT_FALSE((int)cpu_.Z);
+         EXPECT_FALSE((int)cpu_.N);
+         EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+      };
 };
 
-namespace testHelper{
-   static bool basicFlagsUnused(const CPU& _original, const CPU& _copy){
-      return (_original.C == _copy.C &&
-      _original.B == _copy.B &&
-      _original.I == _copy.I &&
-      _original.D == _copy.D &&
-      _original.V == _copy.V);
-   };
-}
+struct test{
+   int va;
+   test() = default;
+   bool operator=(const test& _a){return va == _a.va;};
+};
 
 #endif

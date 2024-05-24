@@ -5,6 +5,7 @@
 #include <cassert>
 #include <iostream>
 #include <fstream>
+#include <inttypes.h>
 
 struct Mem
 {

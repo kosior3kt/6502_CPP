@@ -7,20 +7,7 @@ TEST_F(TEST_6502, MemoryDumpTest)
 
 TEST_F(TEST_6502, LDA_IM)
 {
-   constexpr uint8_t ASSIGNED_CYCLES = 2;
-   mem_.debug_set(0xFFFC, CPU::INS_LDA_IM);
-   mem_.debug_set(0xFFFD, 0x69);
-   auto cyclesLeft = cpu_.execute(ASSIGNED_CYCLES, mem_);
-
-   // Byte targetCycles =
-   // cpu_.numberOfCyclesByInstruction_.find(CPU::INS_LDA_IM);
-   // EXPECT_EQ(ASSIGNED_CYCLES, targetCycles); ///make everything into that
-   // later. Maybe calculate number of cycles based on some functino(?)
-   EXPECT_EQ(cyclesLeft, 0);
-   EXPECT_EQ((int)cpu_.A, 0x69);
-   EXPECT_FALSE((int)cpu_.Z);
-   EXPECT_FALSE((int)cpu_.N);
-   EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+   test_LD(CPU::INS_LDA_IM, Register::A);
 }
 
 TEST_F(TEST_6502, LDA_IM_NEGATIVE)

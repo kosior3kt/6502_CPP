@@ -2,7 +2,8 @@
 add_executable(test
    main.cpp
    test.hpp
-   test.cpp
+   test_LDA.cpp
+   test_LDX.cpp
    )
 
 target_include_directories( test
