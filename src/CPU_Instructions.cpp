@@ -19,6 +19,7 @@ void CPU::LDA_ZPX(u32 &_cycles, Mem &_mem)
 {
    Byte zeroPageAddress = FetchByte(_cycles, _mem);
    zeroPageAddress += X;
+   _cycles--;
    if(zeroPageAddress > _mem.MAX_MEM)
    {
       std::cout << "instrukcja LDA ZPX przekroczyla obszar pamieci";
@@ -117,6 +118,7 @@ void CPU::LDX_ZPY(u32 &_cycles, Mem &_mem)
 {
    Byte zeroPageAddress = FetchByte(_cycles, _mem);
    zeroPageAddress += Y;
+   _cycles--;
    if(zeroPageAddress > _mem.MAX_MEM)
    {
       std::cout << "instrukcja LDA ZPY przekroczyla obszar pamieci";
