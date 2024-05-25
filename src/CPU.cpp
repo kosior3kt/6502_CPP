@@ -122,6 +122,18 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
          break;
       }
 
+      case INS_INX:
+      {
+         INX(_cycles, _mem);
+         break;
+      }
+
+      case INS_INY:
+      {
+         INY(_cycles, _mem);
+         break;
+      }
+
       case INS_NULL:
       {
          ///TODO: decide if this is the kind of behaviour we want

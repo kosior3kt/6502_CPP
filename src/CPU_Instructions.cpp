@@ -204,4 +204,15 @@ void CPU::LDY_ABSX(u32 &_cycles, Mem &_mem)
 
 //////////////////////////////////// INX
 
+void CPU::INX(u32& _cycles, Mem& _mem){
+   if(X == 0xFF) X = 0;
+   else ++X;
+   LDXSetStatus();
+}
 //////////////////////////////////// INY
+
+void CPU::INY(u32& _cycles, Mem& _mem){
+   if(Y == 0xFF) Y = 0;
+   else ++Y;
+   LDYSetStatus();
+}

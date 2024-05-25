@@ -58,6 +58,12 @@ struct CPU
       static constexpr Byte INS_LDY_ABS  = 0xAC;
       static constexpr Byte INS_LDY_ABSX = 0xBC;
 
+      /// INC instructions
+      ///static constexpr Byte INS_INC = 0xBC; ///for now just the INX and INY - INC has more adressing modes
+      static constexpr Byte INS_INX = 0xE8;
+      static constexpr Byte INS_INY = 0xC8;
+
+
       struct canBeExceeded
       {
             bool can;
@@ -138,8 +144,11 @@ struct CPU
       /// INC - instruction INC increments value in the given memory locatino
 
       /// INX - this instruction increments value stored in the X register
+      void INX(u32& _cycles, Mem& _mem);
 
       /// INY - this instruction increments value stored in the Y register
+      void INY(u32& _cycles, Mem& _mem);
+
 };
 
 #endif

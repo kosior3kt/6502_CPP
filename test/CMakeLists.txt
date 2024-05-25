@@ -5,6 +5,7 @@ add_executable(test
    test_LDA.cpp
    test_LDX.cpp
    test_LDY.cpp
+   test_INC.cpp
    test_MultipleInstructions.cpp
    )
 
