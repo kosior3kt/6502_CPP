@@ -6,7 +6,7 @@
 #include <functional>
 #include <map>
 
-///maybe later I will use it, when I discover that it is faster or sth
+/// maybe later I will use it, when I discover that it is faster or sth
 #define SUBST(VAR)                                                            \
    std::bind(&CPU::VAR, this, std::placeholders::_1, std::placeholders::_2)
 
@@ -69,11 +69,15 @@ struct CPU
       static constexpr Byte INS_INX = 0xE8;
       static constexpr Byte INS_INY = 0xC8;
 
+      static constexpr Byte INS_INC_ZP   = 0xE6;
+      static constexpr Byte INS_INC_ZPX  = 0xF6;
+      static constexpr Byte INS_INC_ABS  = 0xEE;
+      static constexpr Byte INS_INC_ABSX = 0xFE;
+
       /// DEC incstructions
       // static constexpr Byte INS_DEC = 0xDE;   ///not doing this yet
       static constexpr Byte INS_DEX = 0xCA;
       static constexpr Byte INS_DEY = 0x88;
-
 
       /* ///unused for now
       struct canBeExceeded
@@ -108,6 +112,12 @@ struct CPU
 
       Byte ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem);
 
+      void
+      WriteByte(u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val);
+
+      void
+      WriteByte(u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val);
+
       Byte ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
 
       Byte ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
@@ -118,9 +128,22 @@ struct CPU
 
       void LDYSetStatus();
 
+      void
+      ApplyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
+
+      void
+      ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
+
       s32 execute(u32 _cycles, Mem &_mem);
 
       s32 execute_alternative(u32 _cycles, Mem &_mem);
+
+      void SetNZWithRegister(const Register &_reg);
+
+      void SetNZWithValue(const Byte &_val);
+
+      void SetCustomFlagsWithValue(const Byte& _val, Byte& _flags);
+      void SetCustomFlagsWithRegister(const Register& _reg, Byte& _flags);
 
    private:
       /// place for all the function for instructis
@@ -161,6 +184,11 @@ struct CPU
       /// INC - instruction INC increments value in the given memory locatino
       /// void INC(u32& _cycles, Mem& _mem);
 
+      void INC_ZP(u32 &_cycles, Mem &_mem);
+      void INC_ZPX(u32 &_cycles, Mem &_mem);
+      void INC_ABS(u32 &_cycles, Mem &_mem);
+      void INC_ABSX(u32 &_cycles, Mem &_mem);
+
       /// INX - this instruction increments value stored in the X register
       void INX(u32 &_cycles, Mem &_mem);
 
@@ -188,48 +216,53 @@ struct CPU
       std::map<Byte, std::function<void(u32 &, Mem &)> > test;
 
    public:
-      CPU() 
+      CPU()
       {
          ///////Do I even want to do this here?
 
          //// LDA
 
-         test[INS_LDA_IM] = bindMemberFunction(&CPU::LDA_IM);
-         test[INS_LDA_ZP] = bindMemberFunction(&CPU::LDA_ZP);
-         test[INS_LDA_ZPX] = bindMemberFunction(&CPU::LDA_ZPX);
-         test[INS_LDA_ABS] = bindMemberFunction(&CPU::LDA_ABS);
+         test[INS_LDA_IM]   = bindMemberFunction(&CPU::LDA_IM);
+         test[INS_LDA_ZP]   = bindMemberFunction(&CPU::LDA_ZP);
+         test[INS_LDA_ZPX]  = bindMemberFunction(&CPU::LDA_ZPX);
+         test[INS_LDA_ABS]  = bindMemberFunction(&CPU::LDA_ABS);
          test[INS_LDA_ABSX] = bindMemberFunction(&CPU::LDA_ABSX);
          test[INS_LDA_ABSY] = bindMemberFunction(&CPU::LDA_ABSY);
          test[INS_LDA_INDX] = bindMemberFunction(&CPU::LDA_INDX);
          test[INS_LDA_INDY] = bindMemberFunction(&CPU::LDA_INDY);
          //// LDX
 
-         test[INS_LDX_IM] = bindMemberFunction(&CPU::LDX_IM);
-         test[INS_LDX_ZP] = bindMemberFunction(&CPU::LDX_ZP);
-         test[INS_LDX_ZPY] = bindMemberFunction(&CPU::LDX_ZPY);
-         test[INS_LDX_ABS] = bindMemberFunction(&CPU::LDX_ABS);
+         test[INS_LDX_IM]   = bindMemberFunction(&CPU::LDX_IM);
+         test[INS_LDX_ZP]   = bindMemberFunction(&CPU::LDX_ZP);
+         test[INS_LDX_ZPY]  = bindMemberFunction(&CPU::LDX_ZPY);
+         test[INS_LDX_ABS]  = bindMemberFunction(&CPU::LDX_ABS);
          test[INS_LDX_ABSY] = bindMemberFunction(&CPU::LDX_ABSY);
          //// LDY
 
-         test[INS_LDY_IM] = bindMemberFunction(&CPU::LDY_IM);
-         test[INS_LDY_ZP] = bindMemberFunction(&CPU::LDY_ZP);
-         test[INS_LDY_ZPX] = bindMemberFunction(&CPU::LDY_ZPX);
-         test[INS_LDY_ABS] = bindMemberFunction(&CPU::LDY_ABS);
+         test[INS_LDY_IM]   = bindMemberFunction(&CPU::LDY_IM);
+         test[INS_LDY_ZP]   = bindMemberFunction(&CPU::LDY_ZP);
+         test[INS_LDY_ZPX]  = bindMemberFunction(&CPU::LDY_ZPX);
+         test[INS_LDY_ABS]  = bindMemberFunction(&CPU::LDY_ABS);
          test[INS_LDY_ABSX] = bindMemberFunction(&CPU::LDY_ABSX);
          /// JSR
 
          test[INS_JSR] = bindMemberFunction(&CPU::JSR);
          /// INC
-        
+
          test[INS_INX] = bindMemberFunction(&CPU::INX);
          test[INS_INY] = bindMemberFunction(&CPU::INY);
+
+         test[INS_INC_ZP]  = bindMemberFunction(&CPU::INC_ZP);
+         test[INS_INC_ZPX] = bindMemberFunction(&CPU::INC_ZPX);
+         test[INS_INC_ABS] = bindMemberFunction(&CPU::INC_ABS);
+         test[INS_INC_ABSX] = bindMemberFunction(&CPU::INC_ZPX);
          /// DEC
-        
+
          test[INS_DEX] = bindMemberFunction(&CPU::DEX);
          test[INS_DEY] = bindMemberFunction(&CPU::DEY);
-         
-         //NULL
-         //test[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);
+
+         // NULL
+         // test[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);
       }
 };
 

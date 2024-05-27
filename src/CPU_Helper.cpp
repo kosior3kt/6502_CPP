@@ -42,13 +42,29 @@ Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
    return data;
 }
 
+void CPU::WriteByte(
+    u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val
+)
+{
+   _mem.debug_set(_addr, _val);
+   --_cycles;
+}
+
+void CPU::WriteByte(
+    u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val
+)
+{
+   _mem.debug_set(_addr, _val);
+   --_cycles;
+}
+
 Byte CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
-   Word ea; ///ea => effective address
-   Byte eaLow = ReadByte(_cycles, _addr, _mem);
+   Word ea; /// ea => effective address
+   Byte eaLow  = ReadByte(_cycles, _addr, _mem);
    Byte eaHigh = ReadByte(_cycles, _addr, _mem);
-   ea = eaLow + (eaHigh << 8);
+   ea          = eaLow + (eaHigh << 8);
    return ea;
 }
 
@@ -56,26 +72,120 @@ Byte CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea;
-   Byte eaLow = ReadByte(_cycles, _addr, _mem);
+   Byte eaLow  = ReadByte(_cycles, _addr, _mem);
    Byte eaHigh = ReadByte(_cycles, _addr, _mem);
-   ea = eaLow + (eaHigh << 8);
+   ea          = eaLow + (eaHigh << 8);
    return ea;
 }
 
-void CPU::LDASetStatus()
+void CPU::ApplyToMemory(
+    u32 &_cycles, const Word &_addr, Mem &_mem,
+    std::function<Byte(const Byte &)> _fun
+)
 {
-   Z = (A == 0);
-   N = ((Byte)(A & 0b10000000)) > 0; /// is this correct?
+   Byte tempVal = ReadByte(_cycles, _addr, _mem);
+   WriteByte(_cycles, _addr, _mem, _fun(tempVal));
 }
 
-void CPU::LDXSetStatus()
+void CPU::ApplyToMemory(
+    u32 &_cycles, const Byte &_addr, Mem &_mem,
+    std::function<Byte(const Byte &)> _fun
+)
 {
-   Z = (X == 0);
-   N = ((Byte)(X & 0b10000000))> 0; /// is this correct?
+   Byte tempVal = ReadByte(_cycles, _addr, _mem);
+   WriteByte(_cycles, _addr, _mem, _fun(tempVal));
 }
 
-void CPU::LDYSetStatus()
+void CPU::SetNZWithRegister(const Register &_reg)
 {
-   Z = (Y == 0);
-   N = (Byte)(Y & 0b10000000) > 0; /// is this correct?
+   Byte temp;
+   switch(_reg)
+   {
+   case Register::A:
+      temp = A;
+      break;
+   case Register::X:
+      temp = X;
+      break;
+   case Register::Y:
+      temp = Y;
+      break;
+   }
+   Z = (temp == 0);
+   N = ((Byte)(temp & 0b10000000)) > 0;
+}
+
+void CPU::SetNZWithValue(const Byte &_val)   ///this thing exists only so that I can do less in lambdas
+{
+   Z = (_val == 0);
+   N = ((Byte)(_val & 0b10000000)) > 0;
+}
+
+void CPU::SetCustomFlagsWithValue(const Byte &_val, Byte &_flags)
+{
+   if(_flags & C_f)
+   {
+   }
+   if(_flags & Z_f)
+   {
+      Z = (_val == 0);
+   }
+   if(_flags & I_f)
+   {
+   }
+   if(_flags & D_f)
+   {
+   }
+   if(_flags & B_f)
+   {
+   }
+   if(_flags & V_f)
+   {
+   }
+   if(_flags & N_f)
+   {
+      N = ((Byte)(_val & 0b10000000)) > 0;
+   }
+}
+
+void CPU::SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
+{
+
+   Byte val;
+   switch(_reg)
+   {
+   case Register::A:
+      val = A;
+      break;
+   case Register::X:
+      val = X;
+      break;
+   case Register::Y:
+      val = Y;
+      break;
+   }
+
+   if(_flags & C_f)
+   {
+   }
+   if(_flags & Z_f)
+   {
+      Z = (val == 0);
+   }
+   if(_flags & I_f)
+   {
+   }
+   if(_flags & D_f)
+   {
+   }
+   if(_flags & B_f)
+   {
+   }
+   if(_flags & V_f)
+   {
+   }
+   if(_flags & N_f)
+   {
+      N = ((Byte)(val & 0b10000000)) > 0;
+   }
 }

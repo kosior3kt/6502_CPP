@@ -4,18 +4,21 @@ void createInlineProgram(Mem &);
 
 int main()
 {
-   /// start - boot
+   ////Here you can see how to use this library
+
+   /// start - boot  
    Mem mem;
    CPU cpu;
-   cpu.Reset(mem);
+   cpu.Reset(mem);   ///I want to explicitly reset memory instead of doing it in constructor
    /// end - boot
 
-   createInlineProgram(mem);
+   createInlineProgram(mem);  /// As of today we need to put our program in memory manually 
 
-   cpu.execute(16, mem);
+   cpu.execute(16, mem);      /// we need to explicitly expecify (minimal) number of cycles needed to finish doing stuff
 
    /// start - test
-   std::cout << cpu.A << std::endl;
+   
+   //std::cout << cpu.A << std::endl;  ///Dont want to have this now - I will take care of this later
    /// end - test
 
    return 0;

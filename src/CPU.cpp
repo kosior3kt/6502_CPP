@@ -21,7 +21,7 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    return _cycles;
 }
 
-s32 CPU::execute_alternative(u32 _cycles, Mem &_mem)
+s32 CPU::execute_alternative(u32 _cycles, Mem &_mem)  ///from now on I will use mainly CPU::execute and not support this one. Feel free to port rest of command here tho
 {
 
    while(_cycles)
