@@ -79,7 +79,7 @@ class TEST_6502 : public testing::Test
          constexpr uint8_t ASSIGNED_CYCLES = 2;
          mem_.debug_set(0xFFFC, _oper);
          mem_.debug_set(0xFFFD, 0x69);
-         auto cyclesLeft = cpu_.execute2(ASSIGNED_CYCLES, mem_);
+         auto cyclesLeft = cpu_.execute_alternative(ASSIGNED_CYCLES, mem_);
 
          switch(_reg)
          {

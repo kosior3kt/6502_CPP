@@ -98,13 +98,19 @@ void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
    LDASetStatus();
 }
 
-/////////////////////////////////////// MISC
+/////////////////////////////////////// JSR
 void CPU::JSR(u32 &_cycles, Mem &_mem)
 {
    Word subRoutineAddr = FetchWord(_cycles, _mem);
-   _mem.writeWord(_cycles, SP + 1, PC - 1);
+   //auto temp = SP;
+   _mem.writeWord(_cycles, ++SP, PC - 1);  ///does this make sense(?) ((I belive so))
+   // ++S
    //_mem.writeWord(_cycles, SP , PC - 1);
    PC = subRoutineAddr;
+#ifdef DEBUG
+   printf("SP before: %d, SP now: %d\n", temp, SP);
+   assert(SP == temp + 1);
+#endif
    --_cycles;
 }
 
