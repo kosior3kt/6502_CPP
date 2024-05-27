@@ -127,3 +127,20 @@ TEST_F(TEST_6502, INC_ABS_simple)
    EXPECT_FALSE((int)cpu_.N);
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
 }
+
+TEST_F(TEST_6502, INC_ZPX_PageCrossing)
+{   auto MEM_ADDR = 0x00FF;   ///page corssing so we expect it to be at the adress 0x00. Hope it is not reserved or sth
+   cpu_.X        = 0x01;
+   mem_.debug_set(0x00, 0x68);
+   mem_.debug_set(0xFFFC, CPU::INS_INC_ZPX);
+   mem_.debug_set(0xFFFD, MEM_ADDR);
+   auto cyclesLeft = cpu_.execute(6, mem_);
+
+   auto temp = mem_.Data[0x00];
+   EXPECT_EQ(cyclesLeft, 0);
+   EXPECT_EQ(temp, 0x69);
+   EXPECT_FALSE((int)cpu_.Z);
+   EXPECT_FALSE((int)cpu_.N);
+   EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+
+}

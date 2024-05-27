@@ -64,18 +64,22 @@ struct CPU
       static constexpr Byte INS_LDY_ABSX = 0xBC;
 
       /// INC instructions
-      /// static constexpr Byte INS_INC = 0xBC; ///for now just the INX and INY
-      /// - INC has more adressing modes
-      static constexpr Byte INS_INX = 0xE8;
-      static constexpr Byte INS_INY = 0xC8;
-
       static constexpr Byte INS_INC_ZP   = 0xE6;
       static constexpr Byte INS_INC_ZPX  = 0xF6;
       static constexpr Byte INS_INC_ABS  = 0xEE;
       static constexpr Byte INS_INC_ABSX = 0xFE;
 
+      /// INX and INY
+      static constexpr Byte INS_INX = 0xE8;
+      static constexpr Byte INS_INY = 0xC8;
+
       /// DEC incstructions
-      // static constexpr Byte INS_DEC = 0xDE;   ///not doing this yet
+      static constexpr Byte INS_DEC_ZP   = 0xC6;
+      static constexpr Byte INS_DEC_ZPX  = 0xD6;
+      static constexpr Byte INS_DEC_ABS  = 0xCE;
+      static constexpr Byte INS_DEC_ABSX = 0xDE;
+
+      /// DEX and DEY
       static constexpr Byte INS_DEX = 0xCA;
       static constexpr Byte INS_DEY = 0x88;
 
@@ -122,12 +126,6 @@ struct CPU
 
       Byte ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
 
-      void LDASetStatus();
-
-      void LDXSetStatus();
-
-      void LDYSetStatus();
-
       void
       ApplyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
 
@@ -142,8 +140,9 @@ struct CPU
 
       void SetNZWithValue(const Byte &_val);
 
-      void SetCustomFlagsWithValue(const Byte& _val, Byte& _flags);
-      void SetCustomFlagsWithRegister(const Register& _reg, Byte& _flags);
+      void SetCustomFlagsWithValue(const Byte &_val, Byte &_flags);
+
+      void SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags);
 
    private:
       /// place for all the function for instructis
@@ -196,7 +195,10 @@ struct CPU
       void INY(u32 &_cycles, Mem &_mem);
 
       /// DEC
-      /// void DEC(u32& _cycles, Mem& _mem);
+      void DEC_ZP(u32 &_cycles, Mem &_mem);
+      void DEC_ZPX(u32 &_cycles, Mem &_mem);
+      void DEC_ABS(u32 &_cycles, Mem &_mem);
+      void DEC_ABSX(u32 &_cycles, Mem &_mem);
 
       /// DEX
       void DEX(u32 &_cycles, Mem &_mem);
@@ -252,14 +254,19 @@ struct CPU
          test[INS_INX] = bindMemberFunction(&CPU::INX);
          test[INS_INY] = bindMemberFunction(&CPU::INY);
 
-         test[INS_INC_ZP]  = bindMemberFunction(&CPU::INC_ZP);
-         test[INS_INC_ZPX] = bindMemberFunction(&CPU::INC_ZPX);
-         test[INS_INC_ABS] = bindMemberFunction(&CPU::INC_ABS);
+         test[INS_INC_ZP]   = bindMemberFunction(&CPU::INC_ZP);
+         test[INS_INC_ZPX]  = bindMemberFunction(&CPU::INC_ZPX);
+         test[INS_INC_ABS]  = bindMemberFunction(&CPU::INC_ABS);
          test[INS_INC_ABSX] = bindMemberFunction(&CPU::INC_ZPX);
          /// DEC
 
          test[INS_DEX] = bindMemberFunction(&CPU::DEX);
          test[INS_DEY] = bindMemberFunction(&CPU::DEY);
+
+         test[INS_DEC_ZP]   = bindMemberFunction(&CPU::DEC_ZP);
+         test[INS_DEC_ZPX]  = bindMemberFunction(&CPU::DEC_ZPX);
+         test[INS_DEC_ABS]  = bindMemberFunction(&CPU::DEC_ABS);
+         test[INS_DEC_ABSX] = bindMemberFunction(&CPU::DEC_ABSX);
 
          // NULL
          // test[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);

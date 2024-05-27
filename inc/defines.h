@@ -1,11 +1,13 @@
 #ifndef __DEFINES__
 #define __DEFINES__
 
+//glossary
 using Byte = unsigned char;
 using Word = unsigned short;
 using u32 = unsigned int;
 using s32 = int;
 
+///flags for setting flags (?)
 #define C_f  (1 << 0)
 #define Z_f  (1 << 1)
 #define I_f  (1 << 2)
@@ -13,5 +15,7 @@ using s32 = int;
 #define B_f  (1 << 4)
 #define V_f  (1 << 5)
 #define N_f  (1 << 6)
+
+
 
 #endif
