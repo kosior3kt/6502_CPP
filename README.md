@@ -8,3 +8,9 @@ List of what works (instruction wise):
     -LDX
     -LDY
     -JSR
+    -INC
+    -INX
+    -INY
+    -DEC
+    -DEY
+    -DEX
