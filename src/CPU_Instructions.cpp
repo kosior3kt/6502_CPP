@@ -1,5 +1,14 @@
 #include "CPU.h"
 
+//////////////////////////////////// NULL 
+
+void CPU::NULL_INS(u32 &_cycles, Mem &_mem)
+{
+   //printf("\nhere in null ins. Number of cycles is: %d\n", _cycles);
+   Byte val = FetchByte(_cycles, _mem);
+   return;
+}
+
 //////////////////////////////////// LDA
 void CPU::LDA_IM(u32 &_cycles, Mem &_mem)
 {
@@ -148,7 +157,6 @@ void CPU::LDX_ABSY(u32 &_cycles, Mem &_mem)
    LDXSetStatus();
 }
 
-
 //////////////////////////////////// LDY
 
 void CPU::LDY_IM(u32 &_cycles, Mem &_mem)
@@ -199,20 +207,53 @@ void CPU::LDY_ABSX(u32 &_cycles, Mem &_mem)
    LDYSetStatus();
 }
 
-
 //////////////////////////////////// INC
 
 //////////////////////////////////// INX
 
-void CPU::INX(u32& _cycles, Mem& _mem){
-   if(X == 0xFF) X = 0;
-   else ++X;
+void CPU::INX(u32 &_cycles, Mem &_mem)
+{
+   if(X == 0xFF)
+      X = 0;
+   else
+      ++X;
+   --_cycles;
    LDXSetStatus();
 }
+
 //////////////////////////////////// INY
 
-void CPU::INY(u32& _cycles, Mem& _mem){
-   if(Y == 0xFF) Y = 0;
-   else ++Y;
+void CPU::INY(u32 &_cycles, Mem &_mem)
+{
+   if(Y == 0xFF)
+      Y = 0;
+   else
+      ++Y;
+   --_cycles;
+   LDYSetStatus();
+}
+
+//////////////////////////////////// DEC
+
+//////////////////////////////////// DEX
+void CPU::DEX(u32 &_cycles, Mem &_mem)
+{
+   if(X == 0)
+      X = 0xFF;
+   else
+      --X;
+   --_cycles;
+   LDXSetStatus();
+}
+
+//////////////////////////////////// DEY
+
+void CPU::DEY(u32 &_cycles, Mem &_mem)
+{
+   if(Y == 0)
+      Y = 0xFF;
+   else
+      --Y;
+   --_cycles;
    LDYSetStatus();
 }

@@ -73,6 +73,39 @@ class TEST_6502 : public testing::Test
          EXPECT_FALSE((int)cpu_.N);
          EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
       };
+
+      void test_LD_alternative(Byte _oper, Register _reg)
+      {
+         constexpr uint8_t ASSIGNED_CYCLES = 2;
+         mem_.debug_set(0xFFFC, _oper);
+         mem_.debug_set(0xFFFD, 0x69);
+         auto cyclesLeft = cpu_.execute2(ASSIGNED_CYCLES, mem_);
+
+         switch(_reg)
+         {
+         case Register::A:
+         {
+            EXPECT_EQ((int)cpu_.A, 0x69);
+            break;
+         }
+         case Register::X:
+         {
+            EXPECT_EQ((int)cpu_.X, 0x69);
+            break;
+         }
+         case Register::Y:
+         {
+            EXPECT_EQ((int)cpu_.Y, 0x69);
+            break;
+         }
+         default:
+            break;
+         }
+         EXPECT_EQ(cyclesLeft, 0);
+         EXPECT_FALSE((int)cpu_.Z);
+         EXPECT_FALSE((int)cpu_.N);
+         EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+      };
 };
 
 struct test{

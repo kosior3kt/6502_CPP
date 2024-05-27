@@ -65,17 +65,17 @@ Byte CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
 void CPU::LDASetStatus()
 {
    Z = (A == 0);
-   N = (A & 0b10000000) > 0; /// is this correct?
+   N = ((Byte)(A & 0b10000000)) > 0; /// is this correct?
 }
 
 void CPU::LDXSetStatus()
 {
    Z = (X == 0);
-   N = (X & 0b10000000) > 0; /// is this correct?
+   N = ((Byte)(X & 0b10000000))> 0; /// is this correct?
 }
 
 void CPU::LDYSetStatus()
 {
    Z = (Y == 0);
-   N = (Y & 0b10000000) > 0; /// is this correct?
+   N = (Byte)(Y & 0b10000000) > 0; /// is this correct?
 }

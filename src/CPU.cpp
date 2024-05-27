@@ -2,6 +2,28 @@
 
 s32 CPU::execute(u32 _cycles, Mem &_mem)
 {
+
+   while(_cycles > 0)
+   {
+      Byte inst = FetchByte(_cycles, _mem);
+      auto function = CPU::test.find(inst);
+      if(function!= test.end())
+      {
+         function->second(_cycles, _mem);
+      }
+      else
+      {
+         printf("Not handled %d\n", inst);
+         break;
+      }
+   }
+
+   return _cycles;
+}
+
+s32 CPU::execute_alternative(u32 _cycles, Mem &_mem)
+{
+
    while(_cycles)
    {
       Byte inst = FetchByte(_cycles, _mem);
@@ -134,9 +156,21 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
          break;
       }
 
+      case INS_DEX:
+      {
+         DEX(_cycles, _mem);
+         break;
+      }
+
+      case INS_DEY:
+      {
+         DEY(_cycles, _mem);
+         break;
+      }
+
       case INS_NULL:
       {
-         ///TODO: decide if this is the kind of behaviour we want
+         /// TODO: decide if this is the kind of behaviour we want
          return _cycles;
       }
 
@@ -151,3 +185,4 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    }
    return _cycles;
 }
+
