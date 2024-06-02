@@ -103,7 +103,7 @@ void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
       --_cycles;
    Word ea   = eaLow + (eaHigh << 8) + Y;
    A         = ReadByte(_cycles, ea, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?) YES IT DOES =0
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -113,10 +113,13 @@ void CPU::JSR(u32 &_cycles, Mem &_mem)
    Word subRoutineAddr = FetchWord(_cycles, _mem);
 #ifdef DEBUG
    auto temp = SP;
-#endif
+
+
    _mem.writeWord(
        _cycles, ++SP, PC - 1
    ); /// does this make sense(?) ((I belive so))
+#endif
+   WriteWord(_cycles, ++SP, _mem, (PC-1));
    // ++S
    //_mem.writeWord(_cycles, SP , PC - 1);
    ///////////////////////////////////////// this thing should be a stack...
@@ -251,7 +254,8 @@ void CPU::INC_ZP(u32 &_cycles, Mem &_mem)
        _cycles, zeroPageAddress, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
-          CPU::SetNZWithValue(_val + 1);
+         Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+         SetCustomFlagsWithValue(_val, flag);
           return (_val + 1);
        }
    );
@@ -270,7 +274,8 @@ void CPU::INC_ZPX(u32 &_cycles, Mem &_mem)
        _cycles, zeroPageAddress, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
-          CPU::SetNZWithValue(_val + 1);
+         Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+         SetCustomFlagsWithValue(_val, flag);
           return (_val + 1);
        }
    );
@@ -285,7 +290,8 @@ void CPU::INC_ABS(u32 &_cycles, Mem &_mem)
        _cycles, address, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
-          CPU::SetNZWithValue(_val + 1);
+         Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+         SetCustomFlagsWithValue(_val, flag);
           return (_val + 1);
        }
    );
@@ -304,7 +310,8 @@ void CPU::INC_ABSX(u32 &_cycles, Mem &_mem)
        _cycles, address, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
-          CPU::SetNZWithValue(_val + 1);
+         Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+         SetCustomFlagsWithValue(_val, flag);
           return (_val + 1);
        }
    );
@@ -346,7 +353,8 @@ void CPU::DEC_ZP(u32 &_cycles, Mem &_mem)
        _cycles, zeroPageAddress, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
-          CPU::SetNZWithValue(_val - 1);
+         Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+         SetCustomFlagsWithValue(_val, flag);
           return (_val - 1);
        }
    );
@@ -365,7 +373,8 @@ void CPU::DEC_ZPX(u32 &_cycles, Mem &_mem)
        _cycles, zeroPageAddress, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
-          CPU::SetNZWithValue(_val - 1);
+         Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+         SetCustomFlagsWithValue(_val, flag);
           return (_val - 1);
        }
    );
@@ -380,7 +389,8 @@ void CPU::DEC_ABS(u32 &_cycles, Mem &_mem)
        _cycles, address, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
-          CPU::SetNZWithValue(_val - 1);
+         Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+         SetCustomFlagsWithValue(_val, flag);
           return (_val - 1);
        }
    );
@@ -399,7 +409,8 @@ void CPU::DEC_ABSX(u32 &_cycles, Mem &_mem)
        _cycles, address, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
-          CPU::SetNZWithValue(_val - 1);
+         Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+         SetCustomFlagsWithValue(_val, flag);
           return (_val - 1);
        }
    );
@@ -429,3 +440,19 @@ void CPU::DEY(u32 &_cycles, Mem &_mem)
    Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
    SetCustomFlagsWithRegister(Register::Y, flag);
 }
+
+//////////////////////////////////// STA
+
+void CPU::STA_ZP(u32 &_cycles, Mem &_mem) {}
+
+void CPU::STA_ZPX(u32 &_cycles, Mem &_mem) {}
+
+void CPU::STA_ABS(u32 &_cycles, Mem &_mem) {}
+
+void CPU::STA_ABSX(u32 &_cycles, Mem &_mem) {}
+
+void CPU::STA_ABSY(u32 &_cycles, Mem &_mem) {}
+
+void CPU::STA_INDX(u32 &_cycles, Mem &_mem) {}
+
+void CPU::STA_INDY(u32 &_cycles, Mem &_mem) {}

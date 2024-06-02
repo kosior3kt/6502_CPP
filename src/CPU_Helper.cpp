@@ -28,21 +28,23 @@ void CPU::Reset(Mem &_mem)
    return data;
 }
 
-[[nodiscard]] Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+[[nodiscard]] Byte
+CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    --_cycles;
    return data;
 }
 
-[[nodiscard]] Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
+[[nodiscard]] Byte
+CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    --_cycles;
    return data;
 }
 
- void CPU::WriteByte(
+void CPU::WriteByte(
     u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val
 )
 {
@@ -58,7 +60,26 @@ void CPU::WriteByte(
    --_cycles;
 }
 
-[[nodiscard]] Byte CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+void CPU::WriteWord(
+    u32 &_cycles, const Byte &_addr, Mem &_mem, const Word&_val
+)
+{
+   _mem.debug_set(_addr, (_val & 0xFF));
+   _mem.debug_set(_addr + 1, (_val << 8));
+   _cycles -= 2;
+}
+
+void CPU::WriteWord(
+    u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val
+)
+{
+   _mem.debug_set(_addr, (_val & 0xFF));
+   _mem.debug_set(_addr + 1, (_val << 8));
+   _cycles -= 2;
+}
+
+[[nodiscard]] Byte
+CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea; /// ea => effective address
@@ -68,7 +89,8 @@ void CPU::WriteByte(
    return ea;
 }
 
-[[nodiscard]] Byte CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
+[[nodiscard]] Byte
+CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea;
@@ -115,7 +137,8 @@ void CPU::SetNZWithRegister(const Register &_reg)
    N = ((Byte)(temp & 0b10000000)) > 0;
 }
 
-void CPU::SetNZWithValue(const Byte &_val)   ///this thing exists only so that I can do less in lambdas
+void CPU::SetNZWithValue(const Byte &_val
+) /// this thing exists only so that I can do less in lambdas
 {
    Z = (_val == 0);
    N = ((Byte)(_val & 0b10000000)) > 0;
@@ -123,7 +146,7 @@ void CPU::SetNZWithValue(const Byte &_val)   ///this thing exists only so that I
 
 void CPU::SetCustomFlagsWithValue(const Byte &_val, Byte &_flags)
 {
-   ///will fill this later on
+   /// will fill this later on
    if(_flags & C_f)
    {
    }
@@ -190,3 +213,5 @@ void CPU::SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
       N = ((Byte)(val & 0b10000000)) > 0;
    }
 }
+
+////////stack

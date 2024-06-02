@@ -63,5 +63,13 @@
       /// DEY
       void DEY(u32 &_cycles, Mem &_mem);
 
+      ///STA
+      void STA_ZP(u32 &_cycles, Mem &_mem);
+      void STA_ZPX(u32 &_cycles, Mem &_mem);
+      void STA_ABS(u32 &_cycles, Mem &_mem);
+      void STA_ABSX(u32 &_cycles, Mem &_mem);
+      void STA_ABSY(u32 &_cycles, Mem &_mem);
+      void STA_INDX(u32 &_cycles, Mem &_mem);
+      void STA_INDY(u32 &_cycles, Mem &_mem);
 
 #endif
