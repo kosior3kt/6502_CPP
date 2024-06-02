@@ -19,10 +19,6 @@ struct Mem
 
       Byte &operator[](const u32& _addr);
 
-      void writeByte(u32& _cycles, const u32& _addr, const u32& _val);
-
-      void writeWord(u32& _cycles, const u32& _addr, const Word& _val);
-
       void debug_set(const u32& _addr, const u32& _val);
 
       void debug_dumpMemory(const std::string& _fileName);

@@ -20,21 +20,6 @@ Byte &Mem::operator[](const u32 &_addr)
    return Data[_addr];
 }
 
-void Mem::writeByte(u32 &_cycles, const u32 &_addr, const u32 &_val)
-{
-   assert(_addr < MAX_MEM);
-   Data[_addr] = _val;
-   --_cycles;
-}
-
-void Mem::writeWord(u32 &_cycles, const u32 &_addr, const Word &_val)
-{
-   assert(_addr < MAX_MEM);
-   Data[_addr]     = _val & 0xFF;
-   Data[_addr + 1] = (_val >> 8);
-   _cycles -= 2;
-}
-
 void Mem::debug_set(const u32 &_addr, const u32 &_val)
 {
    assert(_addr < MAX_MEM);
