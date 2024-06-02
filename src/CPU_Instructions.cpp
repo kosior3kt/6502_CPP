@@ -1,11 +1,11 @@
 #include "CPU.h"
 
-//////////////////////////////////// NULL
+//////////////////////////////////// NULL not to be confused with NOP - NULL is literally absent of instruction
 
 void CPU::NULL_INS(u32 &_cycles, Mem &_mem)
 {
    // printf("\nhere in null ins. Number of cycles is: %d\n", _cycles);
-   Byte val = FetchByte(_cycles, _mem);
+   [[maybe_unused]]Byte val = FetchByte(_cycles, _mem);
    return;
 }
 
@@ -94,9 +94,7 @@ void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
 {
    Word adress = FetchByte(_cycles, _mem);
    Byte eaLow  = ReadByte(_cycles, adress, _mem);
-   Byte eaHigh = ReadByte(
-       _cycles, ++adress, _mem
-   ); /// TODO: abstract this later on, and find out why this is supposed to be
+   Byte eaHigh = ReadByte( _cycles, ++adress, _mem); /// TODO: abstract this later on, and find out why this is supposed to be
       /// able to cross page
    if(eaLow + Y > 0xFF)
       --_cycles;
@@ -118,6 +116,7 @@ void CPU::JSR(u32 &_cycles, Mem &_mem)
    ); /// does this make sense(?) ((I belive so))
    // ++S
    //_mem.writeWord(_cycles, SP , PC - 1);
+   ///////////////////////////////////////// this thing should be a stack...
    PC = subRoutineAddr;
 #ifdef DEBUG
    printf("SP before: %d, SP now: %d\n", temp, SP);
@@ -150,6 +149,7 @@ void CPU::LDX_ZPY(u32 &_cycles, Mem &_mem)
    _cycles--;
    if(zeroPageAddress > _mem.MAX_MEM)
    {
+      ///this shuoldn't even be abble to happend, but sure I guess
       std::cout << "instrukcja LDA ZPY przekroczyla obszar pamieci";
       return;
    }
@@ -172,7 +172,7 @@ void CPU::LDX_ABSY(u32 &_cycles, Mem &_mem)
    Byte eaHigh  = FetchByte(_cycles, _mem);
    Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
    address += Y;
-   // address = address % Mem::MAX_MEM;   ///Does it make sense???
+   // address = address % Mem::MAX_MEM;   ///Does it make sense??? (it didn't =D)
    if(eaLow + Y > 0xFF)
       --_cycles;
    X         = ReadByte(_cycles, address, _mem);
@@ -205,6 +205,7 @@ void CPU::LDY_ZPX(u32 &_cycles, Mem &_mem)
    _cycles--;
    if(zeroPageAddress > _mem.MAX_MEM)
    {
+      ///this shuoldn't even be abble to happend, but sure I guess. Maybe abstract this if btw?
       std::cout << "instrukcja LDA ZPY przekroczyla obszar pamieci";
       return;
    }

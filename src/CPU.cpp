@@ -6,12 +6,13 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    while(_cycles > 0)
    {
       Byte inst = FetchByte(_cycles, _mem);
-      auto function = CPU::test.find(inst);
-      if(function!= test.end())
+      auto functionIter = CPU::instructionMap.find(inst);
+
+      if(functionIter != instructionMap.end()) [[likely]]
       {
-         function->second(_cycles, _mem);
+         functionIter->second(_cycles, _mem);
       }
-      else
+      else [[unlikely]]
       {
          printf("Not handled %d\n", inst);
          break;
@@ -21,14 +22,13 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    return _cycles;
 }
 
-s32 CPU::execute_alternative(u32 _cycles, Mem &_mem)  ///from now on I will use mainly CPU::execute and not support this one. Feel free to port rest of command here tho
+s32 CPU::execute_alternative(u32 _cycles, Mem &_mem)   ///from now on I will use mainly CPU::execute and not support this one. Feel free to port rest of command here tho
 {
 
    while(_cycles)
    {
       Byte inst = FetchByte(_cycles, _mem);
-      switch(inst) /// TODO: abstaract this later into a std::map<INS,
-                   /// 'function pointer'>, so that it isnt such a massive boi
+      switch(inst)       
       {
       case INS_LDA_IM:
       {
@@ -170,13 +170,11 @@ s32 CPU::execute_alternative(u32 _cycles, Mem &_mem)  ///from now on I will use 
 
       case INS_NULL:
       {
-         /// TODO: decide if this is the kind of behaviour we want
          return _cycles;
       }
 
       default:
       {
-         /// TODO: decide later if we want to panic or sth in such case
          printf("Not handled %d\n", inst);
          return _cycles;
          break;

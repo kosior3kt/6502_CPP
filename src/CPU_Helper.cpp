@@ -9,7 +9,7 @@ void CPU::Reset(Mem &_mem)
    _mem.Initialise();
 }
 
-Byte CPU::FetchByte(u32 &_cycles, const Mem &_mem)
+[[nodiscard]] Byte CPU::FetchByte(u32 &_cycles, const Mem &_mem)
 {
    Byte data = _mem[PC];
    ++PC;
@@ -17,7 +17,7 @@ Byte CPU::FetchByte(u32 &_cycles, const Mem &_mem)
    return data;
 }
 
-Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
+[[nodiscard]] Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
 {
    // 6502 is little endian - so the first is the least significant byte
    Word data = _mem[PC];
@@ -28,21 +28,21 @@ Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
    return data;
 }
 
-Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+[[nodiscard]] Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    --_cycles;
    return data;
 }
 
-Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
+[[nodiscard]] Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    --_cycles;
    return data;
 }
 
-void CPU::WriteByte(
+ void CPU::WriteByte(
     u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val
 )
 {
@@ -58,7 +58,7 @@ void CPU::WriteByte(
    --_cycles;
 }
 
-Byte CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+[[nodiscard]] Byte CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea; /// ea => effective address
@@ -68,7 +68,7 @@ Byte CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
    return ea;
 }
 
-Byte CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
+[[nodiscard]] Byte CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea;
@@ -123,6 +123,7 @@ void CPU::SetNZWithValue(const Byte &_val)   ///this thing exists only so that I
 
 void CPU::SetCustomFlagsWithValue(const Byte &_val, Byte &_flags)
 {
+   ///will fill this later on
    if(_flags & C_f)
    {
    }
