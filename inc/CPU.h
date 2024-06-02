@@ -119,6 +119,7 @@ struct CPU
 
       void Reset(Mem &_mem);
 
+   private:
       ///logic
       Byte FetchByte(u32 &_cycles, const Mem &_mem);
       Word FetchWord(u32 &_cycles, const Mem &_mem);
@@ -136,6 +137,11 @@ struct CPU
       ApplyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
       void
       ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
+
+      ///TODO: finish this later
+      void pushToStack();
+      Byte popFromStack();
+   public:
 
       s32 execute(u32 _cycles, Mem &_mem);
 

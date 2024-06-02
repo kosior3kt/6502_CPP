@@ -6,6 +6,7 @@ set (TEST_SOURCES
    test_LDY.cpp
    test_INC.cpp
    test_DEC.cpp
+   test_STA.cpp
    test_MultipleInstructions.cpp
    )
 

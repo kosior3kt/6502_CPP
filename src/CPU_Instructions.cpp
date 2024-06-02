@@ -113,15 +113,9 @@ void CPU::JSR(u32 &_cycles, Mem &_mem)
    Word subRoutineAddr = FetchWord(_cycles, _mem);
 #ifdef DEBUG
    auto temp = SP;
-
-
-   _mem.writeWord(
-       _cycles, ++SP, PC - 1
-   ); /// does this make sense(?) ((I belive so))
 #endif
    WriteWord(_cycles, ++SP, _mem, (PC-1));
-   // ++S
-   //_mem.writeWord(_cycles, SP , PC - 1);
+
    ///////////////////////////////////////// this thing should be a stack...
    PC = subRoutineAddr;
 #ifdef DEBUG
@@ -253,7 +247,7 @@ void CPU::INC_ZP(u32 &_cycles, Mem &_mem)
    ApplyToMemory(
        _cycles, zeroPageAddress, _mem,
        [this](const Byte &_val
-       ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
+       ) -> Byte { /// need to capture "this", so that it can manipulate NZ flags
          Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
          SetCustomFlagsWithValue(_val, flag);
           return (_val + 1);
