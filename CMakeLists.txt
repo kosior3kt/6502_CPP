@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(INC ${CMAKE_CURRENT_SOURCE_DIR}/inc/)
 
-add_subdirectory(inc)
+#add_subdirectory(inc) #not needed for now
 add_subdirectory(src)
 add_subdirectory(test)
 

@@ -10,12 +10,13 @@
 #define SUBST(VAR)                                                            \
    std::bind(&CPU::VAR, this, std::placeholders::_1, std::placeholders::_2)
 
-//TODO:
+// TODO:
 /*
 // - add stack operations (push pop)
 // - fill function for settings flags
 // - change instructions into enum if possible
-// - remove instances of SetNZWithValue and replace it with general flag setting function
+// - remove instances of SetNZWithValue and replace it with general flag
+setting function
 // - abstract addressing modes
 // - implement rest of the operations:
 //    + AND
@@ -67,7 +68,8 @@
 
 struct CPU
 {
-   ///want to have everything exposed for now. No need for encapsulation BS yet
+      /// want to have everything exposed for now. No need for encapsulation BS
+      /// yet
       Word PC; /// program counter
       Word SP; /// stack pointer
 
@@ -88,57 +90,11 @@ struct CPU
          Y
       };
 
-      /// Empty instruction
-      static constexpr Byte INS_NULL = 0x00;
+      /// here we store all the instruction codes together with addressing
+      /// mdoes (did what I had to do...)
+#include "instructionCodes.h"
 
-      /// LDA instructions
-      static constexpr Byte INS_LDA_IM   = 0xA9;
-      static constexpr Byte INS_LDA_ZP   = 0xA5;
-      static constexpr Byte INS_LDA_ABS  = 0xAD;
-      static constexpr Byte INS_LDA_ZPX  = 0xB5;
-      static constexpr Byte INS_LDA_ABSY = 0xB9;
-      static constexpr Byte INS_LDA_ABSX = 0xBD;
-      static constexpr Byte INS_LDA_INDX = 0xA1;
-      static constexpr Byte INS_LDA_INDY = 0xB1;
-
-      /// JSR instruction
-      static constexpr Byte INS_JSR = 0x20;
-
-      /// LDX instructions
-      static constexpr Byte INS_LDX_IM   = 0xA2;
-      static constexpr Byte INS_LDX_ZP   = 0xA6;
-      static constexpr Byte INS_LDX_ZPY  = 0xB6;
-      static constexpr Byte INS_LDX_ABS  = 0xAE;
-      static constexpr Byte INS_LDX_ABSY = 0xBE;
-
-      /// LDY instructions
-      static constexpr Byte INS_LDY_IM   = 0xA0;
-      static constexpr Byte INS_LDY_ZP   = 0xA4;
-      static constexpr Byte INS_LDY_ZPX  = 0xB4;
-      static constexpr Byte INS_LDY_ABS  = 0xAC;
-      static constexpr Byte INS_LDY_ABSX = 0xBC;
-
-      /// INC instructions
-      static constexpr Byte INS_INC_ZP   = 0xE6;
-      static constexpr Byte INS_INC_ZPX  = 0xF6;
-      static constexpr Byte INS_INC_ABS  = 0xEE;
-      static constexpr Byte INS_INC_ABSX = 0xFE;
-
-      /// INX and INY
-      static constexpr Byte INS_INX = 0xE8;
-      static constexpr Byte INS_INY = 0xC8;
-
-      /// DEC incstructions
-      static constexpr Byte INS_DEC_ZP   = 0xC6;
-      static constexpr Byte INS_DEC_ZPX  = 0xD6;
-      static constexpr Byte INS_DEC_ABS  = 0xCE;
-      static constexpr Byte INS_DEC_ABSX = 0xDE;
-
-      /// DEX and DEY
-      static constexpr Byte INS_DEX = 0xCA;
-      static constexpr Byte INS_DEY = 0x88;
-
-      /* ///unused for now
+      /* ///unused for now, maybe I will change it later
       struct canBeExceeded
       {
             bool can;
@@ -163,90 +119,42 @@ struct CPU
 
       void Reset(Mem &_mem);
 
+      ///logic
       Byte FetchByte(u32 &_cycles, const Mem &_mem);
       Word FetchWord(u32 &_cycles, const Mem &_mem);
       Byte ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem);
       Byte ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem);
-      void WriteByte(u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val);
-      void WriteByte(u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val);
+      void
+      WriteByte(u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val);
+      void
+      WriteByte(u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val);
       Byte ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
       Byte ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
 
-      void ApplyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
-      void ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
+      void
+      ApplyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
+      void
+      ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
 
       s32 execute(u32 _cycles, Mem &_mem);
 
-      [[deprecated("Use execute() instead")]]
-      s32 execute_alternative(u32 _cycles, Mem &_mem);
+      [[deprecated("Use execute() instead")]] s32
+      execute_alternative(u32 _cycles, Mem &_mem);
 
+      ///flags managment
+      [[deprecated("Use SetCustomFlags...() instead")]] 
       void SetNZWithRegister(const Register &_reg);
+      [[deprecated("Use SetCustomFlags...() instead")]] 
       void SetNZWithValue(const Byte &_val);
+
       void SetCustomFlagsWithValue(const Byte &_val, Byte &_flags);
       void SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags);
 
    private:
       /// place for all the function for instructis
-
-      void NULL_INS(u32 &_cycles, Mem &_mem);
-
-      /// LDA - instruction LDA loads value from given memory location into the
-      /// A register. It has 8 different adression modes - they are below
-      void LDA_IM(u32 &_cycles, Mem &_mem);
-      void LDA_ZP(u32 &_cycles, Mem &_mem);
-      void LDA_ZPX(u32 &_cycles, Mem &_mem);
-      void LDA_ABS(u32 &_cycles, Mem &_mem);
-      void LDA_ABSY(u32 &_cycles, Mem &_mem);
-      void LDA_ABSX(u32 &_cycles, Mem &_mem);
-      void LDA_INDX(u32 &_cycles, Mem &_mem);
-      void LDA_INDY(u32 &_cycles, Mem &_mem);
-
-      /// JSR - this instruction jumps to the subrutine  (and preasumably
-      /// returns)
-      void JSR(u32 &_cycles, Mem &_mem);
-
-      /// LDX  - instruction LDX loads value from given memory location into
-      /// the X register. It has 5 different adressing modes
-      void LDX_IM(u32 &_cycles, Mem &_mem);
-      void LDX_ZP(u32 &_cycles, Mem &_mem);
-      void LDX_ZPY(u32 &_cycles, Mem &_mem);
-      void LDX_ABS(u32 &_cycles, Mem &_mem);
-      void LDX_ABSY(u32 &_cycles, Mem &_mem);
-
-      /// LDY - instruction LDX loads value from given memory location into the
-      /// Y register. It has 5 different adressing modes
-      void LDY_IM(u32 &_cycles, Mem &_mem);
-      void LDY_ZP(u32 &_cycles, Mem &_mem);
-      void LDY_ZPX(u32 &_cycles, Mem &_mem);
-      void LDY_ABS(u32 &_cycles, Mem &_mem);
-      void LDY_ABSX(u32 &_cycles, Mem &_mem);
-
-      /// INC - instruction INC increments value in the given memory locatino
-      /// void INC(u32& _cycles, Mem& _mem);
-
-      void INC_ZP(u32 &_cycles, Mem &_mem);
-      void INC_ZPX(u32 &_cycles, Mem &_mem);
-      void INC_ABS(u32 &_cycles, Mem &_mem);
-      void INC_ABSX(u32 &_cycles, Mem &_mem);
-
-      /// INX - this instruction increments value stored in the X register
-      void INX(u32 &_cycles, Mem &_mem);
-
-      /// INY - this instruction increments value stored in the Y register
-      void INY(u32 &_cycles, Mem &_mem);
-
-      /// DEC
-      void DEC_ZP(u32 &_cycles, Mem &_mem);
-      void DEC_ZPX(u32 &_cycles, Mem &_mem);
-      void DEC_ABS(u32 &_cycles, Mem &_mem);
-      void DEC_ABSX(u32 &_cycles, Mem &_mem);
-
-      /// DEX
-      void DEX(u32 &_cycles, Mem &_mem);
-
-      /// DEY
-      void DEY(u32 &_cycles, Mem &_mem);
-
+#include "instructionDefinitions.h"
+   
+   private: ///yeah, Im dubling private purposely for transaperncy
       /// wow - it actually works (im as surprised as you are)
       template <typename Func>
       std::function<void(u32 &, Mem &)> bindMemberFunction(Func func)
@@ -259,9 +167,10 @@ struct CPU
       std::map<Byte, std::function<void(u32 &, Mem &)> > instructionMap;
 
    public:
-      CPU()
+      explicit CPU()
       {
-         ///////Do I even want to do this here - this should be more of a static thing?
+         ///////Do I even want to do this here - this should be more of a
+         /// static thing?
 
          //// LDA
          instructionMap[INS_LDA_IM]   = bindMemberFunction(&CPU::LDA_IM);
@@ -309,7 +218,7 @@ struct CPU
          instructionMap[INS_DEC_ABSX] = bindMemberFunction(&CPU::DEC_ABSX);
 
          /// NULL ///figure out later how to make it not hang my program =3
-         //instructionMap[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);
+         // instructionMap[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);
       }
 };
 

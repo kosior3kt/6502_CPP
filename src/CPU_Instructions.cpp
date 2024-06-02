@@ -1,11 +1,12 @@
 #include "CPU.h"
 
-//////////////////////////////////// NULL not to be confused with NOP - NULL is literally absent of instruction
+//////////////////////////////////// NULL not to be confused with NOP - NULL is
+/// literally absent of instruction
 
 void CPU::NULL_INS(u32 &_cycles, Mem &_mem)
 {
    // printf("\nhere in null ins. Number of cycles is: %d\n", _cycles);
-   [[maybe_unused]]Byte val = FetchByte(_cycles, _mem);
+   [[maybe_unused]] Byte val = FetchByte(_cycles, _mem);
    return;
 }
 
@@ -94,7 +95,9 @@ void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
 {
    Word adress = FetchByte(_cycles, _mem);
    Byte eaLow  = ReadByte(_cycles, adress, _mem);
-   Byte eaHigh = ReadByte( _cycles, ++adress, _mem); /// TODO: abstract this later on, and find out why this is supposed to be
+   Byte eaHigh = ReadByte(
+       _cycles, ++adress, _mem
+   ); /// TODO: abstract this later on, and find out why this is supposed to be
       /// able to cross page
    if(eaLow + Y > 0xFF)
       --_cycles;
@@ -149,7 +152,7 @@ void CPU::LDX_ZPY(u32 &_cycles, Mem &_mem)
    _cycles--;
    if(zeroPageAddress > _mem.MAX_MEM)
    {
-      ///this shuoldn't even be abble to happend, but sure I guess
+      /// this shuoldn't even be abble to happend, but sure I guess
       std::cout << "instrukcja LDA ZPY przekroczyla obszar pamieci";
       return;
    }
@@ -172,7 +175,8 @@ void CPU::LDX_ABSY(u32 &_cycles, Mem &_mem)
    Byte eaHigh  = FetchByte(_cycles, _mem);
    Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
    address += Y;
-   // address = address % Mem::MAX_MEM;   ///Does it make sense??? (it didn't =D)
+   // address = address % Mem::MAX_MEM;   ///Does it make sense??? (it didn't
+   // =D)
    if(eaLow + Y > 0xFF)
       --_cycles;
    X         = ReadByte(_cycles, address, _mem);
@@ -205,7 +209,8 @@ void CPU::LDY_ZPX(u32 &_cycles, Mem &_mem)
    _cycles--;
    if(zeroPageAddress > _mem.MAX_MEM)
    {
-      ///this shuoldn't even be abble to happend, but sure I guess. Maybe abstract this if btw?
+      /// this shuoldn't even be abble to happend, but sure I guess. Maybe
+      /// abstract this if btw?
       std::cout << "instrukcja LDA ZPY przekroczyla obszar pamieci";
       return;
    }
@@ -275,7 +280,7 @@ void CPU::INC_ZPX(u32 &_cycles, Mem &_mem)
 void CPU::INC_ABS(u32 &_cycles, Mem &_mem)
 {
    Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
-   _cycles--;  
+   _cycles--;
    ApplyToMemory(
        _cycles, address, _mem,
        [this](const Byte &_val
@@ -333,7 +338,6 @@ void CPU::INY(u32 &_cycles, Mem &_mem)
 
 //////////////////////////////////// DEC
 
-
 void CPU::DEC_ZP(u32 &_cycles, Mem &_mem)
 {
    Byte zeroPageAddress = FetchByte(_cycles, _mem);
@@ -371,7 +375,7 @@ void CPU::DEC_ZPX(u32 &_cycles, Mem &_mem)
 void CPU::DEC_ABS(u32 &_cycles, Mem &_mem)
 {
    Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
-   _cycles--;  
+   _cycles--;
    ApplyToMemory(
        _cycles, address, _mem,
        [this](const Byte &_val
@@ -400,7 +404,6 @@ void CPU::DEC_ABSX(u32 &_cycles, Mem &_mem)
        }
    );
 }
-
 
 //////////////////////////////////// DEX
 void CPU::DEX(u32 &_cycles, Mem &_mem)

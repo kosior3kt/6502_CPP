@@ -74,6 +74,7 @@ class TEST_6502 : public testing::Test
          EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
       };
 
+#ifdef __ALTERNATIVE__
       void test_LD_alternative(Byte _oper, Register _reg)
       {
          constexpr uint8_t ASSIGNED_CYCLES = 2;
@@ -106,7 +107,10 @@ class TEST_6502 : public testing::Test
          EXPECT_FALSE((int)cpu_.N);
          EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
       };
+#endif
+
 };
+
 
 struct test{
    int va;

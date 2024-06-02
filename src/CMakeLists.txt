@@ -2,7 +2,8 @@ set(CPU_SOURCES
    memory.cpp 
    CPU.cpp 
    CPU_Instructions.cpp 
-   CPU_Helper.cpp)
+   CPU_Helper.cpp
+   )
 
 add_library(CPU
    ${CPU_SOURCES}
