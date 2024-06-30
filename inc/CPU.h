@@ -269,8 +269,12 @@ struct CPU
          instructionMap[INS_STY_ZPX]  = bindMemberFunction(&CPU::STY_ZPX);
          instructionMap[INS_STY_ABS]  = bindMemberFunction(&CPU::STY_ABS);
 
-         ///RTS
+         /// RTS
          instructionMap[INS_RTS]      = bindMemberFunction(&CPU::RTS);
+
+         /// JMP
+         instructionMap[INS_JMP_ABS]      = bindMemberFunction(&CPU::JMP_ABS);
+         instructionMap[INS_JMP_IND]      = bindMemberFunction(&CPU::JMP_IND);
 
          /// NULL ///figure out later how to make it not hang my program =3
          // instructionMap[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);

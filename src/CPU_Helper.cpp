@@ -20,9 +20,9 @@ void CPU::Reset(Mem &_mem, const Word& _PC_start)  ///_PC_start is by deafult 0x
 [[nodiscard]] Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
 {
    // 6502 is little endian - so the first is the least significant byte
-   auto dataHigh = _mem[PC];
-   ++PC;
    auto dataLow = _mem[PC];
+   ++PC;
+   auto dataHigh = _mem[PC];
    Word data = dataLow + (dataHigh << 8);
    ++PC;
    _cycles -= 2;
@@ -75,9 +75,10 @@ CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea; /// ea => effective address
-   Byte eaLow  = ReadByte(_cycles, _addr, _mem);
-   Byte eaHigh = ReadByte(_cycles, _addr, _mem);
+   Byte eaHigh  = ReadByte(_cycles, _addr, _mem);
+   Byte eaLow   = ReadByte(_cycles, _addr, _mem);
    ea          = eaLow + (eaHigh << 8);
+   _cycles -= 2;
    return ea;
 }
 
@@ -86,9 +87,10 @@ CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea;
-   Byte eaLow  = ReadByte(_cycles, _addr, _mem);
    Byte eaHigh = ReadByte(_cycles, _addr, _mem);
+   Byte eaLow  = ReadByte(_cycles, _addr, _mem);
    ea          = eaLow + (eaHigh << 8);
+   _cycles -= 2;
    return ea;
 }
 
@@ -110,6 +112,7 @@ void CPU::ApplyToMemory(
    WriteByte(_cycles, _addr, _mem, _fun(tempVal));
 }
 
+///depricated
 void CPU::SetNZWithRegister(const Register &_reg)
 {
    Byte temp;
@@ -129,6 +132,7 @@ void CPU::SetNZWithRegister(const Register &_reg)
    N = ((Byte)(temp & 0b10000000)) > 0;
 }
 
+///depricated
 void CPU::SetNZWithValue(const Byte &_val
 ) /// this thing exists only so that I can do less in lambdas
 {
@@ -216,7 +220,7 @@ void CPU::pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val) ///those sh
    --_cycles;
 }
 
-Byte CPU::popByteFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
+[[nodiscard]]Byte CPU::popByteFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
 {
    ++SP;
    auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
@@ -236,13 +240,13 @@ void CPU::pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val) ///those sh
    //--_cycles;
 }
 
-Word CPU::popWordFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
+[[nodiscard]]Word CPU::popWordFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
 {
     const Byte retAddrHigh = popByteFromStack(_cycles, _mem);
     const Byte retAddrLow = popByteFromStack(_cycles, _mem);
     Word retAddr = retAddrLow | retAddrHigh << 8;
 
-   //--_cycles;
+   --_cycles;
    return retAddr;
 }
 

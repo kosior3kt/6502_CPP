@@ -85,4 +85,8 @@
       ///RTS
       void RTS(u32 &_cycles, Mem &_mem);
 
+      ///JMP
+      void JMP_ABS(u32 &_cycles, Mem &_mem);
+      void JMP_IND(u32 &_cycles, Mem &_mem);
+
 #endif

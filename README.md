@@ -17,3 +17,4 @@ List of what works (instruction wise):
     -STA
     -STX
     -STY
+    -RTS

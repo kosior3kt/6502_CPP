@@ -548,3 +548,19 @@ void CPU::RTS(u32 &_cycles, Mem &_mem)
    PC = retAddr;
    --_cycles;
 }
+
+/// JMP
+void CPU::JMP_ABS(u32 &_cycles, Mem &_mem)
+{
+   auto setAddr = FetchWord(_cycles, _mem);
+   --_cycles;
+   PC = setAddr;
+}
+
+void CPU::JMP_IND(u32 &_cycles, Mem &_mem)
+{
+   auto setAddr = FetchWord(_cycles, _mem);
+   auto setAddr2 = ReadWord(_cycles, setAddr, _mem);
+   --_cycles;
+   PC = setAddr2;
+}

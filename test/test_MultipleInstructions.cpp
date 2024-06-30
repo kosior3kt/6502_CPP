@@ -1,7 +1,5 @@
 #include"test.hpp"
 
-
-
 TEST_F(TEST_6502, MemoryDumpTest)
 {
    mem_.debug_dumpMemory("dupa.txt");
@@ -56,8 +54,8 @@ TEST_F(TEST_6502, forthAndBack)
 {
    cpu_.Reset(mem_, 0xFF00);
    mem_.debug_set(0xFF00, CPU::INS_JSR);  ///6 cycles
-   mem_.debug_set(0xFF01, 0x60);
-   mem_.debug_set(0xFF02, 0x00);
+   mem_.debug_set(0xFF01, 0x00);
+   mem_.debug_set(0xFF02, 0x60);
    mem_.debug_set(0x6000, CPU::INS_RTS);  ///6 cycles
    mem_.debug_set(0xFF03, CPU::INS_LDA_IM);  ///2 cycles?
    mem_.debug_set(0xFF04, 0x42);
