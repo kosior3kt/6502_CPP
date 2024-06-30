@@ -207,7 +207,7 @@ void CPU::SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
 }
 
 ////////stack
-void CPU::pushToStack(u32& _cycles, Mem& _mem, const Byte& _val) ///those should use one more cycle i believ
+void CPU::pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val) ///those should use one more cycle i believ
 {
    auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
    _mem.debug_set(addr, _val);
@@ -216,7 +216,7 @@ void CPU::pushToStack(u32& _cycles, Mem& _mem, const Byte& _val) ///those should
    --_cycles;
 }
 
-Byte CPU::popFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
+Byte CPU::popByteFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
 {
    ++SP;
    auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
@@ -225,3 +225,24 @@ Byte CPU::popFromStack(u32& _cycles, Mem& _mem) ///those should use one more cyc
    _cycles--;
    return _mem.debug_get(addr);
 }
+
+void CPU::pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val) ///those should use one more cycle i believ
+{
+   const Byte toPushLow  = (Byte)(_val);
+   const Byte toPushHigh = (Byte)(_val>> 8);
+
+   pushByteToStack(_cycles, _mem, toPushLow);
+   pushByteToStack(_cycles, _mem, toPushHigh);
+   //--_cycles;
+}
+
+Word CPU::popWordFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
+{
+    const Byte retAddrHigh = popByteFromStack(_cycles, _mem);
+    const Byte retAddrLow = popByteFromStack(_cycles, _mem);
+    Word retAddr = retAddrLow | retAddrHigh << 8;
+
+   //--_cycles;
+   return retAddr;
+}
+

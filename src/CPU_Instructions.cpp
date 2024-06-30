@@ -5,7 +5,6 @@
 
 void CPU::NULL_INS(u32 &_cycles, Mem &_mem)
 {
-   // printf("\nhere in null ins. Number of cycles is: %d\n", _cycles);
    [[maybe_unused]] Byte val = FetchByte(_cycles, _mem);
    return;
 }
@@ -111,13 +110,9 @@ void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
 void CPU::JSR(u32 &_cycles, Mem &_mem)
 {
    Word subRoutineAddr = FetchWord(_cycles, _mem);
-   const Byte toPushLow  = (Byte)(PC);
-   const Byte toPushHigh = (Byte)(PC >> 8);
-   pushToStack(_cycles, _mem, toPushLow);
-   pushToStack(_cycles, _mem, toPushHigh);
+   pushWordToStack(_cycles, _mem, PC);
    
    PC = subRoutineAddr;
-   //--_cycles;
 }
 
 /////////////////////////////////////// LDX
@@ -548,9 +543,7 @@ void CPU::STY_ABS(u32 &_cycles, Mem &_mem)
 /// RTS
 void CPU::RTS(u32 &_cycles, Mem &_mem)
 {
-    const Byte retAddrHigh = popFromStack(_cycles, _mem);
-    const Byte retAddrLow = popFromStack(_cycles, _mem);
-    Word retAddr = retAddrLow | retAddrHigh << 8;
+    auto retAddr = popWordFromStack(_cycles, _mem);
 
    PC = retAddr;
    --_cycles;

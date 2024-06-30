@@ -163,8 +163,10 @@ struct CPU
       void ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
 
       ///TODO: finish this later
-      void pushToStack(u32& _cycles, Mem& _mem, const Byte& _val);
-      Byte popFromStack(u32& _cycles, Mem& _mem);
+      void pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val);
+      Byte popByteFromStack(u32& _cycles, Mem& _mem);
+      void pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val);
+      Word popWordFromStack(u32& _cycles, Mem& _mem);
    public:
 
       s32 execute(u32 _cycles, Mem &_mem);
