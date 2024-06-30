@@ -72,4 +72,14 @@
       void STA_INDX(u32 &_cycles, Mem &_mem);
       void STA_INDY(u32 &_cycles, Mem &_mem);
 
+      ///STX
+      void STX_ZP(u32 &_cycles, Mem &_mem);
+      void STX_ZPY(u32 &_cycles, Mem &_mem);
+      void STX_ABS(u32 &_cycles, Mem &_mem);
+
+      ///STY
+      void STY_ZP(u32 &_cycles, Mem &_mem);
+      void STY_ZPX(u32 &_cycles, Mem &_mem);
+      void STY_ABS(u32 &_cycles, Mem &_mem);
+
 #endif

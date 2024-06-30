@@ -233,6 +233,16 @@ struct CPU
          instructionMap[INS_STA_INDX] = bindMemberFunction(&CPU::STA_INDX);
          instructionMap[INS_STA_INDY] = bindMemberFunction(&CPU::STA_INDY);
 
+         /// STX
+         instructionMap[INS_STX_ZP]   = bindMemberFunction(&CPU::STX_ZP);
+         instructionMap[INS_STX_ZPY]  = bindMemberFunction(&CPU::STX_ZPY);
+         instructionMap[INS_STX_ABS]  = bindMemberFunction(&CPU::STX_ABS);
+
+         /// STY
+         instructionMap[INS_STY_ZP]   = bindMemberFunction(&CPU::STY_ZP);
+         instructionMap[INS_STY_ZPX]  = bindMemberFunction(&CPU::STY_ZPX);
+         instructionMap[INS_STY_ABS]  = bindMemberFunction(&CPU::STY_ABS);
+
          /// NULL ///figure out later how to make it not hang my program =3
          // instructionMap[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);
 

@@ -496,3 +496,57 @@ void CPU::STA_INDY(u32 &_cycles, Mem &_mem)
    --_cycles;
    WriteByte(_cycles, address, _mem, CPU::A);
 }
+
+///STX
+void CPU::STX_ZP(u32 &_cycles, Mem &_mem) 
+{
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   WriteByte(_cycles, zeroPageAddress, _mem, CPU::X);
+   ///no flags to set (in theory)
+}
+
+void CPU::STX_ZPY(u32 &_cycles, Mem &_mem)
+{
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   zeroPageAddress += Y;
+   _cycles--;
+   if(zeroPageAddress > _mem.MAX_MEM)
+   {
+      std::cout << "instrukcja LDA ZPX przekroczyla obszar pamieci";
+      return;
+   }
+   WriteByte(_cycles, zeroPageAddress, _mem, CPU::X);
+}
+
+void CPU::STX_ABS(u32 &_cycles, Mem &_mem) 
+{
+   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;   ///make this a macro?
+   WriteByte(_cycles, address, _mem, CPU::X);
+}
+
+///STY
+void CPU::STY_ZP(u32 &_cycles, Mem &_mem) 
+{   
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   WriteByte(_cycles, zeroPageAddress, _mem, CPU::Y);
+}
+
+void CPU::STY_ZPX(u32 &_cycles, Mem &_mem) 
+{
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   zeroPageAddress += X;
+   _cycles--;
+   if(zeroPageAddress > _mem.MAX_MEM)
+   {
+      std::cout << "instrukcja LDA ZPX przekroczyla obszar pamieci";
+      return;
+   }
+   WriteByte(_cycles, zeroPageAddress, _mem, CPU::Y);
+}
+
+void CPU::STY_ABS(u32 &_cycles, Mem &_mem) 
+{
+   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;   ///make this a macro?
+   WriteByte(_cycles, address, _mem, CPU::Y);
+}
+

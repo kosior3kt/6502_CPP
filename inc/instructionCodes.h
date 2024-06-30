@@ -64,8 +64,8 @@ static constexpr Byte INS_STA_INDY = 0x91;
 
 /// STX
 static constexpr Byte INS_STX_ZP  = 0x86;
-static constexpr Byte INS_STX_ZPX = 0x96;
-static constexpr Byte INS_STX_ABS = 0x96;
+static constexpr Byte INS_STX_ZPY = 0x96;
+static constexpr Byte INS_STX_ABS = 0x8E;
 
 /// STY
 static constexpr Byte INS_STY_ZP  = 0x84;
