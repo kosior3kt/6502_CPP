@@ -161,7 +161,7 @@ struct CPU
       /// place for all the function for instructis
 #include "instructionDefinitions.h"
    
-   private: ///yeah, Im dubling private purposely for transaperncy
+   private:      
       /// wow - it actually works (im as surprised as you are)
       template <typename Func>
       std::function<void(u32 &, Mem &)> bindMemberFunction(Func func)
@@ -204,11 +204,11 @@ struct CPU
          instructionMap[INS_LDY_ABSX] = bindMemberFunction(&CPU::LDY_ABSX);
 
          /// JSR
-         instructionMap[INS_JSR] = bindMemberFunction(&CPU::JSR);
+         instructionMap[INS_JSR]      = bindMemberFunction(&CPU::JSR);
 
          /// INC
-         instructionMap[INS_INX] = bindMemberFunction(&CPU::INX);
-         instructionMap[INS_INY] = bindMemberFunction(&CPU::INY);
+         instructionMap[INS_INX]      = bindMemberFunction(&CPU::INX);
+         instructionMap[INS_INY]      = bindMemberFunction(&CPU::INY);
 
          instructionMap[INS_INC_ZP]   = bindMemberFunction(&CPU::INC_ZP);
          instructionMap[INS_INC_ZPX]  = bindMemberFunction(&CPU::INC_ZPX);
@@ -216,16 +216,26 @@ struct CPU
          instructionMap[INS_INC_ABSX] = bindMemberFunction(&CPU::INC_ZPX);
 
          /// DEC
-         instructionMap[INS_DEX] = bindMemberFunction(&CPU::DEX);
-         instructionMap[INS_DEY] = bindMemberFunction(&CPU::DEY);
+         instructionMap[INS_DEX]      = bindMemberFunction(&CPU::DEX);
+         instructionMap[INS_DEY]      = bindMemberFunction(&CPU::DEY);
 
          instructionMap[INS_DEC_ZP]   = bindMemberFunction(&CPU::DEC_ZP);
          instructionMap[INS_DEC_ZPX]  = bindMemberFunction(&CPU::DEC_ZPX);
          instructionMap[INS_DEC_ABS]  = bindMemberFunction(&CPU::DEC_ABS);
          instructionMap[INS_DEC_ABSX] = bindMemberFunction(&CPU::DEC_ABSX);
 
+         ///STA
+         instructionMap[INS_STA_ZP]   = bindMemberFunction(&CPU::STA_ZP);
+         instructionMap[INS_STA_ZPX]  = bindMemberFunction(&CPU::STA_ZPX);
+         instructionMap[INS_STA_ABS]  = bindMemberFunction(&CPU::STA_ABS);
+         instructionMap[INS_STA_ABSX] = bindMemberFunction(&CPU::STA_ABSX);
+         instructionMap[INS_STA_ABSY] = bindMemberFunction(&CPU::STA_ABSY);
+         instructionMap[INS_STA_INDX] = bindMemberFunction(&CPU::STA_INDX);
+         instructionMap[INS_STA_INDY] = bindMemberFunction(&CPU::STA_INDY);
+
          /// NULL ///figure out later how to make it not hang my program =3
          // instructionMap[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);
+
       }
 };
 

@@ -81,7 +81,7 @@ void CPU::LDA_ABSY(u32 &_cycles, Mem &_mem)
 
 void CPU::LDA_INDX(u32 &_cycles, Mem &_mem)
 {
-   Word adress = FetchByte(_cycles, _mem) + X;
+   Byte adress = FetchByte(_cycles, _mem) + X;
    Byte eaLow  = ReadByte(_cycles, adress, _mem);
    Byte eaHigh = ReadByte(_cycles, ++adress, _mem);
    Word ea     = eaLow + (eaHigh << 8);
@@ -437,16 +437,62 @@ void CPU::DEY(u32 &_cycles, Mem &_mem)
 
 //////////////////////////////////// STA
 
-void CPU::STA_ZP(u32 &_cycles, Mem &_mem) {}
+void CPU::STA_ABS(u32 &_cycles, Mem &_mem) 
+{
+   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;   ///make this a macro?
+   WriteByte(_cycles, address, _mem, CPU::A);
+}
 
-void CPU::STA_ZPX(u32 &_cycles, Mem &_mem) {}
+void CPU::STA_ABSX(u32 &_cycles, Mem &_mem) 
+{
+   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+   address += X;
+   _cycles--;
+   WriteByte(_cycles, address, _mem, CPU::A);
+}
 
-void CPU::STA_ABS(u32 &_cycles, Mem &_mem) {}
+void CPU::STA_ABSY(u32 &_cycles, Mem &_mem) 
+{
+   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+   address += Y;
+   _cycles--;
+   WriteByte(_cycles, address, _mem, CPU::A);
+}
 
-void CPU::STA_ABSX(u32 &_cycles, Mem &_mem) {}
+void CPU::STA_ZP(u32 &_cycles, Mem &_mem) 
+{
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   WriteByte(_cycles, zeroPageAddress, _mem, CPU::A);
+   ///no flags to set (in theory)
+}
 
-void CPU::STA_ABSY(u32 &_cycles, Mem &_mem) {}
+void CPU::STA_ZPX(u32 &_cycles, Mem &_mem) 
+{
+   Byte zeroPageAddress = FetchByte(_cycles, _mem);
+   zeroPageAddress += X;
+   _cycles--;
+   if(zeroPageAddress > _mem.MAX_MEM)
+   {
+      std::cout << "instrukcja LDA ZPX przekroczyla obszar pamieci";
+      return;
+   }
+   WriteByte(_cycles, zeroPageAddress, _mem, CPU::A);
+}
 
-void CPU::STA_INDX(u32 &_cycles, Mem &_mem) {}
+void CPU::STA_INDX(u32 &_cycles, Mem &_mem) 
+{
+   Byte indirectionAdress = FetchByte(_cycles, _mem) + X;
+   Word address = ReadByte(_cycles, indirectionAdress, _mem) | ReadByte(_cycles, ++indirectionAdress, _mem) << 8;
+   --_cycles; /// have to add this here
+   WriteByte(_cycles, address, _mem, CPU::A);
+}
 
-void CPU::STA_INDY(u32 &_cycles, Mem &_mem) {}
+void CPU::STA_INDY(u32 &_cycles, Mem &_mem) 
+{
+   Byte indirectionAdress = FetchByte(_cycles, _mem);
+   Word address = ReadByte(_cycles, indirectionAdress, _mem) | ReadByte(_cycles, ++indirectionAdress, _mem) << 8;
+   address += Y;
+      /// always crosses page or sth
+   --_cycles;
+   WriteByte(_cycles, address, _mem, CPU::A);
+}

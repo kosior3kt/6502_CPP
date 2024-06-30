@@ -21,6 +21,8 @@ struct Mem
 
       void debug_set(const u32& _addr, const u32& _val);
 
+      Byte debug_get(const u32& _addr);
+
       void debug_dumpMemory(const std::string& _fileName);
 };
 

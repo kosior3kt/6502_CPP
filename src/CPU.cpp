@@ -5,7 +5,7 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
 
    while(_cycles > 0)
    {
-      Byte inst = FetchByte(_cycles, _mem);
+      Byte inst         = FetchByte(_cycles, _mem);
       auto functionIter = CPU::instructionMap.find(inst);
 
       if(functionIter != instructionMap.end()) [[likely]]
@@ -22,13 +22,16 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    return _cycles;
 }
 
-s32 CPU::execute_alternative(u32 _cycles, Mem &_mem)   ///from now on I will use mainly CPU::execute and not support this one. Feel free to port rest of command here tho
+s32 CPU::execute_alternative(
+    u32 _cycles, Mem &_mem
+) /// from now on I will use mainly CPU::execute and not support this one. Feel
+  /// free to port rest of command here tho
 {
 
    while(_cycles)
    {
       Byte inst = FetchByte(_cycles, _mem);
-      switch(inst)       
+      switch(inst)
       {
       case INS_LDA_IM:
       {
@@ -183,4 +186,3 @@ s32 CPU::execute_alternative(u32 _cycles, Mem &_mem)   ///from now on I will use
    }
    return _cycles;
 }
-

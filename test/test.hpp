@@ -15,6 +15,14 @@ namespace testHelper
           && _original.V == _copy.V
       );
    };
+   static bool allFlagsUnchanged(const CPU &_original, const CPU &_copy)
+   {
+      return (
+          _original.C == _copy.C && _original.B == _copy.B
+          && _original.I == _copy.I && _original.D == _copy.D
+          && _original.V == _copy.V && _original.N == _copy.N && _original.Z == _copy.Z
+      );
+   };
 }
 
 class TEST_6502 : public testing::Test

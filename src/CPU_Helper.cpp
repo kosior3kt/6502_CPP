@@ -28,50 +28,40 @@ void CPU::Reset(Mem &_mem)
    return data;
 }
 
-[[nodiscard]] Byte
-CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+[[nodiscard]] Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    --_cycles;
    return data;
 }
 
-[[nodiscard]] Byte
-CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
+[[nodiscard]] Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    --_cycles;
    return data;
 }
 
-void CPU::WriteByte(
-    u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val
-)
+void CPU::WriteByte( u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val)
+{
+   _mem.debug_set(_addr, _val);  ///TODO: create different mechanism for this later
+   --_cycles;
+}
+
+void CPU::WriteByte( u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val)
 {
    _mem.debug_set(_addr, _val);
    --_cycles;
 }
 
-void CPU::WriteByte(
-    u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val
-)
-{
-   _mem.debug_set(_addr, _val);
-   --_cycles;
-}
-
-void CPU::WriteWord(
-    u32 &_cycles, const Byte &_addr, Mem &_mem, const Word&_val
-)
+void CPU::WriteWord( u32 &_cycles, const Byte &_addr, Mem &_mem, const Word&_val)
 {
    _mem.debug_set(_addr, (_val & 0xFF));
    _mem.debug_set(_addr + 1, (_val << 8));
    _cycles -= 2;
 }
 
-void CPU::WriteWord(
-    u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val
-)
+void CPU::WriteWord( u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val)
 {
    _mem.debug_set(_addr, (_val & 0xFF));
    _mem.debug_set(_addr + 1, (_val << 8));

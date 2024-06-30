@@ -26,6 +26,12 @@ void Mem::debug_set(const u32 &_addr, const u32 &_val)
    Data[_addr] = _val;
 }
 
+Byte Mem::debug_get(const u32 &_addr)
+{
+   assert(_addr < MAX_MEM);
+   return Data[_addr];
+}
+
 void Mem::debug_dumpMemory(const std::string& _fileName){
    std::ofstream _file;
    _file.open(_fileName);
