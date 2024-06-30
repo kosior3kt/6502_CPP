@@ -68,10 +68,11 @@ setting function
 
 struct CPU
 {
+
       /// want to have everything exposed for now. No need for encapsulation BS
       /// yet
       Word PC; /// program counter
-      Word SP; /// stack pointer
+      Byte SP; /// stack pointer - it has to be a Byte because it is fixed size 256 between $0100 and $01FF
 
       Byte A, X, Y; /// registers
 
@@ -89,6 +90,31 @@ struct CPU
          X,
          Y
       };
+
+   // private:
+   //    struct Stack   ///you may ask, why create my own stack instead of the stl one. thats a good question indeed - idk, felt bored
+   //    {
+   //       std::vector<Byte> val_;
+   //       Stack() noexcept {val_.reserve(256);};
+   //       void push(const Byte& _val)   noexcept ///idk if this is even noexcept
+   //       {
+   //          if(!(val_.size() >= 256))
+   //             val_.push_back(_val);   ///need to handle errors here, but I dont feel like it now
+   //          return;
+   //       }
+   //       Byte pop() noexcept
+   //       {
+   //          if(!val_.empty())
+   //          {
+   //             auto temp = val_.back();
+   //             val_.pop_back();
+   //             return temp;
+   //          }
+   //          return 0;   ///need to handle this more gracefully probably, but w/e for now
+   //       }
+   //    };
+   // public:
+   //    Stack stack();
 
       /// here we store all the instruction codes together with addressing
       /// mdoes (did what I had to do...)
@@ -117,7 +143,7 @@ struct CPU
       };
       */
 
-      void Reset(Mem &_mem);
+      void Reset(Mem &_mem, const Word& _PC_start = 0xFFFC);
 
    private:
       ///logic
@@ -132,15 +158,13 @@ struct CPU
       Byte ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
       Byte ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
 
-
-      void
-      ApplyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
-      void
-      ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
+      ///even I - the creator fear this thing...
+      void ApplyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
+      void ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
 
       ///TODO: finish this later
-      void pushToStack();
-      Byte popFromStack();
+      void pushToStack(u32& _cycles, Mem& _mem, const Byte& _val);
+      Byte popFromStack(u32& _cycles, Mem& _mem);
    public:
 
       s32 execute(u32 _cycles, Mem &_mem);
@@ -242,6 +266,9 @@ struct CPU
          instructionMap[INS_STY_ZP]   = bindMemberFunction(&CPU::STY_ZP);
          instructionMap[INS_STY_ZPX]  = bindMemberFunction(&CPU::STY_ZPX);
          instructionMap[INS_STY_ABS]  = bindMemberFunction(&CPU::STY_ABS);
+
+         ///RTS
+         instructionMap[INS_RTS]      = bindMemberFunction(&CPU::RTS);
 
          /// NULL ///figure out later how to make it not hang my program =3
          // instructionMap[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);

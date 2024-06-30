@@ -1,9 +1,9 @@
 #include "CPU.h"
 
-void CPU::Reset(Mem &_mem)
+void CPU::Reset(Mem &_mem, const Word& _PC_start)  ///_PC_start is by deafult 0xFFFC
 {
-   PC = 0xFFFC;
-   SP = 0x0100;
+   PC = _PC_start;
+   SP = 0xFF;
    C = Z = I = D = B = V = N = 0;
    A = X = Y = 0;
    _mem.Initialise();
@@ -20,9 +20,11 @@ void CPU::Reset(Mem &_mem)
 [[nodiscard]] Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
 {
    // 6502 is little endian - so the first is the least significant byte
-   Word data = _mem[PC];
-   data |= (_mem[PC] << 8);
-   PC += 2;
+   auto dataHigh = _mem[PC];
+   ++PC;
+   auto dataLow = _mem[PC];
+   Word data = dataLow + (dataHigh << 8);
+   ++PC;
    _cycles -= 2;
    /// good old endiannes ifdef here (if you care ofc...)
    return data;
@@ -205,3 +207,21 @@ void CPU::SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
 }
 
 ////////stack
+void CPU::pushToStack(u32& _cycles, Mem& _mem, const Byte& _val) ///those should use one more cycle i believ
+{
+   auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
+   _mem.debug_set(addr, _val);
+   --_cycles;
+   --SP;
+   --_cycles;
+}
+
+Byte CPU::popFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
+{
+   ++SP;
+   auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
+   _cycles--;
+   if(SP > 255) return 0; ///and cry in the darkness - alone
+   _cycles--;
+   return _mem.debug_get(addr);
+}

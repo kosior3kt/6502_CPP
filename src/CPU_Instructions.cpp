@@ -103,7 +103,7 @@ void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
       --_cycles;
    Word ea   = eaLow + (eaHigh << 8) + Y;
    A         = ReadByte(_cycles, ea, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?) YES IT DOES =0
+   Byte flag = 0b11111111 & (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -111,18 +111,13 @@ void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
 void CPU::JSR(u32 &_cycles, Mem &_mem)
 {
    Word subRoutineAddr = FetchWord(_cycles, _mem);
-#ifdef DEBUG
-   auto temp = SP;
-#endif
-   WriteWord(_cycles, ++SP, _mem, (PC-1));
-
-   ///////////////////////////////////////// this thing should be a stack...
+   const Byte toPushLow  = (Byte)(PC);
+   const Byte toPushHigh = (Byte)(PC >> 8);
+   pushToStack(_cycles, _mem, toPushLow);
+   pushToStack(_cycles, _mem, toPushHigh);
+   
    PC = subRoutineAddr;
-#ifdef DEBUG
-   printf("SP before: %d, SP now: %d\n", temp, SP);
-   assert(SP == temp + 1);
-#endif
-   --_cycles;
+   //--_cycles;
 }
 
 /////////////////////////////////////// LDX
@@ -550,3 +545,13 @@ void CPU::STY_ABS(u32 &_cycles, Mem &_mem)
    WriteByte(_cycles, address, _mem, CPU::Y);
 }
 
+/// RTS
+void CPU::RTS(u32 &_cycles, Mem &_mem)
+{
+    const Byte retAddrHigh = popFromStack(_cycles, _mem);
+    const Byte retAddrLow = popFromStack(_cycles, _mem);
+    Word retAddr = retAddrLow | retAddrHigh << 8;
+
+   PC = retAddr;
+   --_cycles;
+}

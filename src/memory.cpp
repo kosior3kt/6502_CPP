@@ -38,7 +38,7 @@ void Mem::debug_dumpMemory(const std::string& _fileName){
    if(!_file) return;
    for(int i = 0; i < Mem::MAX_MEM; ++i)
    {
-      _file << Data[i] << "at the adress: " << i << "\n";   ///this construction flushes at the end of line
+      _file << (int)Data[i] << " at the adress: " << i << "\n";   ///this construction flushes at the end of line
    }
    _file.close();
 }

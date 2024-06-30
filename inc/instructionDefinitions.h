@@ -82,4 +82,7 @@
       void STY_ZPX(u32 &_cycles, Mem &_mem);
       void STY_ABS(u32 &_cycles, Mem &_mem);
 
+      ///RTS
+      void RTS(u32 &_cycles, Mem &_mem);
+
 #endif

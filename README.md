@@ -14,3 +14,6 @@ List of what works (instruction wise):
     -DEC
     -DEY
     -DEX
+    -STA
+    -STX
+    -STY

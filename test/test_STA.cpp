@@ -1,7 +1,5 @@
 #include "test.hpp"
 
-
-
 ////////////////STA
 
 TEST_F(TEST_6502, STA_ZP_SIMPLE)

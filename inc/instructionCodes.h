@@ -72,4 +72,7 @@ static constexpr Byte INS_STY_ZP  = 0x84;
 static constexpr Byte INS_STY_ZPX = 0x94;
 static constexpr Byte INS_STY_ABS = 0x8C;
 
+///RTS
+static constexpr Byte INS_RTS = 0x60;
+
 #endif
