@@ -6,75 +6,13 @@
 #include <functional>
 #include <map>
 
-/// maybe later I will use it, when I discover that it is faster or sth
-#define SUBST(VAR)                                                            \
-   std::bind(&CPU::VAR, this, std::placeholders::_1, std::placeholders::_2)
-
-// TODO:
-/*
-// - add stack operations (push pop)
-// - fill function for settings flags
-// - change instructions into enum if possible
-// - remove instances of SetNZWithValue and replace it with general flag
-setting function
-// - abstract addressing modes
-// - implement rest of the operations:
-//    + AND
-//    + ANC
-//    + ASL
-//    + BCC
-//    + BCS
-//    + BEQ
-//    + BIT
-//    + BMI
-//    + BNE
-//    + BPL
-//    + BRK
-//    + BVC
-//    + CLC
-//    + CLD
-//    + CLI
-//    + CLV
-//    + CMP
-//    + CPX
-//    + CPY
-//    + EOR
-//    + JMP
-//    + LSR
-//    + NOP
-//    + ORA
-//    + PHA
-//    + PHP
-//    + PLA
-//    + PLP
-//    + ROL
-//    + ROR
-//    + RTI
-//    + RTS
-//    + SBC
-//    + SEC
-//    + SED
-//    + SEI
-//    + STA
-//    + STX
-//    + STY
-//    + TAX
-//    + TAY
-//    + TSX
-//    + TXA
-//    + TXS
-//    + TXY
-*/
-
 struct CPU
 {
-
-      /// want to have everything exposed for now. No need for encapsulation BS
-      /// yet
+      /// want to have everything exposed for now. No need for encapsulation BS yet
       Word PC; /// program counter
       Byte SP; /// stack pointer - it has to be a Byte because it is fixed size 256 between $0100 and $01FF
 
-      Byte A, X, Y; /// registers
+      Byte A, X, Y; /// registers - less is more
 
       Byte C : 1; // status flag
       Byte Z : 1; // status flag
@@ -91,101 +29,56 @@ struct CPU
          Y
       };
 
-   // private:
-   //    struct Stack   ///you may ask, why create my own stack instead of the stl one. thats a good question indeed - idk, felt bored
-   //    {
-   //       std::vector<Byte> val_;
-   //       Stack() noexcept {val_.reserve(256);};
-   //       void push(const Byte& _val)   noexcept ///idk if this is even noexcept
-   //       {
-   //          if(!(val_.size() >= 256))
-   //             val_.push_back(_val);   ///need to handle errors here, but I dont feel like it now
-   //          return;
-   //       }
-   //       Byte pop() noexcept
-   //       {
-   //          if(!val_.empty())
-   //          {
-   //             auto temp = val_.back();
-   //             val_.pop_back();
-   //             return temp;
-   //          }
-   //          return 0;   ///need to handle this more gracefully probably, but w/e for now
-   //       }
-   //    };
-   // public:
-   //    Stack stack();
-
-      /// here we store all the instruction codes together with addressing
-      /// mdoes (did what I had to do...)
+      ///////////////////////////////////////////////// place for all the function for instruction codes and definitions 
 #include "instructionCodes.h"
+#include "instructionDefinitions.h"
 
-      /* ///unused for now, maybe I will change it later
-      struct canBeExceeded
-      {
-            bool can;
-            uint8_t value;
-            canBeExceeded(bool _b, uint8_t _v) :
-                can(_b),
-                value(_v) {};
-      };
-
-      std::map<Byte, canBeExceeded> numberOfCyclesByInstruction_{
-         {   INS_LDA_IM, canBeExceeded(false, 2) },
-         {   INS_LDA_ZP, canBeExceeded(false, 3) },
-         {  INS_LDA_ABS, canBeExceeded(false, 4) },
-         { INS_LDA_ABSX,  canBeExceeded(true, 4) },
-         { INS_LDA_ABSY,  canBeExceeded(true, 4) },
-         { INS_LDA_INDX, canBeExceeded(false, 6) },
-         { INS_LDA_INDY,  canBeExceeded(true, 5) },
-         {  INS_LDA_ZPX, canBeExceeded(false, 4) },
-         {      INS_JSR, canBeExceeded(false, 6) },
-      };
-      */
-
-      void Reset(Mem &_mem, const Word& _PC_start = 0xFFFC);
 
    private:
-      ///logic
+      /////////////////////////////////////////////////logic and memory
       Byte FetchByte(u32 &_cycles, const Mem &_mem);
       Word FetchWord(u32 &_cycles, const Mem &_mem);
+
       Byte ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem);
       Byte ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem);
+      Byte ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
+      Byte ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
+
       void WriteByte(u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val);
       void WriteByte(u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val);
       void WriteWord(u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val);
       void WriteWord(u32 &_cycles, const Byte&_addr, Mem &_mem, const Word&_val);
-      Byte ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
-      Byte ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
 
-      ///even I - the creator fear this thing...
+
+      /////////////////////////////////////////////////even I - the creator fear this thing...
       void ApplyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
       void ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
 
-      ///TODO: finish this later
+      /////////////////////////////////////////////////stack
       void pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val);
       Byte popByteFromStack(u32& _cycles, Mem& _mem);
       void pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val);
       Word popWordFromStack(u32& _cycles, Mem& _mem);
    public:
 
+      void Reset(Mem &_mem, const Word& _PC_start = 0xFFFC);
+
+      /////////////////////////////////////////////////execution 
       s32 execute(u32 _cycles, Mem &_mem);
 
-      [[deprecated("Use execute() instead")]] s32
-      execute_alternative(u32 _cycles, Mem &_mem);
+      [[deprecated("Use execute() instead")]] 
+      s32 execute_alternative(u32 _cycles, Mem &_mem);
 
-      ///flags managment
+      /////////////////////////////////////////////////flags managment
       [[deprecated("Use SetCustomFlags...() instead")]] 
       void SetNZWithRegister(const Register &_reg);
-      [[deprecated("Use SetCustomFlags...() instead")]] 
+
+      [[deprecated("Use SetCustomFlags...() instead")]]
       void SetNZWithValue(const Byte &_val);
 
       void SetCustomFlagsWithValue(const Byte &_val, Byte &_flags);
       void SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags);
 
-   private:
-      /// place for all the function for instructis
-#include "instructionDefinitions.h"
    
    private:      
       /// wow - it actually works (im as surprised as you are)
@@ -197,13 +90,12 @@ struct CPU
          );
       }
 
-      std::map<Byte, std::function<void(u32 &, Mem &)> > instructionMap;
+      std::map<Byte, std::function<void(u32 &, Mem &)>> instructionMap;
 
    public:
       explicit CPU()
       {
-         ///////Do I even want to do this here - this should be more of a
-         /// static thing?
+         ///////Do I even want to do this here - this should be more of a static thing?
 
          //// LDA
          instructionMap[INS_LDA_IM]   = bindMemberFunction(&CPU::LDA_IM);
@@ -273,8 +165,8 @@ struct CPU
          instructionMap[INS_RTS]      = bindMemberFunction(&CPU::RTS);
 
          /// JMP
-         instructionMap[INS_JMP_ABS]      = bindMemberFunction(&CPU::JMP_ABS);
-         instructionMap[INS_JMP_IND]      = bindMemberFunction(&CPU::JMP_IND);
+         instructionMap[INS_JMP_ABS]  = bindMemberFunction(&CPU::JMP_ABS);
+         instructionMap[INS_JMP_IND]  = bindMemberFunction(&CPU::JMP_IND);
 
          /// NULL ///figure out later how to make it not hang my program =3
          // instructionMap[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);
