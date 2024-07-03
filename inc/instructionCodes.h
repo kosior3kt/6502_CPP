@@ -3,8 +3,8 @@
 
 #include "defines.h"
 
-/// Empty instruction
-static constexpr Byte INS_NULL = 0x00;
+////////////////////////////////////// Empty instruction (this is my happy invention)
+static constexpr Byte INS_NULL     = 0xFF;
 
 ////////////////////////////////////// Load/Store
 /// LDA instructions
@@ -41,14 +41,14 @@ static constexpr Byte INS_STA_INDX = 0x81;
 static constexpr Byte INS_STA_INDY = 0x91;
 
 /// STX
-static constexpr Byte INS_STX_ZP  = 0x86;
-static constexpr Byte INS_STX_ZPY = 0x96;
-static constexpr Byte INS_STX_ABS = 0x8E;
+static constexpr Byte INS_STX_ZP   = 0x86;
+static constexpr Byte INS_STX_ZPY  = 0x96;
+static constexpr Byte INS_STX_ABS  = 0x8E;
 
 /// STY
-static constexpr Byte INS_STY_ZP  = 0x84;
-static constexpr Byte INS_STY_ZPX = 0x94;
-static constexpr Byte INS_STY_ABS = 0x8C;
+static constexpr Byte INS_STY_ZP   = 0x84;
+static constexpr Byte INS_STY_ZPX  = 0x94;
+static constexpr Byte INS_STY_ABS  = 0x8C;
 
 ////////////////////////////////////// Increment/Decrement
 /// INC instructions
@@ -58,8 +58,8 @@ static constexpr Byte INS_INC_ABS  = 0xEE;
 static constexpr Byte INS_INC_ABSX = 0xFE;
 
 /// INX and INY
-static constexpr Byte INS_INX = 0xE8;
-static constexpr Byte INS_INY = 0xC8;
+static constexpr Byte INS_INX      = 0xE8;
+static constexpr Byte INS_INY      = 0xC8;
 
 /// DEC incstructions
 static constexpr Byte INS_DEC_ZP   = 0xC6;
@@ -72,13 +72,8 @@ static constexpr Byte INS_DEX = 0xCA;
 static constexpr Byte INS_DEY = 0x88;
 
 ////////////////////////////////////// Jumps/Calls
-/// JSR instruction
-static constexpr Byte INS_JSR = 0x20;
-
-/// RTS
-static constexpr Byte INS_RTS = 0x60;
-
-/// JMP
+static constexpr Byte INS_JSR     = 0x20;
+static constexpr Byte INS_RTS     = 0x60;
 static constexpr Byte INS_JMP_ABS = 0x4C;
 static constexpr Byte INS_JMP_IND = 0x6C;
 
@@ -172,9 +167,59 @@ static constexpr Byte INS_ROR_ABS  = 0x6E;
 static constexpr Byte INS_ROR_ABSX = 0x7E;
 
 ////////////////////////////////////// Arithmetic
+///ADC
+static constexpr Byte INS_ADC_IM   = 0x69;
+static constexpr Byte INS_ADC_ZP   = 0x65;
+static constexpr Byte INS_ADC_ZPX  = 0x75;
+static constexpr Byte INS_ADC_ABS  = 0x6D;
+static constexpr Byte INS_ADC_ABSX = 0x7D;
+static constexpr Byte INS_ADC_ABSY = 0x79;
+static constexpr Byte INS_ADC_INDX = 0x61;
+static constexpr Byte INS_ADC_INDY = 0x71;
+
+/// SBC
+static constexpr Byte INS_SBC_IM   = 0xE9;
+static constexpr Byte INS_SBC_ZP   = 0xE5;
+static constexpr Byte INS_SBC_ZPX  = 0xF5;
+static constexpr Byte INS_SBC_ABS  = 0xED;
+static constexpr Byte INS_SBC_ABSX = 0xFD;
+static constexpr Byte INS_SBC_ABSY = 0xF9;
+static constexpr Byte INS_SBC_INDX = 0xE1;
+static constexpr Byte INS_SBC_INDY = 0xF1;
+
+/// CMP
+static constexpr Byte INS_CMP_IM   = 0xC9;
+static constexpr Byte INS_CMP_ZP   = 0xC5;
+static constexpr Byte INS_CMP_ZPX  = 0xD5;
+static constexpr Byte INS_CMP_ABS  = 0xCD;
+static constexpr Byte INS_CMP_ABSX = 0xDD;
+static constexpr Byte INS_CMP_ABSY = 0xD9;
+static constexpr Byte INS_CMP_INDX = 0xC1;
+static constexpr Byte INS_CMP_INDY = 0xD1;
+
+///CPX
+static constexpr Byte INS_CPX_IM   = 0xE0;
+static constexpr Byte INS_CPX_ZP   = 0xE4;
+static constexpr Byte INS_CPX_ABS  = 0xEC;
+
+///CPY
+static constexpr Byte INS_CPY_IM   = 0xC0;
+static constexpr Byte INS_CPY_ZP   = 0xC4;
+static constexpr Byte INS_CPY_ABS  = 0xCC;
 
 ////////////////////////////////////// Status Flag Changes
+static constexpr Byte INS_CLC      = 0x18;
+static constexpr Byte INS_CLD      = 0xD8;
+static constexpr Byte INS_CLI      = 0x58;
+static constexpr Byte INS_CLV      = 0xB8;
+static constexpr Byte INS_SEC      = 0x38;
+static constexpr Byte INS_SED      = 0xF8;
+static constexpr Byte INS_SEI      = 0x78;
 
 ////////////////////////////////////// System Functions
+static constexpr Byte INS_BRK      = 0x00;
+static constexpr Byte INS_NOP      = 0xEA;
+static constexpr Byte INS_RTI      = 0x60;
+
 
 #endif

@@ -60,7 +60,7 @@ void CPU::LDA_ABSX(u32 &_cycles, Mem &_mem)
    if(eaLow + X > 0xFF)
       --_cycles;
    A         = ReadByte(_cycles, address, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag = 0b11111111 & (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -70,11 +70,10 @@ void CPU::LDA_ABSY(u32 &_cycles, Mem &_mem)
    Byte eaHigh  = FetchByte(_cycles, _mem);
    Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
    address += Y;
-   // address = address % Mem::MAX_MEM;   ///Does it make sense???
    if(eaLow + Y > 0xFF)
       --_cycles;
    A         = ReadByte(_cycles, address, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag = 0b11111111 & (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
