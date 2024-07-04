@@ -41,8 +41,8 @@ struct CPU
 
       Byte ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem);
       Byte ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem);
-      Byte ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
-      Byte ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
+      Word ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
+      Word ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
 
       void WriteByte(u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val);
       void WriteByte(u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val);

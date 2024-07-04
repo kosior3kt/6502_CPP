@@ -10,6 +10,7 @@ set (TEST_SOURCES
    test_JumpingInstructions.cpp
    test_circularTestCollection.cpp
    test_MultipleInstructions.cpp
+   test_transfer.cpp
    )
 
 set(ALTERNATIVE_SOURCES

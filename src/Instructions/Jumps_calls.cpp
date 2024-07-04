@@ -20,10 +20,10 @@ void CPU::JMP_ABS(u32 &_cycles, Mem &_mem)
 
 void CPU::JMP_IND(u32 &_cycles, Mem &_mem)
 {
-   auto setAddr = FetchWord(_cycles, _mem);
-   auto setAddr2 = ReadWord(_cycles, setAddr, _mem);
+   Word setAddr = FetchWord(_cycles, _mem);
+   Word setAddrEffective = ReadWord(_cycles, setAddr, _mem);
    --_cycles;
-   PC = setAddr2;
+   PC = setAddrEffective;
 }
 
 /// RTS

@@ -54,3 +54,24 @@ TEST_F(TEST_6502, JMP_ABS_andOtherTrash)
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
 }
 
+TEST_F(TEST_6502, JMP_IND_andOtherTrashAsWell)
+{
+   cpu_.Reset(mem_, 0xFF00);
+   mem_.debug_set(0xFF00, CPU::INS_JMP_IND);  
+   mem_.debug_set(0xFF01, 0x0010);  
+   mem_.debug_set(0xFF02, 0x0020);  
+   mem_.debug_set(0x2010, 0x10);  
+   mem_.debug_set(0x2011, 0x69);  
+   mem_.debug_set(0x6910, CPU::INS_LDA_ZP);  
+   mem_.debug_set(0x6911, 0x42);  
+   mem_.debug_set(0x0042, 0x69);  
+
+   auto cyclesLeft = cpu_.execute(20, mem_);
+
+   EXPECT_EQ(cyclesLeft, 0);  //imma do this later on...
+   EXPECT_EQ((int)cpu_.A, 0x69);
+   EXPECT_FALSE((int)cpu_.Z);
+   EXPECT_FALSE((int)cpu_.N);
+   EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+}
+

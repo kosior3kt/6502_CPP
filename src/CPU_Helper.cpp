@@ -70,8 +70,8 @@ void CPU::WriteWord( u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val
    _cycles -= 2;
 }
 
-[[nodiscard]] Byte
-CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+[[nodiscard]] 
+Word CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea; /// ea => effective address
@@ -82,13 +82,12 @@ CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
    return ea;
 }
 
-[[nodiscard]] Byte
-CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
+[[nodiscard]]
+Word CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
-   assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea;
-   Byte eaHigh = ReadByte(_cycles, _addr, _mem);
-   Byte eaLow  = ReadByte(_cycles, _addr, _mem);
+   Byte eaLow = ReadByte(_cycles, _addr, _mem);
+   Byte eaHigh  = ReadByte(_cycles, (Word)(_addr + 1), _mem);
    ea          = eaLow + (eaHigh << 8);
    _cycles -= 2;
    return ea;
