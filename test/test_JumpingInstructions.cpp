@@ -22,7 +22,7 @@ TEST_F(TEST_6502, veryFuckingConvolutedTest)
    mem_.debug_set(0xFF03, CPU::INS_LDA_IM);  
    mem_.debug_set(0xFF04, 0x42);
 
-   auto cyclesLeft = cpu_.execute(33, mem_);
+   auto cyclesLeft = cpu_.execute(100, mem_);
 
    // EXPECT_EQ(cyclesLeft, 0);  //imma do this later on...
    EXPECT_EQ((int)cpu_.A, 0x42);

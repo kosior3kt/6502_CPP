@@ -563,3 +563,151 @@ void CPU::JMP_IND(u32 &_cycles, Mem &_mem)
    --_cycles;
    PC = setAddr2;
 }
+
+
+
+////////////////////////////////////// Stack Operations
+
+void CPU::TSX(u32& _cycles, Mem &_mem){}
+void CPU::TXS(u32& _cycles, Mem &_mem){}
+void CPU::PHA(u32& _cycles, Mem &_mem){}
+void CPU::PHP(u32& _cycles, Mem &_mem){}
+void CPU::PLA(u32& _cycles, Mem &_mem){}
+void CPU::PLP(u32& _cycles, Mem &_mem){}
+
+////////////////////////////////////// Register Transfers
+void CPU::TAX(u32& _cycles, Mem &_mem){}
+void CPU::TAY(u32& _cycles, Mem &_mem){}
+void CPU::TXA(u32& _cycles, Mem &_mem){}
+void CPU::TYA(u32& _cycles, Mem &_mem){}
+
+////////////////////////////////////// Logical
+void CPU::AND_IM (u32& _cycles, Mem &_mem){}
+void CPU::AND_ZP (u32& _cycles, Mem &_mem){}
+void CPU::AND_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::AND_ABS(u32& _cycles, Mem &_mem){}
+void CPU::AND_ABSX(u32& _cycles, Mem &_mem){}
+void CPU::AND_ABSY(u32& _cycles, Mem &_mem){}
+void CPU::AND_INDX(u32& _cycles, Mem &_mem){}
+void CPU::AND_INDY(u32& _cycles, Mem &_mem){}
+
+void CPU::EOR_IM (u32& _cycles, Mem &_mem){}
+void CPU::EOR_ZP (u32& _cycles, Mem &_mem){}
+void CPU::EOR_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::EOR_ABS(u32& _cycles, Mem &_mem){}
+void CPU::EOR_ABSX(u32& _cycles, Mem &_mem){}
+void CPU::EOR_ABSY(u32& _cycles, Mem &_mem){}
+void CPU::EOR_INDX(u32& _cycles, Mem &_mem){}
+void CPU::EOR_INDY(u32& _cycles, Mem &_mem){}
+
+///ORA 
+void CPU::ORA_IM (u32& _cycles, Mem &_mem){}
+void CPU::ORA_ZP (u32& _cycles, Mem &_mem){}
+void CPU::ORA_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::ORA_ABS(u32& _cycles, Mem &_mem){}
+void CPU::ORA_ABSX(u32& _cycles, Mem &_mem){}
+void CPU::ORA_ABSY(u32& _cycles, Mem &_mem){}
+void CPU::ORA_INDX(u32& _cycles, Mem &_mem){}
+void CPU::ORA_INDY(u32& _cycles, Mem &_mem){}
+
+/// BIT
+void CPU::BIT_ZP (u32& _cycles, Mem &_mem){}
+void CPU::BIT_ZBS(u32& _cycles, Mem &_mem){}
+
+////////////////////////////////////// Branches
+void CPU::BCC (u32& _cycles, Mem &_mem){}
+void CPU::BCS (u32& _cycles, Mem &_mem){}
+void CPU::BEQ (u32& _cycles, Mem &_mem){}
+void CPU::BMI (u32& _cycles, Mem &_mem){}
+void CPU::BNE (u32& _cycles, Mem &_mem){}
+void CPU::BPL (u32& _cycles, Mem &_mem){}
+void CPU::BVC (u32& _cycles, Mem &_mem){}
+void CPU::BVS (u32& _cycles, Mem &_mem){}
+
+////////////////////////////////////// Shifts
+///ASL
+void CPU::ASL_ACC(u32& _cycles, Mem &_mem){}
+void CPU::ASL_ZP (u32& _cycles, Mem &_mem){}
+void CPU::ASL_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::ASL_ABS(u32& _cycles, Mem &_mem){}
+void CPU::ASL_ABSX(u32& _cycles, Mem &_mem){}
+
+///LSR
+void CPU::LSR_ACC(u32& _cycles, Mem &_mem){}
+void CPU::LSR_ZP (u32& _cycles, Mem &_mem){}
+void CPU::LSR_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::LSR_ABS(u32& _cycles, Mem &_mem){}
+void CPU::LSR_ABSX(u32& _cycles, Mem &_mem){}
+
+///ROL
+void CPU::ROL_ACC(u32& _cycles, Mem &_mem){}
+void CPU::ROL_ZP (u32& _cycles, Mem &_mem){}
+void CPU::ROL_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::ROL_ABS(u32& _cycles, Mem &_mem){}
+void CPU::ROL_ABSX(u32& _cycles, Mem &_mem){}
+
+///ROR
+void CPU::ROR_ACC(u32& _cycles, Mem &_mem){}
+void CPU::ROR_ZP (u32& _cycles, Mem &_mem){}
+void CPU::ROR_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::ROR_ABS(u32& _cycles, Mem &_mem){}
+void CPU::ROR_ABSX(u32& _cycles, Mem &_mem){}
+
+
+////////////////////////////////////// Arithmetic
+///ADC
+void CPU::ADC_IM (u32& _cycles, Mem &_mem){}
+void CPU::ADC_ZP (u32& _cycles, Mem &_mem){}
+void CPU::ADC_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::ADC_ABS(u32& _cycles, Mem &_mem){}
+void CPU::ADC_ABSX(u32& _cycles, Mem &_mem){}
+void CPU::ADC_ABSY(u32& _cycles, Mem &_mem){}
+void CPU::ADC_INDX(u32& _cycles, Mem &_mem){}
+void CPU::ADC_INDY(u32& _cycles, Mem &_mem){}
+
+/// SBC
+void CPU::SBC_IM (u32& _cycles, Mem &_mem){}
+void CPU::SBC_ZP (u32& _cycles, Mem &_mem){}
+void CPU::SBC_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::SBC_ABS(u32& _cycles, Mem &_mem){}
+void CPU::SBC_ABSX(u32& _cycles, Mem &_mem){}
+void CPU::SBC_ABSY(u32& _cycles, Mem &_mem){}
+void CPU::SBC_INDX(u32& _cycles, Mem &_mem){}
+void CPU::SBC_INDY(u32& _cycles, Mem &_mem){}
+
+/// CMP
+void CPU::CMP_IM (u32& _cycles, Mem &_mem){}
+void CPU::CMP_ZP (u32& _cycles, Mem &_mem){}
+void CPU::CMP_ZPX(u32& _cycles, Mem &_mem){}
+void CPU::CMP_ABS(u32& _cycles, Mem &_mem){}
+void CPU::CMP_ABSX(u32& _cycles, Mem &_mem){}
+void CPU::CMP_ABSY(u32& _cycles, Mem &_mem){}
+void CPU::CMP_INDX(u32& _cycles, Mem &_mem){}
+void CPU::CMP_INDY(u32& _cycles, Mem &_mem){}
+
+///CPX
+void CPU::CPX_IM (u32& _cycles, Mem &_mem){}
+void CPU::CPX_ZP (u32& _cycles, Mem &_mem){}
+void CPU::CPX_ABS(u32& _cycles, Mem &_mem){}
+
+///CPY
+void CPU::CPY_IM (u32& _cycles, Mem &_mem){}
+void CPU::CPY_ZP (u32& _cycles, Mem &_mem){}
+void CPU::CPY_ABS(u32& _cycles, Mem &_mem){}
+
+      
+////////////////////////////////////// Status Flag Changes
+void CPU::CLC (u32& _cycles, Mem &_mem){}
+void CPU::CLD (u32& _cycles, Mem &_mem){}
+void CPU::CLI (u32& _cycles, Mem &_mem){}
+void CPU::CLV (u32& _cycles, Mem &_mem){}
+void CPU::SEC (u32& _cycles, Mem &_mem){}
+void CPU::SED (u32& _cycles, Mem &_mem){}
+void CPU::SEI (u32& _cycles, Mem &_mem){}
+
+////////////////////////////////////// System Functions
+void CPU::BRK (u32& _cycles, Mem &_mem){}
+void CPU::NOP (u32& _cycles, Mem &_mem){}
+void CPU::RTI (u32& _cycles, Mem &_mem){}
+
+

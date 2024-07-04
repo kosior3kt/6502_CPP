@@ -73,7 +73,7 @@ static constexpr Byte INS_DEY = 0x88;
 
 ////////////////////////////////////// Jumps/Calls
 static constexpr Byte INS_JSR     = 0x20;
-static constexpr Byte INS_RTS     = 0x60;
+static constexpr Byte INS_RTS     = 0x40;
 static constexpr Byte INS_JMP_ABS = 0x4C;
 static constexpr Byte INS_JMP_IND = 0x6C;
 
@@ -217,7 +217,7 @@ static constexpr Byte INS_SED      = 0xF8;
 static constexpr Byte INS_SEI      = 0x78;
 
 ////////////////////////////////////// System Functions
-static constexpr Byte INS_BRK      = 0x00;
+static constexpr Byte INS_BRK      = 0x00;   ///TODO: change this later on into 0x00. For now I prefer to have a 0x00 as an idle instruction
 static constexpr Byte INS_NOP      = 0xEA;
 static constexpr Byte INS_RTI      = 0x60;
 
