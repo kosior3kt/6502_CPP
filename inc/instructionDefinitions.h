@@ -207,8 +207,7 @@ void SBC_INDY(u32& _cycles, Mem &_mem);
 
 /// CMP
 void CMP_IM (u32& _cycles, Mem &_mem);
-void CMP_ZP (u32& _cycles, Mem &_mem);
-void CMP_ZPX(u32& _cycles, Mem &_mem);
+void CMP_ZP (u32& _cycles, Mem &_mem); void CMP_ZPX(u32& _cycles, Mem &_mem);
 void CMP_ABS(u32& _cycles, Mem &_mem);
 void CMP_ABSX(u32& _cycles, Mem &_mem);
 void CMP_ABSY(u32& _cycles, Mem &_mem);

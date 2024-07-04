@@ -6,6 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 
 set(INC ${CMAKE_CURRENT_SOURCE_DIR}/inc/)
+set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
 #add_subdirectory(inc) #not needed for now
 add_subdirectory(src)

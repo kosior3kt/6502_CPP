@@ -3,6 +3,17 @@ set(CPU_SOURCES
    CPU.cpp 
    CPU_Instructions.cpp 
    CPU_Helper.cpp
+   Instructions/Load_store.cpp
+   Instructions/Increment_decrement.cpp
+   Instructions/Jumps_calls.cpp
+   Instructions/Stack_operations.cpp
+   Instructions/Register_transfers.cpp
+   Instructions/Logical.cpp
+   Instructions/Branches.cpp
+   Instructions/Shifts.cpp
+   Instructions/Arithmetics.cpp
+   Instructions/Status_flags.cpp
+   Instructions/System_functions.cpp
    )
 
 add_library(CPU
