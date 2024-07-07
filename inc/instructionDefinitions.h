@@ -142,7 +142,7 @@ void ORA_INDY(u32& _cycles, Mem &_mem);
 
 /// BIT
 void BIT_ZP (u32& _cycles, Mem &_mem);
-void BIT_ZBS(u32& _cycles, Mem &_mem);
+void BIT_ABS(u32& _cycles, Mem &_mem);
 
 ////////////////////////////////////// Branches
 void BCC (u32& _cycles, Mem &_mem);

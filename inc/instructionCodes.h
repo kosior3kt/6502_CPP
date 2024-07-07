@@ -124,7 +124,7 @@ static constexpr Byte INS_ORA_INDY = 0x11;
 
 /// BIT
 static constexpr Byte INS_BIT_ZP  = 0x24;
-static constexpr Byte INS_BIT_ZBS = 0x2C;
+static constexpr Byte INS_BIT_ABS = 0x2C;
 
 
 ////////////////////////////////////// Branches

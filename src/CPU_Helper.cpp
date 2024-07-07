@@ -186,6 +186,7 @@ void CPU::SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
 
    if(_flags & C_f)
    {
+      C = 1;
    }
    if(_flags & Z_f)
    {
@@ -193,15 +194,19 @@ void CPU::SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
    }
    if(_flags & I_f)
    {
+      I = 1;
    }
    if(_flags & D_f)
    {
+      D = 1;
    }
    if(_flags & B_f)
    {
+      B = 1;
    }
    if(_flags & V_f)
    {
+      V = 1;
    }
    if(_flags & N_f)
    {

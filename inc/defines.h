@@ -15,8 +15,8 @@ constexpr int Z_f = (1 << 1);
 constexpr int I_f = (1 << 2);
 constexpr int D_f = (1 << 3);
 constexpr int B_f = (1 << 4);
-constexpr int V_f = (1 << 5);
-constexpr int N_f = (1 << 6);
+constexpr int V_f = (1 << 6);
+constexpr int N_f = (1 << 7);
 
 /// abomination
 template<typename T, typename... Args>

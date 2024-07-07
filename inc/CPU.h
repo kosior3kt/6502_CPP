@@ -236,7 +236,7 @@ struct CPU
 
          /// BIT
          instructionMap[INS_BIT_ZP ] = bindMemberFunction(&CPU::BIT_ZP );
-         instructionMap[INS_BIT_ZBS] = bindMemberFunction(&CPU::BIT_ZBS);
+         instructionMap[INS_BIT_ABS] = bindMemberFunction(&CPU::BIT_ABS);
 
 
 ////////////////////////////////////// Branches
