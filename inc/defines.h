@@ -1,6 +1,8 @@
 #ifndef __DEFINES__
 #define __DEFINES__
 
+#include <iostream>
+
 //glossary
 using Byte = unsigned char;
 using Word = unsigned short;
@@ -15,5 +17,30 @@ constexpr int D_f = (1 << 3);
 constexpr int B_f = (1 << 4);
 constexpr int V_f = (1 << 5);
 constexpr int N_f = (1 << 6);
+
+
+template<typename T, typename... Args>
+void HEX_PRINT_TO_BE_WRAPPED(T&& _first, Args&&... _rest)
+{
+   std::cout<<std::hex;
+   std::cout<<std::forward<T>(_first)<<" ";
+   if constexpr(sizeof...(_rest) > 0)
+   {
+      HEX_PRINT_TO_BE_WRAPPED(std::forward<Args>(_rest)...);
+   }
+   else
+   {
+      std::cout<<std::dec;      
+      std::cout<<"\n";
+   }
+}
+
+//#define DEBUG_PRINT
+
+#ifdef DEBUG_PRINT
+#define HEX_PRINT(...) HEX_PRINT_TO_BE_WRAPPED(__VA_ARGS__, "|||| from function:", __FUNCTION__)
+#else 
+#define HEX_PRINT(...)
+#endif
 
 #endif

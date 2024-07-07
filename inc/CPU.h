@@ -14,13 +14,17 @@ struct CPU
 
       Byte A, X, Y; /// registers - less is more
 
-      Byte C : 1; // status flag
-      Byte Z : 1; // status flag
-      Byte I : 1; // status flag
-      Byte D : 1; // status flag
-      Byte B : 1; // status flag
-      Byte V : 1; // status flag
-      Byte N : 1; // status flag
+      ///IDK I dont feel like changing it now
+      // struct flags
+      // {
+         Byte C : 1; // status flag
+         Byte Z : 1; // status flag
+         Byte I : 1; // status flag
+         Byte D : 1; // status flag
+         Byte B : 1; // status flag
+         Byte V : 1; // status flag
+         Byte N : 1; // status flag
+      // }current_flags{};
 
       enum class Register : uint8_t
       {
@@ -28,6 +32,10 @@ struct CPU
          X,
          Y
       };
+
+      ///access to all flags at the same time
+      uint8_t getCurrentFlags();
+      void setCurrentFlags(const uint8_t& _flags);
 
       ///////////////////////////////////////////////// place for all the function for instruction codes and definitions 
 #include "instructionCodes.h"
@@ -55,10 +63,17 @@ struct CPU
       void ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
 
       /////////////////////////////////////////////////stack
-      void pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val);
       Byte popByteFromStack(u32& _cycles, Mem& _mem);
-      void pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val);
       Word popWordFromStack(u32& _cycles, Mem& _mem);
+
+      void pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val);
+      void pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val);
+
+      Byte ReadByteFromStack(u32& _cycles, Mem& _mem);
+      Word ReadWordFromStack(u32& _cycles, Mem& _mem);
+
+      void OverwriteByteOnStack(u32& _cycles, Mem& _mem, const Word& _val);
+      void OverwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val);
    public:
 
       void Reset(Mem &_mem, const Word& _PC_start = 0xFFFC);

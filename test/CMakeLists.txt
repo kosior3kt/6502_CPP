@@ -7,10 +7,12 @@ set (TEST_SOURCES
    test_INC.cpp
    test_DEC.cpp
    test_STA.cpp
+   test_MISC.cpp
    test_JumpingInstructions.cpp
    test_circularTestCollection.cpp
    test_MultipleInstructions.cpp
    test_transfer.cpp
+   test_stackOperations.cpp
    )
 
 set(ALTERNATIVE_SOURCES

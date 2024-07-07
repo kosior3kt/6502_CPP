@@ -2,7 +2,6 @@
 
 s32 CPU::execute(u32 _cycles, Mem &_mem)
 {
-
    while(_cycles > 0)
    {
       Byte inst         = FetchByte(_cycles, _mem);
@@ -18,7 +17,6 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
          break;
       }
    }
-
    return _cycles;
 }
 

@@ -217,16 +217,7 @@ void CPU::pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val) ///those sh
    --_cycles;
    --SP;
    --_cycles;
-}
-
-[[nodiscard]]Byte CPU::popByteFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
-{
-   ++SP;
-   auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
-   _cycles--;
-   if(SP > 255) return 0; ///and cry in the darkness - alone
-   _cycles--;
-   return _mem.debug_get(addr);
+   HEX_PRINT("memory of the saved thing: ", addr);
 }
 
 void CPU::pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val) ///those should use one more cycle i believ
@@ -239,6 +230,16 @@ void CPU::pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val) ///those sh
    //--_cycles;
 }
 
+[[nodiscard]]Byte CPU::popByteFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
+{
+   ++SP;
+   auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
+   _cycles--;
+   if(SP > 255) return 0; ///and cry in the darkness - alone
+   _cycles--;
+   return _mem.debug_get(addr);
+}
+
 [[nodiscard]]Word CPU::popWordFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
 {
     const Byte retAddrHigh = popByteFromStack(_cycles, _mem);
@@ -249,3 +250,37 @@ void CPU::pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val) ///those sh
    return retAddr;
 }
 
+Byte CPU::ReadByteFromStack(u32& _cycles, Mem& _mem)
+{
+   auto addr = 0x0100 + SP + 1;   ///we dont want to modify SP cause we are just reading, not poping or pushing
+   return _mem.debug_get(addr);
+}
+
+Word CPU::ReadWordFromStack(u32& _cycles, Mem& _mem)
+{
+    const Byte retAddrHigh = ReadByteFromStack(_cycles, _mem);
+    SP++;
+    const Byte retAddrLow = ReadByteFromStack(_cycles, _mem);
+    SP--;
+    ///be carefull, I will need to remove this if I ever want to go multithreaded
+
+    Word retAddr = retAddrLow | retAddrHigh << 8;
+    return retAddr;
+}
+
+void CPU::OverwriteByteOnStack(u32& _cycles, Mem& _mem, const Word& _val)
+{
+   auto addr = 0x0100 + SP;
+   _mem.debug_set(addr, _val);
+}
+
+void CPU::OverwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val)
+{
+   Byte lowToWrite = _val & 0b11110000;
+   Byte highToWrite = _val & 0b00001111;
+
+   SP--;
+   OverwriteByteOnStack(_cycles, _mem, lowToWrite);
+   SP++;
+   OverwriteByteOnStack(_cycles, _mem, highToWrite);
+}

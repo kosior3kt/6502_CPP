@@ -1,9 +1,64 @@
 #include "CPU.h"
 
+////////////////////////////////////// helper functions
+uint8_t CPU::getCurrentFlags()
+{
+   return   (C << 0) |
+            (Z << 1) |
+            (I << 2) |
+            (D << 3) |
+            (B << 4) |
+            (V << 5) |
+            (N << 6);
+}
+
+void CPU::setCurrentFlags(const uint8_t& _flags)
+{
+     C = _flags >> 0 & 1;
+     Z = _flags >> 1 & 1;
+     I = _flags >> 2 & 1;
+     D = _flags >> 3 & 1;
+     B = _flags >> 4 & 1;
+     V = _flags >> 5 & 1;
+     N = _flags >> 6 & 1;
+}
+
 ////////////////////////////////////// Stack Operations
-void CPU::TSX(u32& _cycles, Mem &_mem){}
-void CPU::TXS(u32& _cycles, Mem &_mem){}
-void CPU::PHA(u32& _cycles, Mem &_mem){}
-void CPU::PHP(u32& _cycles, Mem &_mem){}
-void CPU::PLA(u32& _cycles, Mem &_mem){}
-void CPU::PLP(u32& _cycles, Mem &_mem){}
+void CPU::TSX(u32& _cycles, Mem &_mem)
+{
+   X = SP;
+  --_cycles;   ///TODO: measure later how many cycles this thing should even use
+}
+
+void CPU::TXS(u32& _cycles, Mem &_mem)
+{
+  SP = X;
+  --_cycles;
+}
+
+void CPU::PHA(u32& _cycles, Mem &_mem)
+{
+   pushByteToStack(_cycles, _mem, A);
+  --_cycles;
+}
+
+void CPU::PHP(u32& _cycles, Mem &_mem)
+{
+   auto flags = getCurrentFlags();
+   pushByteToStack(_cycles, _mem, flags);
+  --_cycles;
+}
+
+void CPU::PLA(u32& _cycles, Mem &_mem)
+{
+   Byte value = popByteFromStack(_cycles, _mem);
+   --_cycles;
+   A = value;
+}
+
+void CPU::PLP(u32& _cycles, Mem &_mem)
+{
+   auto flags = popByteFromStack(_cycles, _mem);
+   setCurrentFlags(flags);
+   --_cycles;
+}
