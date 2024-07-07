@@ -14,6 +14,7 @@ set (TEST_SOURCES
    test_transfer.cpp
    test_stackOperations.cpp
    test_statusFlags.cpp
+   test_logicalOperations.cpp
    )
 
 set(ALTERNATIVE_SOURCES

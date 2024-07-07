@@ -36,7 +36,7 @@ void HEX_PRINT_TO_BE_WRAPPED(T&& _first, Args&&... _rest)
    }
 }
 
-//#define DEBUG_PRINT
+#define DEBUG_PRINT
 
 #ifdef DEBUG_PRINT
 #define HEX_PRINT(...) HEX_PRINT_TO_BE_WRAPPED(__VA_ARGS__, "|||| from function:", __FUNCTION__)

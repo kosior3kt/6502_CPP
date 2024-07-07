@@ -227,7 +227,8 @@ TEST_F(TEST_6502, LDA_IndirectAdressingY_withPageCrossing)
 }
 
 TEST_F(TEST_6502, LDA_IndirectAdressingX)
-{  ///yeah, this is different than the Y version on purpose (apparently)
+{  
+   ///yeah, this is different than the Y version on purpose (apparently)
    cpu_.X = 0x02;
    mem_.debug_set(0xFFFC, CPU::INS_LDA_INDX);
    mem_.debug_set(0xFFFD, 0x004);
