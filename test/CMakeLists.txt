@@ -13,6 +13,7 @@ set (TEST_SOURCES
    test_MultipleInstructions.cpp
    test_transfer.cpp
    test_stackOperations.cpp
+   test_statusFlags.cpp
    )
 
 set(ALTERNATIVE_SOURCES

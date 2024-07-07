@@ -18,12 +18,13 @@ constexpr int B_f = (1 << 4);
 constexpr int V_f = (1 << 5);
 constexpr int N_f = (1 << 6);
 
-
+/// abomination
 template<typename T, typename... Args>
 void HEX_PRINT_TO_BE_WRAPPED(T&& _first, Args&&... _rest)
 {
    std::cout<<std::hex;
    std::cout<<std::forward<T>(_first)<<" ";
+
    if constexpr(sizeof...(_rest) > 0)
    {
       HEX_PRINT_TO_BE_WRAPPED(std::forward<Args>(_rest)...);
@@ -42,5 +43,6 @@ void HEX_PRINT_TO_BE_WRAPPED(T&& _first, Args&&... _rest)
 #else 
 #define HEX_PRINT(...)
 #endif
+
 
 #endif

@@ -1,20 +1,5 @@
 #include "test.hpp"
 
-
-// TEST_F(TEST_6502, PLA)
-// {
-//    mem_.debug_set(0xFFFC, CPU::INS_PLA);
-//    mem_.debug_set( 0xFFFD, 0b10000000); /// the 1 on the first bit of 8bit number is consider to make it negative
-//       /// - 2 complements or sth
-//    auto cyclesLeft = cpu_.execute(2, mem_);
-//
-//    EXPECT_EQ(cyclesLeft, 0);
-//    EXPECT_EQ((int)cpu_.A, 0b10000000);
-//    EXPECT_FALSE((int)cpu_.Z);
-//    EXPECT_TRUE((int)cpu_.N);
-//    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
-// }
-
 TEST_F(TEST_6502, TSX)
 {
    cpu_.SP = 0x69;
