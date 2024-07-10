@@ -4,7 +4,7 @@
 #include <iostream>
 
 ///when this is defined all the debug info's take effect
-#define DEBUG_PRINT  
+///#define DEBUG_PRINT  
 
 //glossary
 using Byte = unsigned char;

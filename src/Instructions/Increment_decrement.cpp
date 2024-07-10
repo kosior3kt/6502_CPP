@@ -32,7 +32,7 @@ void CPU::INC_ZPX(u32 &_cycles, Mem &_mem)
    ApplyToMemory(
        _cycles, address, _mem,
        [this](const Byte &_val
-       ) -> Byte { /// need to caputer this, so that it can manipulate NZ flags
+       ) -> Byte { 
          Byte flag = (N_f | Z_f); 
          SetCustomFlagsWithValue(_val, flag);
           return (_val + 1);

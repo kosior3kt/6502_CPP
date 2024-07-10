@@ -15,8 +15,8 @@ set (TEST_SOURCES
    test_statusFlags.cpp
    test_logicalOperations.cpp
    test_branches.cpp
-   test_shifts.cpp
    test_LDA.cpp
+   test_shifts.cpp
    )
 
 set(ALTERNATIVE_SOURCES
