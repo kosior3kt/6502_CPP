@@ -1,57 +1,41 @@
 #include "CPU.h"
 
-
-
 //////////////////////////////////// LDA
 void CPU::LDA_IM(u32 &_cycles, Mem &_mem)
 {
    Byte val  = FetchByte(_cycles, _mem);
    A         = val;
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag = 0b11111111 & (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
 void CPU::LDA_ZP(u32 &_cycles, Mem &_mem)
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   A                    = ReadByte(_cycles, zeroPageAddress, _mem);
-   Byte flag            = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Word address = getAddr(_cycles, _mem, adressingMode::ZP);
+   A            = ReadByte(_cycles, address, _mem);
+   Byte flag    = 0b11111111 & (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
 void CPU::LDA_ZPX(u32 &_cycles, Mem &_mem)
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   zeroPageAddress += X;
-   _cycles--;
-   if(zeroPageAddress > _mem.MAX_MEM)
-   {
-      std::cout << "instrukcja LDA ZPX przekroczyla obszar pamieci";
-      return;
-   }
-   A         = ReadByte(_cycles, zeroPageAddress, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Word address = getAddr(_cycles, _mem, adressingMode::ZPX);
+   A            = ReadByte(_cycles, address, _mem);
+   Byte flag    = 0b11111111 & (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
 void CPU::LDA_ABS(u32 &_cycles, Mem &_mem)
 {
-   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+   Word address = getAddr(_cycles, _mem, adressingMode::ABS);
    A            = ReadByte(_cycles, address, _mem);
-   Byte flag    = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag    = 0b11111111 & (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
 void CPU::LDA_ABSX(u32 &_cycles, Mem &_mem)
 {
-   Byte eaLow   = FetchByte(_cycles, _mem);
-   Byte eaHigh  = FetchByte(_cycles, _mem);
-   Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
-   address += X;
-   // address = address % Mem::MAX_MEM;   ///Does it make sense???
-   // (spoiler - it didn't)
-   if(eaLow + X > 0xFF)
-      --_cycles;
+   Word address = getAddr(_cycles, _mem, adressingMode::ABSX);
    A         = ReadByte(_cycles, address, _mem);
    Byte flag = 0b11111111 & (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
@@ -59,12 +43,7 @@ void CPU::LDA_ABSX(u32 &_cycles, Mem &_mem)
 
 void CPU::LDA_ABSY(u32 &_cycles, Mem &_mem)
 {
-   Byte eaLow   = FetchByte(_cycles, _mem);
-   Byte eaHigh  = FetchByte(_cycles, _mem);
-   Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
-   address += Y;
-   if(eaLow + Y > 0xFF)
-      --_cycles;
+   Word address = getAddr(_cycles, _mem, adressingMode::ABSY);
    A         = ReadByte(_cycles, address, _mem);
    Byte flag = 0b11111111 & (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
@@ -72,11 +51,8 @@ void CPU::LDA_ABSY(u32 &_cycles, Mem &_mem)
 
 void CPU::LDA_INDX(u32 &_cycles, Mem &_mem)
 {
-   Byte adress = FetchByte(_cycles, _mem) + X;
-   Byte eaLow  = ReadByte(_cycles, adress, _mem);
-   Byte eaHigh = ReadByte(_cycles, ++adress, _mem);
-   Word ea     = eaLow + (eaHigh << 8);
-   --_cycles; /// have to add this here
+   Word ea     = getAddr(_cycles, _mem, adressingMode::INDX);
+   --_cycles;
    A         = ReadByte(_cycles, ea, _mem);
    Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
    SetCustomFlagsWithRegister(Register::A, flag);
@@ -84,15 +60,7 @@ void CPU::LDA_INDX(u32 &_cycles, Mem &_mem)
 
 void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
 {
-   Word adress = FetchByte(_cycles, _mem);
-   Byte eaLow  = ReadByte(_cycles, adress, _mem);
-   Byte eaHigh = ReadByte(
-       _cycles, ++adress, _mem
-   ); /// TODO: abstract this later on, and find out why this is supposed to be
-      /// able to cross page
-   if(eaLow + Y > 0xFF)
-      --_cycles;
-   Word ea   = eaLow + (eaHigh << 8) + Y;
+   Word ea   = getAddr(_cycles, _mem, adressingMode::INDY);
    A         = ReadByte(_cycles, ea, _mem);
    Byte flag = 0b11111111 & (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);

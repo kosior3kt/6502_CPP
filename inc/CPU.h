@@ -33,8 +33,24 @@ struct CPU
          Y
       };
 
+      enum class adressingMode : uint8_t
+      {
+         ZP,
+         ZPX,
+         ZPY,
+         REL,
+         ABS,
+         ABSX,
+         ABSY,
+         IND,
+         INDX,
+         INDY, 
+      };
+
+      Word getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am);
+
       ///access to all flags at the same time
-      uint8_t getCurrentFlags();
+      uint8_t getCurrentFlags() const;
       void setCurrentFlags(const uint8_t& _flags);
 
       ///////////////////////////////////////////////// place for all the function for instruction codes and definitions 

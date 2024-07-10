@@ -289,3 +289,59 @@ void CPU::OverwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val)
    SP++;
    OverwriteByteOnStack(_cycles, _mem, highToWrite);
 }
+
+/////////////////////////////////addressing
+
+Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
+{
+
+   ///TODO: figure out cycles for these things later - all of these take at least one I guess...
+   switch(_am){
+      case adressingMode::ZP:{
+         Byte temp = FetchByte(_cycles, _mem);
+         return temp;
+      }
+      case adressingMode::ZPX:{
+         Byte temp = FetchByte(_cycles, _mem) + X;
+         return temp;
+      }
+      case adressingMode::ZPY:{
+         Byte temp = FetchByte(_cycles, _mem) + Y;
+         return temp;
+      }
+      case adressingMode::REL:{
+         return FetchByte(_cycles, _mem); ///this just return relative address
+      }
+      case adressingMode::ABS:{
+         return FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+      }
+      case adressingMode::ABSX:{
+         return (FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8) + X;
+      }
+      case adressingMode::ABSY:{ ///I will take care of crossing page later...
+         return (FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8) + Y;
+      }
+      case adressingMode::IND:{
+         return FetchWord(_cycles, _mem);
+      }
+      case adressingMode::INDX:{
+         Byte adress = FetchByte(_cycles, _mem) + X;
+         Byte eaLow  = ReadByte(_cycles, adress, _mem);
+         Byte eaHigh = ReadByte(_cycles, ++adress, _mem);
+         return eaLow + (eaHigh << 8);
+      }
+      case adressingMode::INDY:{
+         HEX_PRINT("here");
+         Word adress = FetchByte(_cycles, _mem);
+         Byte eaLow  = ReadByte(_cycles, adress, _mem);
+         Byte eaHigh = ReadByte( _cycles, ++adress, _mem); 
+         if(eaLow + Y > 0xFF)
+            --_cycles;
+         return (eaLow + (eaHigh << 8) + Y);
+      }
+      default:{
+                 std::unreachable();   ///ignore this - it actually is just newer feature than my lsp...
+         break;
+      }
+   }
+}

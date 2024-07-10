@@ -47,6 +47,7 @@ TEST_F(TEST_6502, slightlyMoreComplicatedProgramWithMemoryManipulation)
    EXPECT_FALSE((int)cpu_.Z);
    EXPECT_FALSE((int)cpu_.N);
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+   mem_.debug_dumpMemory("dupa");
 }
 
 

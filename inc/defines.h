@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+///when this is defined all the debug info's take effect
+#define DEBUG_PRINT  
+
 //glossary
 using Byte = unsigned char;
 using Word = unsigned short;
@@ -36,7 +39,6 @@ void HEX_PRINT_TO_BE_WRAPPED(T&& _first, Args&&... _rest)
    }
 }
 
-#define DEBUG_PRINT
 
 #ifdef DEBUG_PRINT
 #define HEX_PRINT(...) HEX_PRINT_TO_BE_WRAPPED(__VA_ARGS__, "|||| from function:", __FUNCTION__)

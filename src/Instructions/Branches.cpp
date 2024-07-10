@@ -1,11 +1,61 @@
 #include "CPU.h"
 
 ////////////////////////////////////// Branches
-void CPU::BCC (u32& _cycles, Mem &_mem){}
-void CPU::BCS (u32& _cycles, Mem &_mem){}
-void CPU::BEQ (u32& _cycles, Mem &_mem){}
-void CPU::BMI (u32& _cycles, Mem &_mem){}
-void CPU::BNE (u32& _cycles, Mem &_mem){}
-void CPU::BPL (u32& _cycles, Mem &_mem){}
-void CPU::BVC (u32& _cycles, Mem &_mem){}
-void CPU::BVS (u32& _cycles, Mem &_mem){}
+void CPU::BCC (u32& _cycles, Mem &_mem)
+{
+   int8_t relAddr = FetchByte(_cycles, _mem); ///this hing needs to be singed...
+   if(C != 0) return;
+   PC += relAddr;
+}
+
+void CPU::BCS (u32& _cycles, Mem &_mem)
+{
+   int8_t relAddr = FetchByte(_cycles, _mem); ///this hing needs to be singed...
+   if(C != 1) return;
+   PC += relAddr;
+}
+
+void CPU::BEQ (u32& _cycles, Mem &_mem)
+{
+    int8_t relAddr = FetchByte(_cycles, _mem); ///this hing needs to be singed...
+   if(Z != 1) return;
+   PC += relAddr;
+}
+
+void CPU::BMI (u32& _cycles, Mem &_mem)
+{
+    int8_t relAddr = FetchByte(_cycles, _mem); ///this hing needs to be singed...
+   if(N != 1) return;
+   PC += relAddr;
+}
+
+void CPU::BNE (u32& _cycles, Mem &_mem)
+{
+    int8_t relAddr = FetchByte(_cycles, _mem); ///this hing needs to be singed...
+   if(Z != 0) return;
+   PC += relAddr;
+
+}
+
+void CPU::BPL (u32& _cycles, Mem &_mem)
+{
+    int8_t relAddr = FetchByte(_cycles, _mem); ///this hing needs to be singed...
+   if(N != 0) return;
+   PC += relAddr;
+}
+
+void CPU::BVC (u32& _cycles, Mem &_mem)
+{
+    int8_t relAddr = FetchByte(_cycles, _mem); ///this hing needs to be singed...
+   if(V != 0) return;
+   PC += relAddr;
+
+}
+
+void CPU::BVS (u32& _cycles, Mem &_mem)
+{
+    int8_t relAddr = FetchByte(_cycles, _mem); ///this hing needs to be singed...
+   if(V != 1) return;
+   PC += relAddr;
+}
+

@@ -128,8 +128,6 @@ TEST_F(TEST_6502, STA_INDY_SIMPLE)
    EXPECT_TRUE(testHelper::allFlagsUnchanged(cpu_, copyCPU_));
 }
 
-//TODO: add more sophisticated tests here. Maybe start circular tests?
-
 
 ////////////////STX
 

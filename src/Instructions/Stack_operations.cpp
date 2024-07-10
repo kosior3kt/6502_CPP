@@ -1,7 +1,7 @@
 #include "CPU.h"
 
 ////////////////////////////////////// helper functions
-uint8_t CPU::getCurrentFlags()
+uint8_t CPU::getCurrentFlags() const
 {
    return   (C << 0) |
             (Z << 1) |

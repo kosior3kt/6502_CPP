@@ -1,7 +1,6 @@
 set (TEST_SOURCES
    main.cpp
    test.hpp
-   test_LDA.cpp
    test_LDX.cpp
    test_LDY.cpp
    test_INC.cpp
@@ -15,6 +14,9 @@ set (TEST_SOURCES
    test_stackOperations.cpp
    test_statusFlags.cpp
    test_logicalOperations.cpp
+   test_branches.cpp
+   test_shifts.cpp
+   test_LDA.cpp
    )
 
 set(ALTERNATIVE_SOURCES
