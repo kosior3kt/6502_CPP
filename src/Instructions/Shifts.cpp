@@ -1,6 +1,7 @@
 #include "CPU.h"
 
-#define ALMOST_OVERFLOW 0b10000000
+#define ALMOST_OVERFLOW 0b10000000  ///when overflow is to occure we need to do some flags magic
+
 ////////////////////////////////////// Shifts
 ///ASL
 void CPU::ASL_ACC(u32& _cycles, Mem &_mem)
@@ -16,10 +17,11 @@ void CPU::ASL_ACC(u32& _cycles, Mem &_mem)
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
-void CPU::ASL_ZP (u32& _cycles, Mem &_mem)
+void CPU::ASL_ZP(u32& _cycles, Mem &_mem)
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   ApplyToMemory(_cycles, zeroPageAddress, _mem, [&](const Byte& _byte) -> Byte{
+
+   Word address = getAddr(_cycles, _mem, adressingMode::ZP);
+   ApplyToMemory(_cycles, address, _mem, [&](const Byte& _byte) -> Byte{
              if(_byte >= ALMOST_OVERFLOW) {
                C = 1;
              }
@@ -31,8 +33,8 @@ void CPU::ASL_ZP (u32& _cycles, Mem &_mem)
 
 void CPU::ASL_ZPX(u32& _cycles, Mem &_mem)
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem) + X;
-   ApplyToMemory(_cycles, zeroPageAddress, _mem, [&](const Byte& _byte) -> Byte{
+   Word address = getAddr(_cycles, _mem, adressingMode::ZPX);
+   ApplyToMemory(_cycles, address, _mem, [&](const Byte& _byte) -> Byte{
              if(_byte >= ALMOST_OVERFLOW) {
                C = 1;
              }

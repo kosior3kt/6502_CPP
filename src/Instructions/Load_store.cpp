@@ -5,7 +5,7 @@ void CPU::LDA_IM(u32 &_cycles, Mem &_mem)
 {
    Byte val  = FetchByte(_cycles, _mem);
    A         = val;
-   Byte flag = 0b11111111 & (N_f | Z_f);
+   Byte flag = (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -13,7 +13,7 @@ void CPU::LDA_ZP(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ZP);
    A            = ReadByte(_cycles, address, _mem);
-   Byte flag    = 0b11111111 & (N_f | Z_f);
+   Byte flag    = (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -21,7 +21,7 @@ void CPU::LDA_ZPX(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ZPX);
    A            = ReadByte(_cycles, address, _mem);
-   Byte flag    = 0b11111111 & (N_f | Z_f);
+   Byte flag    = (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -29,7 +29,7 @@ void CPU::LDA_ABS(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ABS);
    A            = ReadByte(_cycles, address, _mem);
-   Byte flag    = 0b11111111 & (N_f | Z_f);
+   Byte flag    = (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -37,7 +37,7 @@ void CPU::LDA_ABSX(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ABSX);
    A         = ReadByte(_cycles, address, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); 
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -45,7 +45,7 @@ void CPU::LDA_ABSY(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ABSY);
    A         = ReadByte(_cycles, address, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); 
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -54,7 +54,7 @@ void CPU::LDA_INDX(u32 &_cycles, Mem &_mem)
    Word ea     = getAddr(_cycles, _mem, adressingMode::INDX);
    --_cycles;
    A         = ReadByte(_cycles, ea, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -62,7 +62,7 @@ void CPU::LDA_INDY(u32 &_cycles, Mem &_mem)
 {
    Word ea   = getAddr(_cycles, _mem, adressingMode::INDY);
    A         = ReadByte(_cycles, ea, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); 
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
 }
 
@@ -72,54 +72,41 @@ void CPU::LDX_IM(u32 &_cycles, Mem &_mem)
 {
    Byte val  = FetchByte(_cycles, _mem);
    X         = val;
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::X, flag);
 }
 
 void CPU::LDX_ZP(u32 &_cycles, Mem &_mem)
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   X                    = ReadByte(_cycles, zeroPageAddress, _mem);
-   Byte flag            = 0b11111111 & (N_f | Z_f); /// does this work(?)
+
+   Word address = getAddr(_cycles, _mem, adressingMode::ZP);
+   X                    = ReadByte(_cycles, address, _mem);
+   Byte flag            = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::X, flag);
 }
 
 void CPU::LDX_ZPY(u32 &_cycles, Mem &_mem)
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   zeroPageAddress += Y;
-   _cycles--;
-   if(zeroPageAddress > _mem.MAX_MEM)
-   {
-      /// this shuoldn't even be abble to happend, but sure I guess
-      std::cout << "instrukcja LDA ZPY przekroczyla obszar pamieci";
-      return;
-   }
-   X         = ReadByte(_cycles, zeroPageAddress, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+
+   Word address = getAddr(_cycles, _mem, adressingMode::ZPY);
+   X         = ReadByte(_cycles, address, _mem);
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::X, flag);
 }
 
 void CPU::LDX_ABS(u32 &_cycles, Mem &_mem)
 {
-   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+   Word address = getAddr(_cycles, _mem, adressingMode::ABS);
    X            = ReadByte(_cycles, address, _mem);
-   Byte flag    = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag    = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::X, flag);
 }
 
 void CPU::LDX_ABSY(u32 &_cycles, Mem &_mem)
 {
-   Byte eaLow   = FetchByte(_cycles, _mem);
-   Byte eaHigh  = FetchByte(_cycles, _mem);
-   Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
-   address += Y;
-   // address = address % Mem::MAX_MEM;   ///Does it make sense??? (it didn't
-   // =D)
-   if(eaLow + Y > 0xFF)
-      --_cycles;
+   Word address = getAddr(_cycles, _mem, adressingMode::ABSY);
    X         = ReadByte(_cycles, address, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::X, flag);
 }
 
@@ -129,172 +116,126 @@ void CPU::LDY_IM(u32 &_cycles, Mem &_mem)
 {
    Byte val  = FetchByte(_cycles, _mem);
    Y         = val;
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::Y, flag);
 }
 
 void CPU::LDY_ZP(u32 &_cycles, Mem &_mem)
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   Y                    = ReadByte(_cycles, zeroPageAddress, _mem);
-   Byte flag            = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Word address = getAddr(_cycles, _mem, adressingMode::ZP);
+   Y                    = ReadByte(_cycles, address, _mem);
+   Byte flag            = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::Y, flag);
 }
 
 void CPU::LDY_ZPX(u32 &_cycles, Mem &_mem)
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   zeroPageAddress += X;
-   _cycles--;
-   if(zeroPageAddress > _mem.MAX_MEM)
-   {
-      /// this shuoldn't even be abble to happend, but sure I guess. Maybe
-      /// abstract this if btw?
-      std::cout << "instrukcja LDA ZPY przekroczyla obszar pamieci";
-      return;
-   }
-   Y         = ReadByte(_cycles, zeroPageAddress, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Word address = getAddr(_cycles, _mem, adressingMode::ZPX);
+   Y         = ReadByte(_cycles, address, _mem);
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::Y, flag);
 }
 
 void CPU::LDY_ABS(u32 &_cycles, Mem &_mem)
 {
-   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+   Word address = getAddr(_cycles, _mem, adressingMode::ABS);
    Y            = ReadByte(_cycles, address, _mem);
-   Byte flag    = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag    = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::Y, flag);
 }
 
 void CPU::LDY_ABSX(u32 &_cycles, Mem &_mem)
 {
-   Byte eaLow   = FetchByte(_cycles, _mem);
-   Byte eaHigh  = FetchByte(_cycles, _mem);
-   Word address = eaLow + (eaHigh << 8); /// Little endian daddyy
-   address += X;
-   // address = address % Mem::MAX_MEM;   ///Does it make sense???
-   if(eaLow + X > 0xFF)
-      --_cycles;
+   Word address = getAddr(_cycles, _mem, adressingMode::ABSX);
    Y         = ReadByte(_cycles, address, _mem);
-   Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
+   Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::Y, flag);
 }
-
-
 
 
 //////////////////////////////////// STA
 
 void CPU::STA_ABS(u32 &_cycles, Mem &_mem) 
 {
-   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;   ///make this a macro?
+   Word address = getAddr(_cycles, _mem, adressingMode::ABS);
    WriteByte(_cycles, address, _mem, CPU::A);
 }
 
 void CPU::STA_ABSX(u32 &_cycles, Mem &_mem) 
 {
-   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
-   address += X;
+   Word address = getAddr(_cycles, _mem, adressingMode::ABSX);
    _cycles--;
    WriteByte(_cycles, address, _mem, CPU::A);
 }
 
 void CPU::STA_ABSY(u32 &_cycles, Mem &_mem) 
 {
-   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
-   address += Y;
+   Word address = getAddr(_cycles, _mem, adressingMode::ABSY);
    _cycles--;
    WriteByte(_cycles, address, _mem, CPU::A);
 }
 
 void CPU::STA_ZP(u32 &_cycles, Mem &_mem) 
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   WriteByte(_cycles, zeroPageAddress, _mem, CPU::A);
+   Word address = getAddr(_cycles, _mem, adressingMode::ZP);
+   WriteByte(_cycles, address, _mem, CPU::A);
    ///no flags to set (in theory)
 }
 
 void CPU::STA_ZPX(u32 &_cycles, Mem &_mem) 
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   zeroPageAddress += X;
-   _cycles--;
-   if(zeroPageAddress > _mem.MAX_MEM)
-   {
-      std::cout << "instrukcja LDA ZPX przekroczyla obszar pamieci";
-      return;
-   }
-   WriteByte(_cycles, zeroPageAddress, _mem, CPU::A);
+   Word address = getAddr(_cycles, _mem, adressingMode::ZPX);
+   WriteByte(_cycles, address, _mem, CPU::A);
 }
 
 void CPU::STA_INDX(u32 &_cycles, Mem &_mem) 
 {
-   Byte indirectionAdress = FetchByte(_cycles, _mem) + X;
-   Word address = ReadByte(_cycles, indirectionAdress, _mem) | ReadByte(_cycles, ++indirectionAdress, _mem) << 8;
-   --_cycles; /// have to add this here
+   Word address = getAddr(_cycles, _mem, adressingMode::INDX);
    WriteByte(_cycles, address, _mem, CPU::A);
 }
 
 void CPU::STA_INDY(u32 &_cycles, Mem &_mem) 
 {
-   Byte indirectionAdress = FetchByte(_cycles, _mem);
-   Word address = ReadByte(_cycles, indirectionAdress, _mem) | ReadByte(_cycles, ++indirectionAdress, _mem) << 8;
-   address += Y;
-      /// always crosses page or sth
-   --_cycles;
+   Word address = getAddr(_cycles, _mem, adressingMode::INDY);
    WriteByte(_cycles, address, _mem, CPU::A);
 }
 
 ///STX
 void CPU::STX_ZP(u32 &_cycles, Mem &_mem) 
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   WriteByte(_cycles, zeroPageAddress, _mem, CPU::X);
+   Word address = getAddr(_cycles, _mem, adressingMode::ZP);
+   WriteByte(_cycles, address, _mem, CPU::X);
    ///no flags to set (in theory)
 }
 
 void CPU::STX_ZPY(u32 &_cycles, Mem &_mem)
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   zeroPageAddress += Y;
-   _cycles--;
-   if(zeroPageAddress > _mem.MAX_MEM)
-   {
-      std::cout << "instrukcja LDA ZPX przekroczyla obszar pamieci";
-      return;
-   }
-   WriteByte(_cycles, zeroPageAddress, _mem, CPU::X);
+   Word address = getAddr(_cycles, _mem, adressingMode::ZPY);
+   WriteByte(_cycles, address, _mem, CPU::X);
 }
 
 void CPU::STX_ABS(u32 &_cycles, Mem &_mem) 
 {
-   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;   ///make this a macro?
+   Word address = getAddr(_cycles, _mem, adressingMode::ABS);
    WriteByte(_cycles, address, _mem, CPU::X);
 }
 
 ///STY
 void CPU::STY_ZP(u32 &_cycles, Mem &_mem) 
 {   
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   WriteByte(_cycles, zeroPageAddress, _mem, CPU::Y);
+   Word address = getAddr(_cycles, _mem, adressingMode::ZP);
+   WriteByte(_cycles, address, _mem, CPU::Y);
 }
 
 void CPU::STY_ZPX(u32 &_cycles, Mem &_mem) 
 {
-   Byte zeroPageAddress = FetchByte(_cycles, _mem);
-   zeroPageAddress += X;
-   _cycles--;
-   if(zeroPageAddress > _mem.MAX_MEM)
-   {
-      std::cout << "instrukcja LDA ZPX przekroczyla obszar pamieci";
-      return;
-   }
-   WriteByte(_cycles, zeroPageAddress, _mem, CPU::Y);
+   Word address = getAddr(_cycles, _mem, adressingMode::ZPX);
+   WriteByte(_cycles, address, _mem, CPU::Y);
 }
 
 void CPU::STY_ABS(u32 &_cycles, Mem &_mem) 
 {
-   Word address = FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;   ///make this a macro?
+   Word address = getAddr(_cycles, _mem, adressingMode::ABS);
    WriteByte(_cycles, address, _mem, CPU::Y);
 }
 

@@ -294,7 +294,6 @@ void CPU::OverwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val)
 
 Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
 {
-
    ///TODO: figure out cycles for these things later - all of these take at least one I guess...
    switch(_am){
       case adressingMode::ZP:{
@@ -331,7 +330,6 @@ Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
          return eaLow + (eaHigh << 8);
       }
       case adressingMode::INDY:{
-         HEX_PRINT("here");
          Word adress = FetchByte(_cycles, _mem);
          Byte eaLow  = ReadByte(_cycles, adress, _mem);
          Byte eaHigh = ReadByte( _cycles, ++adress, _mem); 
@@ -340,7 +338,7 @@ Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
          return (eaLow + (eaHigh << 8) + Y);
       }
       default:{
-                 std::unreachable();   ///ignore this - it actually is just newer feature than my lsp...
+                 std::unreachable();   ///ignore this - it actually is just newer feature than my lsp... If u have older compiler just delete it or sth
          break;
       }
    }
