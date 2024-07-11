@@ -5,6 +5,8 @@
 
 #include <functional>
 #include <map>
+#include <list>
+#include <set>
 
 struct CPU
 {
@@ -56,6 +58,7 @@ struct CPU
       ///////////////////////////////////////////////// place for all the function for instruction codes and definitions 
 #include "instructionCodes.h"
 #include "instructionDefinitions.h"
+#include "instructionDefinitions_test.h"
 
 
    private:
@@ -96,6 +99,7 @@ struct CPU
 
       /////////////////////////////////////////////////execution 
       s32 execute(u32 _cycles, Mem &_mem);
+      s32 execute_test(u32 _cycles, Mem &_mem);
 
       [[deprecated("Use execute() instead")]] 
       s32 execute_alternative(u32 _cycles, Mem &_mem);
@@ -121,12 +125,411 @@ struct CPU
          );
       }
 
+      /// wow - it actually works (im as surprised as you are)
+      template <typename Func>
+      std::function<void(u32 &, Mem &, const Byte&)> bindMemberFunction2(Func func)
+      {
+         return std::bind(
+             func, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3
+         );
+      }
+
       std::map<Byte, std::function<void(u32 &, Mem &)>> instructionMap;
+      std::map<std::set<Byte>, std::function<void(u32 &, Mem &, const Byte&)>> instructionMap_test;
 
    public:
       explicit CPU()
       {
-         ///////Do I even want to do this here - this should be more of a static thing? - Lets say it's fine for now
+
+         ///////test
+         std::set<Byte> opcodes_LDA = {
+            INS_LDA_IM  ,
+            INS_LDA_ZP  ,
+            INS_LDA_ABS ,
+            INS_LDA_ZPX ,
+            INS_LDA_ABSY,
+            INS_LDA_ABSX,
+            INS_LDA_INDX,
+            INS_LDA_INDY
+         };
+
+         std::set<Byte> opcodes_LDX = {
+            INS_LDX_IM  ,
+            INS_LDX_ZP  ,
+            INS_LDX_ZPY ,
+            INS_LDX_ABS ,
+            INS_LDX_ABSY
+         };
+
+         std::set<Byte> opcodes_LDY = {
+            INS_LDY_IM  ,
+            INS_LDY_ZP  ,
+            INS_LDY_ZPX ,
+            INS_LDY_ABS ,
+            INS_LDY_ABSX
+         };
+
+
+std::set<Byte> opcodes_STA = {
+            INS_STA_ZP  ,
+            INS_STA_ZPX ,
+            INS_STA_ABS ,
+            INS_STA_ABSX,
+            INS_STA_ABSY,
+            INS_STA_INDX,
+            INS_STA_INDY
+         };
+
+
+std::set<Byte> opcodes_STX = {
+            INS_STX_ZP ,
+            INS_STX_ZPY,
+            INS_STX_ABS
+         };
+                       
+                       
+std::set<Byte> opcodes_STY = {
+            INS_STY_ZP ,
+            INS_STY_ZPX,
+            INS_STY_ABS
+         };
+
+
+
+std::set<Byte> opcodes_INC = {
+            INS_INC_ZP  ,
+            INS_INC_ZPX ,
+            INS_INC_ABS ,
+            INS_INC_ABSX
+};
+                        
+std::set<Byte> opcodes_INX = {
+            INS_INX
+};
+
+std::set<Byte> opcodes_INY = {
+            INS_INY     
+};
+                        
+std::set<Byte> opcodes_DEC = {
+            INS_DEC_ZP  ,
+            INS_DEC_ZPX ,
+            INS_DEC_ABS ,
+            INS_DEC_ABSX 
+};
+
+std::set<Byte> opcodes_DEY = {
+            INS_DEX
+};
+
+std::set<Byte> opcodes_DEX = {
+            INS_DEY
+};
+
+std::set<Byte> opcodes_JSR = {
+            INS_JSR    
+};
+
+std::set<Byte> opcodes_RTS = {
+            INS_RTS    
+};
+
+std::set<Byte> opcodes_JMP = {
+            INS_JMP_ABS,
+            INS_JMP_IND
+};
+
+std::set<Byte> opcodes_TSX = {
+            INS_TSX
+};
+std::set<Byte> opcodes_TXS = {
+            INS_TXS
+};
+std::set<Byte> opcodes_PHA = {
+            INS_PHA
+};
+std::set<Byte> opcodes_PHP = {
+            INS_PHP
+};
+std::set<Byte> opcodes_PLA = {
+            INS_PLA
+};
+std::set<Byte> opcodes_PLP = {
+            INS_PLP
+};
+                   
+std::set<Byte> opcodes_TAX = {
+            INS_TAX
+};
+std::set<Byte> opcodes_TAY = {
+            INS_TAY
+};
+std::set<Byte> opcodes_TXA = {
+            INS_TXA
+};
+std::set<Byte> opcodes_TYA = {
+            INS_TYA
+};
+
+std::set<Byte> opcodes_AND = {
+            INS_AND_IM  ,
+            INS_AND_ZP  ,
+            INS_AND_ZPX ,
+            INS_AND_ABS ,
+            INS_AND_ABSX,
+            INS_AND_ABSY,
+            INS_AND_INDX,
+            INS_AND_INDY
+};
+                        
+                        
+std::set<Byte> opcodes_EOR = {
+            INS_EOR_IM  ,
+            INS_EOR_ZP  ,
+            INS_EOR_ZPX ,
+            INS_EOR_ABS ,
+            INS_EOR_ABSX,
+            INS_EOR_ABSY,
+            INS_EOR_INDX,
+            INS_EOR_INDY
+};
+                        
+                        
+std::set<Byte> opcodes_ORA = {
+            INS_ORA_IM  ,
+            INS_ORA_ZP  ,
+            INS_ORA_ZPX ,
+            INS_ORA_ABS ,
+            INS_ORA_ABSX,
+            INS_ORA_ABSY,
+            INS_ORA_INDX,
+            INS_ORA_INDY
+};
+
+std::set<Byte> opcodes_BIT = {
+            INS_BIT_ZP ,
+            INS_BIT_ABS
+};
+
+std::set<Byte> opcodes_BCC = {
+            INS_BCC
+};
+std::set<Byte> opcodes_BCS = {
+            INS_BCS
+};
+std::set<Byte> opcodes_BEQ = {
+            INS_BEQ
+};
+std::set<Byte> opcodes_BMI = {
+            INS_BMI
+};
+std::set<Byte> opcodes_BNE = {
+            INS_BNE
+};
+std::set<Byte> opcodes_BPL = {
+            INS_BPL
+};
+std::set<Byte> opcodes_BVC = {
+            INS_BVC
+};
+std::set<Byte> opcodes_BVS = {
+            INS_BVS
+};
+
+std::set<Byte> opcodes_ASL = {
+            INS_ASL_ACC   ,
+            INS_ASL_ZP    ,
+            INS_ASL_ZPX   ,
+            INS_ASL_ABS   ,
+            INS_ASL_ABSX  
+};              
+                          
+std::set<Byte> opcodes_LSR = {
+            INS_LSR_ACC   ,
+            INS_LSR_ZP    ,
+            INS_LSR_ZPX   ,
+            INS_LSR_ABS   ,
+            INS_LSR_ABSX  
+};
+                          
+                          
+std::set<Byte> opcodes_ROL = {
+            INS_ROL_ACC   ,
+            INS_ROL_ZP    ,
+            INS_ROL_ZPX   ,
+            INS_ROL_ABS   ,
+            INS_ROL_ABSX  
+};
+                          
+std::set<Byte> opcodes_ROR = {
+            INS_ROR_ACC   ,
+            INS_ROR_ZP    ,
+            INS_ROR_ZPX   ,
+            INS_ROR_ABS   ,
+            INS_ROR_ABSX  
+}; 
+                          
+std::set<Byte> opcodes_ADC = {
+            INS_ADC_IM    ,
+            INS_ADC_ZP    ,
+            INS_ADC_ZPX   ,
+            INS_ADC_ABS   ,
+            INS_ADC_ABSX  ,
+            INS_ADC_ABSY  ,
+            INS_ADC_INDX  ,
+            INS_ADC_INDY  
+}; 
+                          
+std::set<Byte> opcodes_SBC = {
+            INS_SBC_IM    ,
+            INS_SBC_ZP    ,
+            INS_SBC_ZPX   ,
+            INS_SBC_ABS   ,
+            INS_SBC_ABSX  ,
+            INS_SBC_ABSY  ,
+            INS_SBC_INDX  ,
+            INS_SBC_INDY  
+}; 
+                          
+std::set<Byte> opcodes_CMP = {
+            INS_CMP_IM    ,
+            INS_CMP_ZP    ,
+            INS_CMP_ZPX   ,
+            INS_CMP_ABS   ,
+            INS_CMP_ABSX  ,
+            INS_CMP_ABSY  ,
+            INS_CMP_INDX  ,
+            INS_CMP_INDY  
+}; 
+                          
+std::set<Byte> opcodes_CPX = {
+            INS_CPX_IM    ,
+            INS_CPX_ZP    ,
+            INS_CPX_ABS   
+}; 
+                          
+std::set<Byte> opcodes_CPY = {
+            INS_CPY_IM    ,
+            INS_CPY_ZP    ,
+            INS_CPY_ABS   
+}; 
+
+std::set<Byte> opcodes_CLC  = {
+            INS_CLC       
+};
+
+std::set<Byte> opcodes_CLD  = {
+            INS_CLD       
+};
+
+std::set<Byte> opcodes_CLI  = {
+            INS_CLI       
+};
+
+std::set<Byte> opcodes_CLV  = {
+            INS_CLV       
+};
+
+std::set<Byte> opcodes_SEC = {
+            INS_SEC                
+};
+
+std::set<Byte> opcodes_SED = {
+            INS_SED                
+};
+
+std::set<Byte> opcodes_SEI = {
+            INS_SEI                
+};
+                                   
+std::set<Byte> opcodes_BRK = {
+            INS_BRK                
+};
+
+std::set<Byte> opcodes_NOP = {
+            INS_NOP       
+};
+
+std::set<Byte> opcodes_RTI = {
+            INS_RTI                
+};
+
+///TODO: now the same thing for the rest of functions =3
+
+//instructionMap_test[bindMemberFunction(&CPU::LDA_TEST)] = opcodes_LDA;
+instructionMap_test[opcodes_LDA] = bindMemberFunction2(&CPU::LDA_TEST);
+instructionMap_test[opcodes_LDX] = bindMemberFunction2(&CPU::LDX_TEST);
+instructionMap_test[opcodes_LDY] = bindMemberFunction2(&CPU::LDY_TEST);
+
+instructionMap_test[opcodes_STA] = bindMemberFunction2(&CPU::STA_TEST);
+instructionMap_test[opcodes_STX] = bindMemberFunction2(&CPU::STX_TEST);
+instructionMap_test[opcodes_STY] = bindMemberFunction2(&CPU::STY_TEST);
+
+instructionMap_test[opcodes_INC] = bindMemberFunction2(&CPU::INC_TEST);
+instructionMap_test[opcodes_INX] = bindMemberFunction2(&CPU::INX_TEST);
+instructionMap_test[opcodes_INY] = bindMemberFunction2(&CPU::INY_TEST);
+
+instructionMap_test[opcodes_DEC] = bindMemberFunction2(&CPU::DEC_TEST);
+instructionMap_test[opcodes_DEX] = bindMemberFunction2(&CPU::DEX_TEST);
+instructionMap_test[opcodes_DEY] = bindMemberFunction2(&CPU::DEY_TEST);
+
+instructionMap_test[opcodes_JSR] = bindMemberFunction2(&CPU::JSR_TEST);
+instructionMap_test[opcodes_RTS] = bindMemberFunction2(&CPU::RTS_TEST);
+instructionMap_test[opcodes_JMP] = bindMemberFunction2(&CPU::JMP_TEST);
+
+instructionMap_test[opcodes_TSX] = bindMemberFunction2(&CPU::TSX_TEST);
+instructionMap_test[opcodes_TXS] = bindMemberFunction2(&CPU::TXS_TEST);
+instructionMap_test[opcodes_PHA] = bindMemberFunction2(&CPU::PHA_TEST);
+instructionMap_test[opcodes_PHP] = bindMemberFunction2(&CPU::PHP_TEST);
+instructionMap_test[opcodes_PLA] = bindMemberFunction2(&CPU::PLA_TEST);
+instructionMap_test[opcodes_PLP] = bindMemberFunction2(&CPU::PLP_TEST);
+
+instructionMap_test[opcodes_TAX] = bindMemberFunction2(&CPU::TAX_TEST);
+instructionMap_test[opcodes_TAY] = bindMemberFunction2(&CPU::TAY_TEST);
+instructionMap_test[opcodes_TXA] = bindMemberFunction2(&CPU::TXA_TEST);
+instructionMap_test[opcodes_TYA] = bindMemberFunction2(&CPU::TYA_TEST);
+
+instructionMap_test[opcodes_AND] = bindMemberFunction2(&CPU::AND_TEST);
+instructionMap_test[opcodes_EOR] = bindMemberFunction2(&CPU::EOR_TEST);
+instructionMap_test[opcodes_ORA] = bindMemberFunction2(&CPU::ORA_TEST);
+instructionMap_test[opcodes_BIT] = bindMemberFunction2(&CPU::BIT_TEST);
+
+instructionMap_test[opcodes_BCC] = bindMemberFunction2(&CPU::BCC_TEST);
+instructionMap_test[opcodes_BCS] = bindMemberFunction2(&CPU::BCS_TEST);
+instructionMap_test[opcodes_BEQ] = bindMemberFunction2(&CPU::BEQ_TEST);
+instructionMap_test[opcodes_BMI] = bindMemberFunction2(&CPU::BMI_TEST);
+instructionMap_test[opcodes_BNE] = bindMemberFunction2(&CPU::BNE_TEST);
+instructionMap_test[opcodes_BPL] = bindMemberFunction2(&CPU::BPL_TEST);
+instructionMap_test[opcodes_BVC] = bindMemberFunction2(&CPU::BVC_TEST);
+instructionMap_test[opcodes_BVS] = bindMemberFunction2(&CPU::BVS_TEST);
+
+instructionMap_test[opcodes_ASL] = bindMemberFunction2(&CPU::ASL_TEST);
+instructionMap_test[opcodes_LSR] = bindMemberFunction2(&CPU::LSR_TEST);
+instructionMap_test[opcodes_ROL] = bindMemberFunction2(&CPU::ROR_TEST);
+instructionMap_test[opcodes_ROR] = bindMemberFunction2(&CPU::ROL_TEST);
+
+instructionMap_test[opcodes_ADC] = bindMemberFunction2(&CPU::ADC_TEST);
+instructionMap_test[opcodes_SBC] = bindMemberFunction2(&CPU::SBC_TEST);
+instructionMap_test[opcodes_CMP] = bindMemberFunction2(&CPU::CMP_TEST);
+instructionMap_test[opcodes_CPX] = bindMemberFunction2(&CPU::CPX_TEST);
+instructionMap_test[opcodes_CPY] = bindMemberFunction2(&CPU::CPY_TEST);
+
+instructionMap_test[opcodes_CLC] = bindMemberFunction2(&CPU::CLC_TEST);
+instructionMap_test[opcodes_CLD] = bindMemberFunction2(&CPU::CLD_TEST);
+instructionMap_test[opcodes_CLI] = bindMemberFunction2(&CPU::CLI_TEST);
+instructionMap_test[opcodes_CLV] = bindMemberFunction2(&CPU::CLV_TEST);
+instructionMap_test[opcodes_SEC] = bindMemberFunction2(&CPU::SEC_TEST);
+instructionMap_test[opcodes_SED] = bindMemberFunction2(&CPU::SED_TEST);
+instructionMap_test[opcodes_SEI] = bindMemberFunction2(&CPU::SEI_TEST);
+
+instructionMap_test[opcodes_BRK] = bindMemberFunction2(&CPU::BRK_TEST);
+instructionMap_test[opcodes_NOP] = bindMemberFunction2(&CPU::NOP_TEST);
+instructionMap_test[opcodes_RTI] = bindMemberFunction2(&CPU::RTI_TEST);
+                                                                                                            
+///////Do I even want to do this here - this should be more of a static thing? - Lets say it's fine for now
+
+
+
 
 ////////////////////////////////////// Load/Store
          //// LDA
@@ -355,7 +758,6 @@ struct CPU
 
          /// NULL ///figure out later how to make it not hang my program =3
          // instructionMap[INS_NULL] = bindMemberFunction(&CPU::NULL_INS);
-
       }
 };
 

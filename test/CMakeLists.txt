@@ -19,15 +19,18 @@ set (TEST_SOURCES
    test_shifts.cpp
    )
 
+
 set(ALTERNATIVE_SOURCES
    test.hpp
-   alternative_solution.cpp
+   test_LDA.cpp
+   test_LDX.cpp
+   test_LDY.cpp
    main.cpp
    )
 
 add_executable(test
-   ${TEST_SOURCES}
-   #${ALTERNATIVE_SOURCES}
+   #${TEST_SOURCES}
+   ${ALTERNATIVE_SOURCES}
    )
 
 target_include_directories( test

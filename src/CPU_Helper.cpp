@@ -9,7 +9,8 @@ void CPU::Reset(Mem &_mem, const Word& _PC_start)  ///_PC_start is by deafult 0x
    _mem.Initialise();
 }
 
-[[nodiscard]] Byte CPU::FetchByte(u32 &_cycles, const Mem &_mem)
+[[nodiscard]] 
+Byte CPU::FetchByte(u32 &_cycles, const Mem &_mem)
 {
    Byte data = _mem[PC];
    ++PC;
@@ -17,7 +18,8 @@ void CPU::Reset(Mem &_mem, const Word& _PC_start)  ///_PC_start is by deafult 0x
    return data;
 }
 
-[[nodiscard]] Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
+[[nodiscard]] 
+Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
 {
    // 6502 is little endian - so the first is the least significant byte
    auto dataLow = _mem[PC];
@@ -30,14 +32,16 @@ void CPU::Reset(Mem &_mem, const Word& _PC_start)  ///_PC_start is by deafult 0x
    return data;
 }
 
-[[nodiscard]] Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+[[nodiscard]] 
+Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    --_cycles;
    return data;
 }
 
-[[nodiscard]] Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
+[[nodiscard]] 
+Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    --_cycles;
@@ -183,7 +187,6 @@ void CPU::SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
       val = Y;
       break;
    }
-
    if(_flags & C_f)
    {
       C = 1;
@@ -235,17 +238,19 @@ void CPU::pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val) ///those sh
    //--_cycles;
 }
 
-[[nodiscard]]Byte CPU::popByteFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
+[[nodiscard]]
+Byte CPU::popByteFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
 {
    ++SP;
    auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
    _cycles--;
-   if(SP > 255) return 0; ///and cry in the darkness - alone
+   if(SP > 255) return 0; ///and cry in the darkness. Alone
    _cycles--;
    return _mem.debug_get(addr);
 }
 
-[[nodiscard]]Word CPU::popWordFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believ
+[[nodiscard]]
+Word CPU::popWordFromStack(u32& _cycles, Mem& _mem) ///those should use one more cycle i believe
 {
     const Byte retAddrHigh = popByteFromStack(_cycles, _mem);
     const Byte retAddrLow = popByteFromStack(_cycles, _mem);

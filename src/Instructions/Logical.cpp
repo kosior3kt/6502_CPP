@@ -1,5 +1,29 @@
 #include "CPU.h"
 
+
+void CPU::AND_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::EOR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::ORA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::BIT_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+
+
+
 ////////////////////////////////////// Logical
 ///AND
 void CPU::AND_IM (u32& _cycles, Mem &_mem)

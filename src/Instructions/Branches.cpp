@@ -1,5 +1,48 @@
 #include "CPU.h"
 
+
+
+void CPU::BCC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::BCS_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::BEQ_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::BMI_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::BNE_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::BPL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::BVC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::BVS_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+
 ////////////////////////////////////// Branches
 void CPU::BCC (u32& _cycles, Mem &_mem)
 {

@@ -1,5 +1,34 @@
 #include "CPU.h"
 
+
+
+void CPU::ADC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::SBC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::CMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::CPX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::CPY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+
+
 ////////////////////////////////////// Arithmetic
 ///ADC
 void CPU::ADC_IM (u32& _cycles, Mem &_mem){}

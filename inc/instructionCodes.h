@@ -153,73 +153,73 @@ static constexpr Byte INS_LSR_ABS   = 0x4E;
 static constexpr Byte INS_LSR_ABSX  = 0x5E;
 
 ///ROL
-static constexpr Byte INS_ROL_ACC  = 0x2A;
-static constexpr Byte INS_ROL_ZP   = 0x26;
-static constexpr Byte INS_ROL_ZPX  = 0x36;
-static constexpr Byte INS_ROL_ABS  = 0x2E;
-static constexpr Byte INS_ROL_ABSX = 0x3E;
+static constexpr Byte INS_ROL_ACC   = 0x2A;
+static constexpr Byte INS_ROL_ZP    = 0x26;
+static constexpr Byte INS_ROL_ZPX   = 0x36;
+static constexpr Byte INS_ROL_ABS   = 0x2E;
+static constexpr Byte INS_ROL_ABSX  = 0x3E;
 
 ///ROR
-static constexpr Byte INS_ROR_ACC  = 0x6A;
-static constexpr Byte INS_ROR_ZP   = 0x66;
-static constexpr Byte INS_ROR_ZPX  = 0x76;
-static constexpr Byte INS_ROR_ABS  = 0x6E;
-static constexpr Byte INS_ROR_ABSX = 0x7E;
+static constexpr Byte INS_ROR_ACC   = 0x6A;
+static constexpr Byte INS_ROR_ZP    = 0x66;
+static constexpr Byte INS_ROR_ZPX   = 0x76;
+static constexpr Byte INS_ROR_ABS   = 0x6E;
+static constexpr Byte INS_ROR_ABSX  = 0x7E;
 
 ////////////////////////////////////// Arithmetic
 ///ADC
-static constexpr Byte INS_ADC_IM   = 0x69;
-static constexpr Byte INS_ADC_ZP   = 0x65;
-static constexpr Byte INS_ADC_ZPX  = 0x75;
-static constexpr Byte INS_ADC_ABS  = 0x6D;
-static constexpr Byte INS_ADC_ABSX = 0x7D;
-static constexpr Byte INS_ADC_ABSY = 0x79;
-static constexpr Byte INS_ADC_INDX = 0x61;
-static constexpr Byte INS_ADC_INDY = 0x71;
+static constexpr Byte INS_ADC_IM    = 0x69;
+static constexpr Byte INS_ADC_ZP    = 0x65;
+static constexpr Byte INS_ADC_ZPX   = 0x75;
+static constexpr Byte INS_ADC_ABS   = 0x6D;
+static constexpr Byte INS_ADC_ABSX  = 0x7D;
+static constexpr Byte INS_ADC_ABSY  = 0x79;
+static constexpr Byte INS_ADC_INDX  = 0x61;
+static constexpr Byte INS_ADC_INDY  = 0x71;
 
 /// SBC
-static constexpr Byte INS_SBC_IM   = 0xE9;
-static constexpr Byte INS_SBC_ZP   = 0xE5;
-static constexpr Byte INS_SBC_ZPX  = 0xF5;
-static constexpr Byte INS_SBC_ABS  = 0xED;
-static constexpr Byte INS_SBC_ABSX = 0xFD;
-static constexpr Byte INS_SBC_ABSY = 0xF9;
-static constexpr Byte INS_SBC_INDX = 0xE1;
-static constexpr Byte INS_SBC_INDY = 0xF1;
+static constexpr Byte INS_SBC_IM    = 0xE9;
+static constexpr Byte INS_SBC_ZP    = 0xE5;
+static constexpr Byte INS_SBC_ZPX   = 0xF5;
+static constexpr Byte INS_SBC_ABS   = 0xED;
+static constexpr Byte INS_SBC_ABSX  = 0xFD;
+static constexpr Byte INS_SBC_ABSY  = 0xF9;
+static constexpr Byte INS_SBC_INDX  = 0xE1;
+static constexpr Byte INS_SBC_INDY  = 0xF1;
 
 /// CMP
-static constexpr Byte INS_CMP_IM   = 0xC9;
-static constexpr Byte INS_CMP_ZP   = 0xC5;
-static constexpr Byte INS_CMP_ZPX  = 0xD5;
-static constexpr Byte INS_CMP_ABS  = 0xCD;
-static constexpr Byte INS_CMP_ABSX = 0xDD;
-static constexpr Byte INS_CMP_ABSY = 0xD9;
-static constexpr Byte INS_CMP_INDX = 0xC1;
-static constexpr Byte INS_CMP_INDY = 0xD1;
+static constexpr Byte INS_CMP_IM    = 0xC9;
+static constexpr Byte INS_CMP_ZP    = 0xC5;
+static constexpr Byte INS_CMP_ZPX   = 0xD5;
+static constexpr Byte INS_CMP_ABS   = 0xCD;
+static constexpr Byte INS_CMP_ABSX  = 0xDD;
+static constexpr Byte INS_CMP_ABSY  = 0xD9;
+static constexpr Byte INS_CMP_INDX  = 0xC1;
+static constexpr Byte INS_CMP_INDY  = 0xD1;
 
 ///CPX
-static constexpr Byte INS_CPX_IM   = 0xE0;
-static constexpr Byte INS_CPX_ZP   = 0xE4;
-static constexpr Byte INS_CPX_ABS  = 0xEC;
+static constexpr Byte INS_CPX_IM    = 0xE0;
+static constexpr Byte INS_CPX_ZP    = 0xE4;
+static constexpr Byte INS_CPX_ABS   = 0xEC;
 
 ///CPY
-static constexpr Byte INS_CPY_IM   = 0xC0;
-static constexpr Byte INS_CPY_ZP   = 0xC4;
-static constexpr Byte INS_CPY_ABS  = 0xCC;
+static constexpr Byte INS_CPY_IM    = 0xC0;
+static constexpr Byte INS_CPY_ZP    = 0xC4;
+static constexpr Byte INS_CPY_ABS   = 0xCC;
 
 ////////////////////////////////////// Status Flag Changes
-static constexpr Byte INS_CLC      = 0x18;
-static constexpr Byte INS_CLD      = 0xD8;
-static constexpr Byte INS_CLI      = 0x58;
-static constexpr Byte INS_CLV      = 0xB8;
-static constexpr Byte INS_SEC      = 0x38;
-static constexpr Byte INS_SED      = 0xF8;
-static constexpr Byte INS_SEI      = 0x78;
+static constexpr Byte INS_CLC       = 0x18;
+static constexpr Byte INS_CLD       = 0xD8;
+static constexpr Byte INS_CLI       = 0x58;
+static constexpr Byte INS_CLV       = 0xB8;
+static constexpr Byte INS_SEC       = 0x38;
+static constexpr Byte INS_SED       = 0xF8;
+static constexpr Byte INS_SEI       = 0x78;
 
 ////////////////////////////////////// System Functions
-static constexpr Byte INS_BRK      = 0x00;   ///TODO: change this later on into 0x00. For now I prefer to have a 0x00 as an idle instruction
-static constexpr Byte INS_NOP      = 0xEA;
-static constexpr Byte INS_RTI      = 0x60;
+static constexpr Byte INS_BRK       = 0x00;   ///TODO: change this later on into 0x00. For now I prefer to have a 0x00 as an idle instruction
+static constexpr Byte INS_NOP       = 0xEA;
+static constexpr Byte INS_RTI       = 0x60;
 
 
 #endif

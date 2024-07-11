@@ -1,5 +1,151 @@
 #include "CPU.h"
 
+//////////////////////////////////// test
+void CPU::LDA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+   bool immediete = false;
+   Word address{};
+
+   switch(_opCode){
+      case CPU::INS_LDA_IM :{
+         Byte val  = FetchByte(_cycles, _mem);
+         A         = val;
+         immediete = true;
+         break;
+      }
+      case CPU::INS_LDA_ZP :{
+         address = getAddr(_cycles, _mem, adressingMode::ZP);
+         break;
+      }
+      case CPU::INS_LDA_ZPX :{
+         address = getAddr(_cycles, _mem, adressingMode::ZPX);
+         break;
+      }
+      case CPU::INS_LDA_ABS :{
+         address = getAddr(_cycles, _mem, adressingMode::ABS);
+         break;
+      }
+      case CPU::INS_LDA_ABSX :{
+         address = getAddr(_cycles, _mem, adressingMode::ABSX);
+         break;
+      }
+      case CPU::INS_LDA_ABSY :{
+         address = getAddr(_cycles, _mem, adressingMode::ABSY);
+         break;
+      }
+      case CPU::INS_LDA_INDX :{
+         address = getAddr(_cycles, _mem, adressingMode::INDX);
+         --_cycles;
+         break;
+      }
+      case CPU::INS_LDA_INDY :{
+         address = getAddr(_cycles, _mem, adressingMode::INDY);
+         break;
+      }
+   }
+
+   if(!immediete)
+   {
+      A  = ReadByte(_cycles, address, _mem);
+   }
+   Byte flag = (N_f | Z_f);
+   SetCustomFlagsWithRegister(Register::A, flag);
+}
+
+
+void CPU::LDX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+   bool immediete = false;
+   Word address{};
+
+   switch(_opCode){
+      case CPU::INS_LDX_IM :{
+         Byte val  = FetchByte(_cycles, _mem);
+         A         = val;
+         immediete = true;
+         break;
+      }
+      case CPU::INS_LDX_ZP :{
+         address = getAddr(_cycles, _mem, adressingMode::ZP);
+         break;
+      }
+      case CPU::INS_LDX_ZPY :{
+         address = getAddr(_cycles, _mem, adressingMode::ZPY);
+         break;
+      }
+      case CPU::INS_LDX_ABS :{
+         address = getAddr(_cycles, _mem, adressingMode::ABS);
+         break;
+      }
+      case CPU::INS_LDX_ABSY :{
+         address = getAddr(_cycles, _mem, adressingMode::ABSY);
+         break;
+      }
+   }
+
+   if(!immediete)
+   {
+      X  = ReadByte(_cycles, address, _mem);
+   }
+   Byte flag = (N_f | Z_f);
+   SetCustomFlagsWithRegister(Register::X, flag);
+}
+
+void CPU::LDY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+   bool immediete = false;
+   Word address{};
+
+   switch(_opCode){
+      case CPU::INS_LDY_IM :{
+         Byte val  = FetchByte(_cycles, _mem);
+         A         = val;
+         immediete = true;
+         break;
+      }
+      case CPU::INS_LDY_ZP :{
+         address = getAddr(_cycles, _mem, adressingMode::ZP);
+         break;
+      }
+      case CPU::INS_LDY_ZPX :{
+         address = getAddr(_cycles, _mem, adressingMode::ZPX);
+         break;
+      }
+      case CPU::INS_LDY_ABS :{
+         address = getAddr(_cycles, _mem, adressingMode::ABS);
+         break;
+      }
+      case CPU::INS_LDY_ABSX :{
+         address = getAddr(_cycles, _mem, adressingMode::ABSX);
+         break;
+      }
+   }
+
+   if(!immediete)
+   {
+      Y  = ReadByte(_cycles, address, _mem);
+   }
+   Byte flag = (N_f | Z_f);
+   SetCustomFlagsWithRegister(Register::Y, flag);
+}
+
+
+void CPU::STA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::STY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::STX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+
 //////////////////////////////////// LDA
 void CPU::LDA_IM(u32 &_cycles, Mem &_mem)
 {

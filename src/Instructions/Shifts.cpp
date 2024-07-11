@@ -3,6 +3,30 @@
 #define ALMOST_OVERFLOW 0b10000000  ///when overflow is to occure we need to do some flags magic
 #define BINARY_ONE      0b00000001
 
+
+
+
+void CPU::ASL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::LSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::ROL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::ROR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+
 ////////////////////////////////////// Shifts
 ///ASL
 void CPU::ASL_ACC(u32& _cycles, Mem &_mem)

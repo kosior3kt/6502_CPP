@@ -1,6 +1,27 @@
 #include "CPU.h"
 
 
+void CPU::TYA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::TAY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::TXA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::TAX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+
 ////////////////////////////////////// Register Transfers
 void CPU::TAX(u32& _cycles, Mem &_mem)
 {

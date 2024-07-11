@@ -20,6 +20,27 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    return _cycles;
 }
 
+s32 CPU::execute_test(u32 _cycles, Mem &_mem)
+{
+    while(_cycles > 0)
+   {
+      Byte inst         = FetchByte(_cycles, _mem);
+      bool found = false;
+      for(auto x : instructionMap_test)
+      {
+         if(x.first.find(inst) == x.first.end()) continue;
+         x.second(_cycles, _mem, inst);
+         found = true;
+      }
+      if(!found)[[unlikely]]
+      {
+         printf("Not handled %d\n", inst);
+         break;
+      }
+   }
+   return _cycles;
+}
+
 s32 CPU::execute_alternative(
     u32 _cycles, Mem &_mem
 ) /// from now on I will use mainly CPU::execute and not support this one. Feel

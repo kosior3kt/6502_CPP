@@ -1,6 +1,19 @@
 #include "CPU.h"
 
+void CPU::JSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
 
+}
+
+void CPU::RTS_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
+
+void CPU::JMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+
+}
 
 /////////////////////////////////////// JSR
 void CPU::JSR(u32 &_cycles, Mem &_mem)
