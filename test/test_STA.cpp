@@ -136,7 +136,7 @@ TEST_F(TEST_6502, STX_ZP_SIMPLE)
    mem_.debug_set(0xFFFC, CPU::INS_STX_ZP);
    mem_.debug_set(0xFFFD, 0x42);
    cpu_.X = 0x69;
-   auto cyclesLeft = cpu_.execute(3, mem_);
+   auto cyclesLeft = cpu_.execute(4, mem_);
 
    Byte res = mem_.debug_get(0x0042);
 

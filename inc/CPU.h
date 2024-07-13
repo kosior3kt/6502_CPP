@@ -219,11 +219,11 @@ std::set<Byte> opcodes_DEC = {
 };
 
 std::set<Byte> opcodes_DEY = {
-            INS_DEX
+            INS_DEY
 };
 
 std::set<Byte> opcodes_DEX = {
-            INS_DEY
+            INS_DEX
 };
 
 std::set<Byte> opcodes_JSR = {
@@ -267,6 +267,7 @@ std::set<Byte> opcodes_TAY = {
 std::set<Byte> opcodes_TXA = {
             INS_TXA
 };
+
 std::set<Byte> opcodes_TYA = {
             INS_TYA
 };
@@ -485,8 +486,8 @@ instructionMap_test[opcodes_PLA] = bindMemberFunction2(&CPU::PLA_TEST);
 instructionMap_test[opcodes_PLP] = bindMemberFunction2(&CPU::PLP_TEST);
 
 instructionMap_test[opcodes_TAX] = bindMemberFunction2(&CPU::TAX_TEST);
-instructionMap_test[opcodes_TAY] = bindMemberFunction2(&CPU::TAY_TEST);
 instructionMap_test[opcodes_TXA] = bindMemberFunction2(&CPU::TXA_TEST);
+instructionMap_test[opcodes_TAY] = bindMemberFunction2(&CPU::TAY_TEST);
 instructionMap_test[opcodes_TYA] = bindMemberFunction2(&CPU::TYA_TEST);
 
 instructionMap_test[opcodes_AND] = bindMemberFunction2(&CPU::AND_TEST);

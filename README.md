@@ -22,3 +22,4 @@ List of what works (instruction wise):
 
 Well, just do you know, for now all the addressing things will just have seperate functions. I realise it's stupid, but for now it will stay.
 I kinda believe it will be usefull in the future when I will make a lib out of this thing and connect dedicated asm to it
+

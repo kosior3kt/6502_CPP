@@ -1,5 +1,6 @@
 #include "CPU.h"
 
+#ifndef ALTERNATIVE
 s32 CPU::execute(u32 _cycles, Mem &_mem)
 {
    while(_cycles > 0)
@@ -19,8 +20,9 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    }
    return _cycles;
 }
+#else
 
-s32 CPU::execute_test(u32 _cycles, Mem &_mem)
+s32 CPU::execute(u32 _cycles, Mem &_mem)
 {
     while(_cycles > 0)
    {
@@ -40,6 +42,8 @@ s32 CPU::execute_test(u32 _cycles, Mem &_mem)
    }
    return _cycles;
 }
+
+#endif
 
 s32 CPU::execute_alternative(
     u32 _cycles, Mem &_mem

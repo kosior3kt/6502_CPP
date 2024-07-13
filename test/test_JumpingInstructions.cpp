@@ -73,5 +73,6 @@ TEST_F(TEST_6502, JMP_IND_andOtherTrashAsWell)
    EXPECT_FALSE((int)cpu_.Z);
    EXPECT_FALSE((int)cpu_.N);
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+
 }
 

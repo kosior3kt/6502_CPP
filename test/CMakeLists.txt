@@ -20,18 +20,34 @@ set (TEST_SOURCES
    )
 
 
-set(ALTERNATIVE_SOURCES
+set(ALTERNATIVE_TEST_SOURCES
    test.hpp
    test_LDA.cpp
    test_LDX.cpp
    test_LDY.cpp
+   test_branches.cpp
+   test_stackOperations.cpp
+   test_transfer.cpp
+   test_MultipleInstructions.cpp
+   test_STA.cpp
+   test_DEC.cpp
    main.cpp
    )
 
-add_executable(test
-   #${TEST_SOURCES}
-   ${ALTERNATIVE_SOURCES}
-   )
+
+if(BUILD_TEST)
+   add_executable(test
+      ${ALTERNATIVE_TEST_SOURCES}
+      )
+   add_compile_definitions(ALTERNATIVE)
+
+else()
+   add_executable(test
+      ${TEST_SOURCES}
+      )
+
+endif()
+
 
 target_include_directories( test
    PUBLIC
