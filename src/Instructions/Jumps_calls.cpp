@@ -4,6 +4,7 @@ void CPU::JSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ABS);
    pushWordToStack(_cycles, _mem, PC);
+   HEX_PRINT("jumping there: ", address);
    PC = address;
 }
 
@@ -11,12 +12,13 @@ void CPU::RTS_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    auto retAddr = popWordFromStack(_cycles, _mem);
    PC = retAddr;
+   HEX_PRINT("jumping there: ", retAddr);
    --_cycles;
 }
 
 void CPU::JMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
-   Word address = getAddr(_cycles, _mem, adressingMode::ABS);
+   Word address;
    switch(_opCode){
       case INS_JMP_ABS:{
          address = getAddr(_cycles, _mem, adressingMode::ABS);
@@ -28,6 +30,7 @@ void CPU::JMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          break;
       }
    }
+   HEX_PRINT("jumping there: ", address);
    PC = address;
    --_cycles;
 }

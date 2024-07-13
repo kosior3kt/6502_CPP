@@ -40,12 +40,10 @@ TEST_F(TEST_6502, JMP_ABS_andOtherTrash)
    mem_.debug_set(0xFF00, CPU::INS_JMP_ABS);  
    mem_.debug_set(0xFF01, 0x0010);  
    mem_.debug_set(0xFF02, 0x0020);  
-   // mem_.debug_set(0x1020, CPU::INS_LDA_IM);  
-   // mem_.debug_set(0x1021, 0x69);  
    mem_.debug_set(0x2010, CPU::INS_LDA_IM);  
    mem_.debug_set(0x2011, 0x69);  
 
-   auto cyclesLeft = cpu_.execute(7, mem_);
+   auto cyclesLeft = cpu_.execute(9, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);  //imma do this later on...
    EXPECT_EQ((int)cpu_.A, 0x69);

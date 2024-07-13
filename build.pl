@@ -10,17 +10,19 @@ use File::Spec;
 use Term::ANSIColor;
 
 # Command-line flags
-my $experimental = 0;
+my $legacy       = 0;
 my $build        = 0;
 my $run          = 0;
 my $test         = 0;
+my $verbose      = 0;
 my $output_dir   = 'build';
 
 GetOptions(
-    "experimental" => \$experimental,
+    "legacy"       => \$legacy,
     "build"        => \$build,
     "run"          => \$run,
     "test"         => \$test,
+    "verbose"      => \$verbose,
     "output_dir=s" => \$output_dir,
 ) or die("Error in command line arguments\n");
 
@@ -29,11 +31,24 @@ $output_dir = File::Spec->rel2abs($output_dir);  # Convert to absolute path for 
 
 # Define CMake arguments based on flags
 my @cmake_args;
-if ($build) {
-   @cmake_args = ("-DBUILD_TEST=ON");
+if ($legacy) 
+{
+   @cmake_args = ("-DBUILD_LEGACY=ON");
 }
-else {
-   @cmake_args = ("-DBUILD_TEST=OFF");
+else
+{
+   @cmake_args = ("-DBUILD_LEGACY=OFF");  #just to be sure
+}
+
+if($verbose)
+{
+   my $extra_arg = "-DVERBOSE=ON";
+   @cmake_args = map { $_ . " " . $extra_arg } @cmake_args;
+}
+else
+{
+   my $extra_arg = "-DVERBOSE=OFF";
+   @cmake_args = map { $_ . " " . $extra_arg } @cmake_args;
 }
 
 # Create build directory if it does not exist

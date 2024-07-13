@@ -20,22 +20,46 @@ set (TEST_SOURCES
    )
 
 
+# set(ALTERNATIVE_TEST_SOURCES
+#    test.hpp
+#    test_LDA.cpp
+#    test_LDX.cpp
+#    test_LDY.cpp
+#    test_branches.cpp
+#    test_stackOperations.cpp
+#    test_transfer.cpp
+#    test_MultipleInstructions.cpp
+#    test_STA.cpp
+#    test_DEC.cpp
+#    test_JumpingInstructions.cpp
+#    test_logicalOperations.cpp
+#    test_statusFlags.cpp
+#    test_shifts.cpp
+#    main.cpp
+#    )
+
 set(ALTERNATIVE_TEST_SOURCES
+   main.cpp
    test.hpp
-   test_LDA.cpp
    test_LDX.cpp
    test_LDY.cpp
-   test_branches.cpp
-   test_stackOperations.cpp
-   test_transfer.cpp
-   test_MultipleInstructions.cpp
-   test_STA.cpp
+   test_INC.cpp
    test_DEC.cpp
-   main.cpp
-   )
+   test_STA.cpp
+   test_MISC.cpp
+   test_JumpingInstructions.cpp
+   test_circularTestCollection.cpp
+   test_MultipleInstructions.cpp
+   test_transfer.cpp
+   test_stackOperations.cpp
+   test_statusFlags.cpp
+   test_logicalOperations.cpp
+   test_branches.cpp
+   test_LDA.cpp
+   test_shifts.cpp)
 
 
-if(BUILD_TEST)
+if(BUILD_LEGACY)
    add_executable(test
       ${ALTERNATIVE_TEST_SOURCES}
       )

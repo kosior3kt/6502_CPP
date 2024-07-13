@@ -1,26 +1,6 @@
 #include "CPU.h"
 
 #ifndef ALTERNATIVE
-s32 CPU::execute(u32 _cycles, Mem &_mem)
-{
-   while(_cycles > 0)
-   {
-      Byte inst         = FetchByte(_cycles, _mem);
-      auto functionIter = CPU::instructionMap.find(inst);
-
-      if(functionIter != instructionMap.end()) [[likely]]
-      {
-         functionIter->second(_cycles, _mem);
-      }
-      else [[unlikely]]
-      {
-         printf("Not handled %d\n", inst);
-         break;
-      }
-   }
-   return _cycles;
-}
-#else
 
 s32 CPU::execute(u32 _cycles, Mem &_mem)
 {
@@ -28,7 +8,7 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    {
       Byte inst         = FetchByte(_cycles, _mem);
       bool found = false;
-      for(auto x : instructionMap_test)
+      for(auto x : instructionMap)
       {
          if(x.first.find(inst) == x.first.end()) continue;
          x.second(_cycles, _mem, inst);
@@ -43,6 +23,29 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
    return _cycles;
 }
 
+#else
+
+
+[[deprecated("use new solution or don't use LEGACY flag")]]
+s32 CPU::execute(u32 _cycles, Mem &_mem)
+{
+   while(_cycles > 0)
+   {
+      Byte inst         = FetchByte(_cycles, _mem);
+      auto functionIter = CPU::instructionMap_legacy.find(inst);
+
+      if(functionIter != instructionMap_legacy.end()) [[likely]]
+      {
+         functionIter->second(_cycles, _mem);
+      }
+      else [[unlikely]]
+      {
+         printf("Not handled %d\n", inst);
+         break;
+      }
+   }
+   return _cycles;
+}
 #endif
 
 s32 CPU::execute_alternative(

@@ -4,7 +4,9 @@
 #include <iostream>
 
 ///when this is defined all the debug info's take effect
-///#define DEBUG_PRINT  
+#ifdef VERBOSE
+   #define DEBUG_PRINT  
+#endif
 
 //glossary
 using Byte = unsigned char;
