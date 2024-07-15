@@ -174,6 +174,7 @@ void CPU::SetCustomFlagsWithValue(const Byte &_val, Byte &_flags)
 void CPU::SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
 {
 
+   ///TODO: fix this garbage later...
    Byte val;
    switch(_reg)
    {

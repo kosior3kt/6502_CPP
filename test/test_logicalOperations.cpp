@@ -93,8 +93,7 @@ TEST_F(TEST_6502, AND_ABS)
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
 }
 
-TEST_F(TEST_6502, AND_ABS_moreAdvancedOrSth)
-{
+TEST_F(TEST_6502, AND_ABS_moreAdvancedOrSth) {
    cpu_.A = 0b10101010;
    mem_.debug_set(0xFFFC, CPU::INS_AND_ABS);
    mem_.debug_set(0xFFFD, 0x69);

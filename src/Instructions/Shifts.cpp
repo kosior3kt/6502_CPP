@@ -4,8 +4,6 @@
 #define BINARY_ONE      0b00000001
 
 
-
-
 void CPU::ASL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
@@ -571,4 +569,7 @@ void CPU::ROR_ABSX(u32& _cycles, Mem &_mem)
       );
 }
 
+
+#undef ALMOST_OVERFLOW 
+#undef BINARY_ONE      
 

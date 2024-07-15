@@ -5,7 +5,7 @@
 
 ///when this is defined all the debug info's take effect
 #ifdef VERBOSE
-   #define DEBUG_PRINT  
+#define DEBUG_PRINT  
 #endif
 
 //glossary
@@ -42,11 +42,67 @@ void HEX_PRINT_TO_BE_WRAPPED(T&& _first, Args&&... _rest)
 }
 
 
+template<typename T, typename... Args>
+void PRINT_TO_BE_WRAPPED(T&& _first, Args&&... _rest)
+{
+   std::cout<<std::forward<T>(_first)<<" ";
+
+   if constexpr(sizeof...(_rest) > 0)
+   {
+      PRINT_TO_BE_WRAPPED(std::forward<Args>(_rest)...);
+   }
+   else
+   {
+      std::cout<<"\n";
+   }
+}
+
 #ifdef DEBUG_PRINT
-#define HEX_PRINT(...) HEX_PRINT_TO_BE_WRAPPED(__VA_ARGS__, "|||| from function:", __FUNCTION__)
+#define HEX_PRINT(...) HEX_PRINT_TO_BE_WRAPPED(__VA_ARGS__, "|||| from function:", __FUNCTION__);
+#define PRINT(...)         PRINT_TO_BE_WRAPPED(__VA_ARGS__, "|||| from function:", __FUNCTION__);
 #else 
 #define HEX_PRINT(...)
+#define PRINT(...)
 #endif
+
+
+
+///////////////LORD have mercy on my wicked soul
+
+class bitset_f {
+public:
+    bitset_f(int _value) : value(_value) {}
+
+    friend std::ostream& operator<<(std::ostream& os, const bitset_f& _val);
+
+private:
+    int value;
+
+    static std::string formatWithQuotes(int _value);
+};
+
+inline std::string bitset_f::formatWithQuotes(int _value) {
+    std::string binaryStr;
+    
+    while (_value > 0) {
+        binaryStr.push_back((_value % 2) ? '1' : '0');
+        _value /= 2;
+    }
+
+    std::reverse(binaryStr.begin(), binaryStr.end());
+
+    for (int i = binaryStr.length() - 4; i > 0; i -= 4) {
+        binaryStr.insert(i, "'");
+    }
+    return binaryStr;
+}
+
+// Overload the << operator for CustomInt class
+inline std::ostream& operator<<(std::ostream& _os, const bitset_f& _val) {
+    _os << bitset_f::formatWithQuotes(_val.value);
+    return _os;
+}
+
 
 
 #endif

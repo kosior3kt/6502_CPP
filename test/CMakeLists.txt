@@ -17,6 +17,8 @@ set (TEST_SOURCES
    test_branches.cpp
    test_LDA.cpp
    test_shifts.cpp
+   test_arithmetics.cpp
+   test_compare.cpp
    )
 
 
@@ -56,7 +58,10 @@ set(ALTERNATIVE_TEST_SOURCES
    test_logicalOperations.cpp
    test_branches.cpp
    test_LDA.cpp
-   test_shifts.cpp)
+   test_shifts.cpp
+   test_arithmetics.cpp
+   #test_compare.cpp
+   )
 
 
 if(BUILD_LEGACY)
