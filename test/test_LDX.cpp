@@ -25,7 +25,7 @@ TEST_F(TEST_6502, LDX_ZPY)
    mem_.debug_set(0xFFFC, CPU::INS_LDX_ZPY);
    mem_.debug_set(0xFFFD, 0x42);
    mem_.debug_set(0x0047, 0x69);
-   auto cyclesLeft = cpu_.execute(4, mem_);
+   auto cyclesLeft = cpu_.execute(5, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((int)cpu_.X, 0x69);

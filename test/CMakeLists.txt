@@ -19,6 +19,7 @@ set (TEST_SOURCES
    test_shifts.cpp
    test_arithmetics.cpp
    test_compare.cpp
+   test_systemInstructions.cpp
    )
 
 

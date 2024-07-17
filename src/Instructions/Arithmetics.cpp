@@ -239,9 +239,6 @@ void CPU::CMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    }
    
    auto res = A - operand;
-   HEX_PRINT("A:        ", bitset_f(A));
-   HEX_PRINT("operand:  ", bitset_f(operand));
-   HEX_PRINT("res:      ", bitset_f(res));
 
    Z = (A == operand)         ? 1 : 0;
    C = (A >= operand)         ? 1 : 0;
@@ -254,12 +251,81 @@ void CPU::CMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
 void CPU::CPX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
+   
+   bool immediete = false;
+   Word address{};
+   Byte operand{};
+
+   switch(_opCode){
+      case CPU::INS_CPX_IM :{
+         operand = FetchByte(_cycles, _mem);
+         immediete = true;
+         break;
+      }
+      case CPU::INS_CPX_ZP :{
+         address = getAddr(_cycles, _mem, adressingMode::ZP);
+         break;
+      }
+      case CPU::INS_CPX_ABS :{
+         address = getAddr(_cycles, _mem, adressingMode::ABS);
+         break;
+      }
+   }
+
+   if(!immediete)
+   {
+      operand = ReadByte(_cycles, address, _mem);
+   }
+   
+   auto res =  X - operand;
+
+   Z = ( X == operand)         ? 1 : 0;
+   C = ( X >= operand)         ? 1 : 0;
+
+   ///TODO: fix location of places in which we change flags later
+
+   Byte flag = (N_f);   ///zero is being handled earlier
+   SetCustomFlagsWithValue(res, flag);
 
 }
 
 void CPU::CPY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
+   
+   bool immediete = false;
+   Word address{};
+   Byte operand{};
 
+   switch(_opCode){
+      case CPU::INS_CPY_IM :{
+         operand = FetchByte(_cycles, _mem);
+         immediete = true;
+         break;
+      }
+      case CPU::INS_CPY_ZP :{
+         address = getAddr(_cycles, _mem, adressingMode::ZP);
+         break;
+      }
+      case CPU::INS_CPY_ABS :{
+         address = getAddr(_cycles, _mem, adressingMode::ABS);
+         break;
+      }
+   }
+
+   if(!immediete)
+   {
+      operand = ReadByte(_cycles, address, _mem);
+   }
+   
+   auto res =  Y - operand;
+
+   Z = ( Y == operand)         ? 1 : 0;
+   C = ( Y >= operand)         ? 1 : 0;
+
+   ///TODO: fix location of places in which we change flags later
+
+   Byte flag = (N_f);   ///zero is being handled earlier
+   SetCustomFlagsWithValue(res, flag);
 }
 
 
