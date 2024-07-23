@@ -1,5 +1,10 @@
 #include "CPU.h"
 
+void CPU::safeCycleDecrement(u32& _cycles)
+{
+   _cycles += (-!!_cycles);
+}
+
 void CPU::Reset(Mem &_mem, const Word& _PC_start)  ///_PC_start is by deafult 0xFFFC
 {
    PC = _PC_start;
@@ -13,8 +18,10 @@ void CPU::Reset(Mem &_mem, const Word& _PC_start)  ///_PC_start is by deafult 0x
 Byte CPU::FetchByte(u32 &_cycles, const Mem &_mem)
 {
    Byte data = _mem[PC];
+   HEX_PRINT("address of the next fetched byte: ", (int)PC);
+   HEX_PRINT("value at this address: ", (int)_mem[PC]);
    ++PC;
-   --_cycles;
+   safeCycleDecrement(_cycles);
    return data;
 }
 
@@ -27,7 +34,8 @@ Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
    auto dataHigh = _mem[PC];
    Word data = dataLow + (dataHigh << 8);
    ++PC;
-   _cycles -= 2;
+   safeCycleDecrement(_cycles);
+   safeCycleDecrement(_cycles);
    /// good old endiannes ifdef here (if you care ofc...)
    return data;
 }
@@ -36,7 +44,7 @@ Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
 Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
-   --_cycles;
+   safeCycleDecrement(_cycles);
    return data;
 }
 
@@ -44,34 +52,36 @@ Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
-   --_cycles;
+   safeCycleDecrement(_cycles);
    return data;
 }
 
 void CPU::WriteByte( u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val)
 {
    _mem.debug_set(_addr, _val);  ///TODO: create different mechanism for this later
-   --_cycles;
+   safeCycleDecrement(_cycles);
 }
 
 void CPU::WriteByte( u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val)
 {
    _mem.debug_set(_addr, _val);
-   --_cycles;
+   safeCycleDecrement(_cycles);
 }
 
 void CPU::WriteWord( u32 &_cycles, const Byte &_addr, Mem &_mem, const Word&_val)
 {
    _mem.debug_set(_addr, (_val & 0xFF));
    _mem.debug_set(_addr + 1, (_val << 8));
-   _cycles -= 2;
+   safeCycleDecrement(_cycles);
+   safeCycleDecrement(_cycles);
 }
 
 void CPU::WriteWord( u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val)
 {
    _mem.debug_set(_addr, (_val & 0xFF));
    _mem.debug_set(_addr + 1, (_val << 8));
-   _cycles -= 2;
+   safeCycleDecrement(_cycles);
+   safeCycleDecrement(_cycles);
 }
 
 [[nodiscard]] 
@@ -82,7 +92,8 @@ Word CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
    Byte eaHigh  = ReadByte(_cycles, _addr, _mem);
    Byte eaLow   = ReadByte(_cycles, _addr, _mem);
    ea          = eaLow + (eaHigh << 8);
-   _cycles -= 2;
+   safeCycleDecrement(_cycles);
+   safeCycleDecrement(_cycles);
    return ea;
 }
 
@@ -93,7 +104,8 @@ Word CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
    Byte eaLow = ReadByte(_cycles, _addr, _mem);
    Byte eaHigh  = ReadByte(_cycles, (Word)(_addr + 1), _mem);
    ea          = eaLow + (eaHigh << 8);
-   _cycles -= 2;
+   safeCycleDecrement(_cycles);
+   safeCycleDecrement(_cycles);
    return ea;
 }
 
@@ -223,9 +235,9 @@ void CPU::pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val) ///those sh
 {
    auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
    _mem.debug_set(addr, _val);
-   --_cycles;
+   safeCycleDecrement(_cycles);
    --SP;
-   --_cycles;
+   safeCycleDecrement(_cycles);
    HEX_PRINT("memory of the saved thing: ", addr);
 }
 
@@ -236,7 +248,7 @@ void CPU::pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val) ///those sh
 
    pushByteToStack(_cycles, _mem, toPushLow);
    pushByteToStack(_cycles, _mem, toPushHigh);
-   //--_cycles;
+   //safeCycleDecrement(_cycles);
 }
 
 [[nodiscard]]
@@ -244,9 +256,9 @@ Byte CPU::popByteFromStack(u32& _cycles, Mem& _mem) ///those should use one more
 {
    ++SP;
    auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
-   _cycles--;
+   safeCycleDecrement(_cycles);
    if(SP > 255) return 0; ///and cry in the darkness. Alone
-   _cycles--;
+   safeCycleDecrement(_cycles);
    return _mem.debug_get(addr);
 }
 
@@ -257,7 +269,7 @@ Word CPU::popWordFromStack(u32& _cycles, Mem& _mem) ///those should use one more
     const Byte retAddrLow = popByteFromStack(_cycles, _mem);
     Word retAddr = retAddrLow | retAddrHigh << 8;
 
-   --_cycles;
+   safeCycleDecrement(_cycles);
    return retAddr;
 }
 
@@ -300,51 +312,92 @@ void CPU::OverwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val)
 
 Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
 {
+   safeCycleDecrement(_cycles);
    ///TODO: figure out cycles for these things later - all of these take at least one I guess...
    switch(_am){
       case adressingMode::ZP:{
          Byte temp = FetchByte(_cycles, _mem);
+         HEX_PRINT("number of cycles: ", _cycles);
          return temp;
       }
       case adressingMode::ZPX:{
+         safeCycleDecrement(_cycles);
          Byte temp = FetchByte(_cycles, _mem) + X;
+         HEX_PRINT("number of cycles: ", _cycles);
          return temp;
       }
       case adressingMode::ZPY:{
+         safeCycleDecrement(_cycles);
          Byte temp = FetchByte(_cycles, _mem) + Y;
+         HEX_PRINT("number of cycles: ", _cycles);
          return temp;
       }
       case adressingMode::REL:{
          return FetchByte(_cycles, _mem); ///this just return relative address
+         HEX_PRINT("number of cycles: ", _cycles);
       }
       case adressingMode::ABS:{
+         safeCycleDecrement(_cycles);
+         HEX_PRINT("number of cycles: ", _cycles);
          return FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
       }
       case adressingMode::ABSX:{
+         // safeCycleDecrement(_cycles);
+         // Word adress = FetchByte(_cycles, _mem);
+         // auto eaLow  = ReadByte(_cycles, adress, _mem);
+         // auto eaHigh = ReadByte( _cycles, ++adress, _mem); 
+         // if(eaLow + X > 0xFF)
+         //    safeCycleDecrement(_cycles);
+         // adress =  eaLow + (eaHigh << 8);
+         // HEX_PRINT("address: ", adress, ", X: ", X);
+         // return adress + X;
+         HEX_PRINT("number of cycles: ", _cycles);
          return (FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8) + X;
       }
       case adressingMode::ABSY:{ ///I will take care of crossing page later...
+         // safeCycleDecrement(_cycles);
+         // Word adress = FetchByte(_cycles, _mem);
+         // auto eaLow  = ReadByte(_cycles, adress, _mem);
+         // auto eaHigh = ReadByte( _cycles, ++adress, _mem); 
+         // if(eaLow + Y > 0xFF)
+         //    safeCycleDecrement(_cycles);
+         // adress =  eaLow + (eaHigh << 8);
+         // std::cout<<(int)adress<<std::endl;
+         // //HEX_PRINT("address: ", (int)adress, ", X: ", (int)X);
+         // return adress + Y;
+         HEX_PRINT("number of cycles: ", _cycles);
          return (FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8) + Y;
       }
       case adressingMode::IND:{
-         return FetchWord(_cycles, _mem);
+         safeCycleDecrement(_cycles);
+         HEX_PRINT("number of cycles: ", _cycles);
+         return FetchWord(_cycles, _mem); ///this takes two cycles
       }
       case adressingMode::INDX:{
+         safeCycleDecrement(_cycles);
+         safeCycleDecrement(_cycles);
+         safeCycleDecrement(_cycles);
          Byte adress = FetchByte(_cycles, _mem) + X;
          Byte eaLow  = ReadByte(_cycles, adress, _mem);
          Byte eaHigh = ReadByte(_cycles, ++adress, _mem);
+         if(eaLow + X > 0xFF)
+            safeCycleDecrement(_cycles);
+         HEX_PRINT("number of cycles: ", _cycles);
          return eaLow + (eaHigh << 8);
       }
       case adressingMode::INDY:{
+         safeCycleDecrement(_cycles);
+         safeCycleDecrement(_cycles);
          Word adress = FetchByte(_cycles, _mem);
          Byte eaLow  = ReadByte(_cycles, adress, _mem);
          Byte eaHigh = ReadByte( _cycles, ++adress, _mem); 
          if(eaLow + Y > 0xFF)
-            --_cycles;
+            safeCycleDecrement(_cycles);
+         HEX_PRINT("number of cycles: ", _cycles);
          return (eaLow + (eaHigh << 8) + Y);
       }
       default:{
-                 std::unreachable();   ///ignore this - it actually is just newer feature than my lsp... If u have older compiler just delete it or sth
+                 ///std::unreachable();   ///ignore this - it actually is just newer feature than my lsp... If u have older compiler just delete it or sth
          break;
       }
    }

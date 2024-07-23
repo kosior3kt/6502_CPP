@@ -61,7 +61,7 @@ void CPU::ADC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
       case CPU::INS_ADC_INDX :{
          address = getAddr(_cycles, _mem, adressingMode::INDX);
-         --_cycles;
+         safeCycleDecrement(_cycles);
          break;
       }
       case CPU::INS_ADC_INDY :{
@@ -143,7 +143,7 @@ void CPU::SBC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
       case CPU::INS_SBC_INDX :{
          address = getAddr(_cycles, _mem, adressingMode::INDX);
-         --_cycles;
+         safeCycleDecrement(_cycles);
          break;
       }
       case CPU::INS_SBC_INDY :{
@@ -224,7 +224,7 @@ void CPU::CMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
       case CPU::INS_CMP_INDX :{
          address = getAddr(_cycles, _mem, adressingMode::INDX);
-         --_cycles;
+         safeCycleDecrement(_cycles);
          break;
       }
       case CPU::INS_CMP_INDY :{

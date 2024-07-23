@@ -9,7 +9,9 @@ TEST_F(TEST_6502, BRK_TRIVIAL)
     mem_.debug_set(0xFFFF, 0x80);
     mem_.debug_set(0x8000, CPU::INS_LDA_IM); 
     mem_.debug_set(0x8001, 0x69); 
-    auto cyclesLeft = cpu_.execute(9, mem_);
+    mem_.debug_set(0x8002, CPU::INS_NOTHING); 
+    auto cyclesLeft = cpu_.execute(30, mem_);
+
 
     EXPECT_EQ(cyclesLeft, 0);
     EXPECT_EQ((uint8_t)cpu_.A, 0x69) ;

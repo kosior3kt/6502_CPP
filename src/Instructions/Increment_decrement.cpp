@@ -33,7 +33,7 @@ void CPU::INC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          break;
       }
    }
-   --_cycles;
+   safeCycleDecrement(_cycles);
    ApplyToMemory(
        _cycles, address, _mem,
        [this](const Byte &_val
@@ -48,7 +48,7 @@ void CPU::INC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 void CPU::INX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    ++X;  ///this should be wrapping
-   --_cycles;
+   safeCycleDecrement(_cycles);
    Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::X, flag);
 }
@@ -56,7 +56,7 @@ void CPU::INX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 void CPU::INY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    ++Y; //this as well should be wrapping
-   --_cycles;
+   safeCycleDecrement(_cycles);
    Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::Y, flag);
 }
@@ -84,7 +84,7 @@ void CPU::DEC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          break;
       }
    }
-   --_cycles;
+   safeCycleDecrement(_cycles);
    ApplyToMemory(
        _cycles, address, _mem,
        [this](const Byte &_val
@@ -99,7 +99,7 @@ void CPU::DEC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 void CPU::DEX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    --X;
-   --_cycles;
+   safeCycleDecrement(_cycles);
    HEX_PRINT("here");
    Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::X, flag);
@@ -108,7 +108,7 @@ void CPU::DEX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 void CPU::DEY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    --Y;
-   --_cycles;
+   safeCycleDecrement(_cycles);
    HEX_PRINT("here");
    Byte flag = (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::Y, flag);
@@ -120,7 +120,7 @@ void CPU::DEY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 void CPU::INC_ZP(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ZP);
-   --_cycles;
+   safeCycleDecrement(_cycles);
    ApplyToMemory(
        _cycles, address, _mem,
        [this](const Byte &_val
@@ -135,7 +135,7 @@ void CPU::INC_ZP(u32 &_cycles, Mem &_mem)
 void CPU::INC_ZPX(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ZPX);
-   --_cycles;
+   safeCycleDecrement(_cycles);
 
    ApplyToMemory(
        _cycles, address, _mem,
@@ -146,7 +146,7 @@ void CPU::INC_ZPX(u32 &_cycles, Mem &_mem)
           return (_val + 1);
        }
    );
-   --_cycles;
+   safeCycleDecrement(_cycles);
 }
 
 void CPU::INC_ABS(u32 &_cycles, Mem &_mem)
@@ -167,7 +167,7 @@ void CPU::INC_ABS(u32 &_cycles, Mem &_mem)
 void CPU::INC_ABSX(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ABSX);
-   --_cycles;
+   safeCycleDecrement(_cycles);
 
    ApplyToMemory(
        _cycles, address, _mem,
@@ -185,7 +185,7 @@ void CPU::INC_ABSX(u32 &_cycles, Mem &_mem)
 void CPU::INX(u32 &_cycles, Mem &_mem)
 {
    ++X;  ///this should be wrapping
-   --_cycles;
+   safeCycleDecrement(_cycles);
    Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::X, flag);
 }
@@ -195,7 +195,7 @@ void CPU::INX(u32 &_cycles, Mem &_mem)
 void CPU::INY(u32 &_cycles, Mem &_mem)
 {
    ++Y; //this as well should be wrapping
-   --_cycles;
+   safeCycleDecrement(_cycles);
    Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::Y, flag);
 }
@@ -205,7 +205,7 @@ void CPU::INY(u32 &_cycles, Mem &_mem)
 void CPU::DEC_ZP(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ZP);
-   --_cycles;
+   safeCycleDecrement(_cycles);
    ApplyToMemory(
        _cycles, address, _mem,
        [this](const Byte &_val
@@ -220,7 +220,7 @@ void CPU::DEC_ZP(u32 &_cycles, Mem &_mem)
 void CPU::DEC_ZPX(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ZPX);
-   --_cycles;
+   safeCycleDecrement(_cycles);
 
    ApplyToMemory(
        _cycles, address, _mem,
@@ -231,7 +231,7 @@ void CPU::DEC_ZPX(u32 &_cycles, Mem &_mem)
           return (_val - 1);
        }
    );
-   --_cycles;
+   safeCycleDecrement(_cycles);
 }
 
 void CPU::DEC_ABS(u32 &_cycles, Mem &_mem)
@@ -252,7 +252,7 @@ void CPU::DEC_ABS(u32 &_cycles, Mem &_mem)
 void CPU::DEC_ABSX(u32 &_cycles, Mem &_mem)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ABSX);
-   --_cycles;
+   safeCycleDecrement(_cycles);
 
    ApplyToMemory(
        _cycles, address, _mem,
@@ -269,7 +269,7 @@ void CPU::DEC_ABSX(u32 &_cycles, Mem &_mem)
 void CPU::DEX(u32 &_cycles, Mem &_mem)
 {
    --X;
-   --_cycles;
+   safeCycleDecrement(_cycles);
    Byte flag = (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::X, flag);
 }
@@ -279,7 +279,7 @@ void CPU::DEX(u32 &_cycles, Mem &_mem)
 void CPU::DEY(u32 &_cycles, Mem &_mem)
 {
    --Y;
-   --_cycles;
+   safeCycleDecrement(_cycles);
    Byte flag = (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::Y, flag);
 }

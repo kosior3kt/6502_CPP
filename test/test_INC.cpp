@@ -101,7 +101,7 @@ TEST_F(TEST_6502, INC_ZPX_simple)
    mem_.debug_set(MEM_ADDR + cpu_.X, 0x68);
    mem_.debug_set(0xFFFC, CPU::INS_INC_ZPX);
    mem_.debug_set(0xFFFD, MEM_ADDR);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   auto cyclesLeft = cpu_.execute(5, mem_);
 
    auto temp = mem_.Data[MEM_ADDR + cpu_.X];
    EXPECT_EQ(cyclesLeft, 0);
@@ -134,7 +134,7 @@ TEST_F(TEST_6502, INC_ZPX_PageCrossing)
    mem_.debug_set(0x00, 0x68);
    mem_.debug_set(0xFFFC, CPU::INS_INC_ZPX);
    mem_.debug_set(0xFFFD, MEM_ADDR);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   auto cyclesLeft = cpu_.execute(5, mem_);
 
    auto temp = mem_.Data[0x00];
    EXPECT_EQ(cyclesLeft, 0);

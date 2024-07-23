@@ -20,12 +20,14 @@ TEST_F(TEST_6502, veryFuckingConvolutedTest)
    mem_.debug_set(0x1023, CPU::INS_RTS);  
    mem_.debug_set(0x6005, CPU::INS_RTS);  
    mem_.debug_set(0xFF03, CPU::INS_LDA_IM);  
-   mem_.debug_set(0xFF04, 0x42);
+   mem_.debug_set(0xFF04, 0x69);
 
-   auto cyclesLeft = cpu_.execute(100, mem_);
+   auto cyclesLeft = cpu_.execute(44, mem_);
+
+   mem_.debug_dumpMemory("convoluted");
 
    // EXPECT_EQ(cyclesLeft, 0);  //imma do this later on...
-   EXPECT_EQ((int)cpu_.A, 0x42);
+   EXPECT_EQ((int)cpu_.A, 0x69);
    EXPECT_EQ((int)cpu_.X, 0x69);
    EXPECT_EQ((int)cpu_.Y, 0x63);
    EXPECT_FALSE((int)cpu_.Z);
@@ -43,7 +45,7 @@ TEST_F(TEST_6502, JMP_ABS_andOtherTrash)
    mem_.debug_set(0x2010, CPU::INS_LDA_IM);  
    mem_.debug_set(0x2011, 0x69);  
 
-   auto cyclesLeft = cpu_.execute(9, mem_);
+   auto cyclesLeft = cpu_.execute(8, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);  //imma do this later on...
    EXPECT_EQ((int)cpu_.A, 0x69);
@@ -64,7 +66,7 @@ TEST_F(TEST_6502, JMP_IND_andOtherTrashAsWell)
    mem_.debug_set(0x6911, 0x42);  
    mem_.debug_set(0x0042, 0x69);  
 
-   auto cyclesLeft = cpu_.execute(20, mem_);
+   auto cyclesLeft = cpu_.execute(14, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);  //imma do this later on...
    EXPECT_EQ((int)cpu_.A, 0x69);

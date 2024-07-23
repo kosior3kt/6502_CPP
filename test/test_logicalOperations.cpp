@@ -6,7 +6,9 @@ TEST_F(TEST_6502, AND_IM)
    cpu_.A = 0b10101010;
    mem_.debug_set(0xFFFC, CPU::INS_AND_IM);
    mem_.debug_set(0xFFFD, 0b11111111);
-   auto cyclesLeft = cpu_.execute(9, mem_);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b10101010);
@@ -15,10 +17,13 @@ TEST_F(TEST_6502, AND_IM)
 
 TEST_F(TEST_6502, AND_IM_moreAdvancedOrSth)
 {
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
    cpu_.A = 0b10101010;
    mem_.debug_set(0xFFFC, CPU::INS_AND_IM);
    mem_.debug_set(0xFFFD, 0b11110000);
-   auto cyclesLeft = cpu_.execute(9, mem_);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b10100000);
@@ -31,7 +36,9 @@ TEST_F(TEST_6502, AND_ZP)
    mem_.debug_set(0xFFFC, CPU::INS_AND_ZP);
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0x0069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(9, mem_);
+   mem_.debug_set(0x006A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10101010);
@@ -44,7 +51,9 @@ TEST_F(TEST_6502, AND_ZP_moreAdvancedOrSth)
    mem_.debug_set(0xFFFC, CPU::INS_AND_ZP);
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0x0069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(9, mem_);
+   mem_.debug_set(0x006A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10100000);
@@ -58,7 +67,9 @@ TEST_F(TEST_6502, AND_ZPX)
    mem_.debug_set(0xFFFC, CPU::INS_AND_ZPX);
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0x0069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(9, mem_);
+   mem_.debug_set(0x006A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10101010);
@@ -72,7 +83,8 @@ TEST_F(TEST_6502, AND_ZPX_moreAdvancedOrSth)
    mem_.debug_set(0xFFFC, CPU::INS_AND_ZPX);
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0x0069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(9, mem_);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10100000);
@@ -86,7 +98,9 @@ TEST_F(TEST_6502, AND_ABS)
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(9, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10101010);
@@ -99,7 +113,9 @@ TEST_F(TEST_6502, AND_ABS_moreAdvancedOrSth) {
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(9, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10100000);
@@ -114,7 +130,9 @@ TEST_F(TEST_6502, AND_ABSX)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10101010);
@@ -129,7 +147,9 @@ TEST_F(TEST_6502, AND_ABSX_moreAdvancedOrSth)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10100000);
@@ -145,7 +165,9 @@ TEST_F(TEST_6502, AND_ABSY)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10101010);
@@ -160,7 +182,9 @@ TEST_F(TEST_6502, AND_ABSY_moreAdvancedOrSth)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10100000);
@@ -176,7 +200,9 @@ TEST_F(TEST_6502, AND_INDX)
    mem_.debug_set(0x0069, 0x69);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10101010);
@@ -192,7 +218,9 @@ TEST_F(TEST_6502, AND_INDX_moreAdvancedOrSth)
    mem_.debug_set(0x0069, 0x69);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10100000);
@@ -208,7 +236,9 @@ TEST_F(TEST_6502, AND_INDY)
    mem_.debug_set(0x0069, 0x68);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10101010);
@@ -224,7 +254,9 @@ TEST_F(TEST_6502, AND_INDY_moreAdvancedOrSth)
    mem_.debug_set(0x0069, 0x68);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((uint8_t)cpu_.A, (uint8_t)0b10100000);
@@ -237,7 +269,9 @@ TEST_F(TEST_6502, EOR_IM)
    cpu_.A = 0b10101010;
    mem_.debug_set(0xFFFC, CPU::INS_EOR_IM);
    mem_.debug_set(0xFFFD, 0b11111111);
-   auto cyclesLeft = cpu_.execute(3, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01010101);
@@ -249,7 +283,9 @@ TEST_F(TEST_6502,EOR_IM_moreAdvancedOrSth)
    cpu_.A = 0b10101010;
    mem_.debug_set(0xFFFC, CPU::INS_EOR_IM);
    mem_.debug_set(0xFFFD, 0b11110000);
-   auto cyclesLeft = cpu_.execute(3, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01011010);
@@ -263,7 +299,9 @@ TEST_F(TEST_6502, EOR_ZP)
    mem_.debug_set(0xFFFC, CPU::INS_EOR_ZP);
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0x0069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(3, mem_);
+   mem_.debug_set(0x006A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01010101);
@@ -276,7 +314,9 @@ TEST_F(TEST_6502, EOR_ZP_moreAdvancedOrSth)
    mem_.debug_set(0xFFFC, CPU::INS_EOR_ZP);
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0x0069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(3, mem_);
+   mem_.debug_set(0x006A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01011010);
@@ -291,7 +331,9 @@ TEST_F(TEST_6502, EOR_ZPX)
    mem_.debug_set(0xFFFC, CPU::INS_EOR_ZPX);
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0x0069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(4, mem_);
+   mem_.debug_set(0x006A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01010101);
@@ -305,7 +347,9 @@ TEST_F(TEST_6502, EOR_ZPX_moreAdvancedOrSth)
    mem_.debug_set(0xFFFC, CPU::INS_EOR_ZPX);
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0x0069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(4, mem_);
+   mem_.debug_set(0x006A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01011010);
@@ -319,7 +363,9 @@ TEST_F(TEST_6502, EOR_ABS)
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01010101);
@@ -333,7 +379,9 @@ TEST_F(TEST_6502, EOR_ABS_moreAdvancedOrSth)
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01011010);
@@ -348,7 +396,9 @@ TEST_F(TEST_6502, EOR_ABSX)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01010101);
@@ -363,7 +413,9 @@ TEST_F(TEST_6502, EOR_ABSX_moreAdvancedOrSth)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01011010);
@@ -378,7 +430,9 @@ TEST_F(TEST_6502, EOR_ABSY)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01010101);
@@ -393,7 +447,9 @@ TEST_F(TEST_6502, EOR_ABSY_moreAdvancedOrSth)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01011010);
@@ -410,7 +466,9 @@ TEST_F(TEST_6502, EOR_INDX)
    mem_.debug_set(0x0069, 0x69);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01010101);
@@ -426,7 +484,9 @@ TEST_F(TEST_6502, EOR_INDX_moreAdvancedOrSth)
    mem_.debug_set(0x0069, 0x69);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01011010);
@@ -443,7 +503,9 @@ TEST_F(TEST_6502, EOR_INDY)
    mem_.debug_set(0x0069, 0x68);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11111111);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01010101);
@@ -459,7 +521,9 @@ TEST_F(TEST_6502, EOR_INDY_moreAdvancedOrSth)
    mem_.debug_set(0x0069, 0x68);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0x106A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b01011010);
@@ -473,7 +537,9 @@ TEST_F(TEST_6502, ORA_IM)
    cpu_.A = 0b10101010;
    mem_.debug_set(0xFFFC, CPU::INS_ORA_IM);
    mem_.debug_set(0xFFFD, 0b01010101);
-   auto cyclesLeft = cpu_.execute(3, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111111);
@@ -485,7 +551,9 @@ TEST_F(TEST_6502,ORA_IM_moreAdvancedOrSth)
    cpu_.A = 0b10101010;
    mem_.debug_set(0xFFFC, CPU::INS_ORA_IM);
    mem_.debug_set(0xFFFD, 0b11110000);
-   auto cyclesLeft = cpu_.execute(3, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111010);
@@ -499,7 +567,9 @@ TEST_F(TEST_6502, ORA_ZP)
    mem_.debug_set(0xFFFC, CPU::INS_ORA_ZP);
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0x0069, 0b01010101);
-   auto cyclesLeft = cpu_.execute(3, mem_);
+   mem_.debug_set(0x006A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111111);
@@ -512,7 +582,9 @@ TEST_F(TEST_6502, ORA_ZP_moreAdvancedOrSth)
    mem_.debug_set(0xFFFC, CPU::INS_ORA_ZP);
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0x0069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(3, mem_);
+   mem_.debug_set(0x006A, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111010);
@@ -527,7 +599,9 @@ TEST_F(TEST_6502, ORA_ZPX)
    mem_.debug_set(0xFFFC, CPU::INS_ORA_ZPX);
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0x0069, 0b01010101);
-   auto cyclesLeft = cpu_.execute(4, mem_);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111111);
@@ -541,7 +615,8 @@ TEST_F(TEST_6502, ORA_ZPX_moreAdvancedOrSth)
    mem_.debug_set(0xFFFC, CPU::INS_ORA_ZPX);
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0x0069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(4, mem_);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111010);
@@ -555,7 +630,8 @@ TEST_F(TEST_6502, ORA_ABS)
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b01010101);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111111);
@@ -569,7 +645,8 @@ TEST_F(TEST_6502, ORA_ABS_moreAdvancedOrSth)
    mem_.debug_set(0xFFFD, 0x69);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111010);
@@ -584,7 +661,8 @@ TEST_F(TEST_6502, ORA_ABSX)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b01010101);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111111);
@@ -599,7 +677,8 @@ TEST_F(TEST_6502, ORA_ABSX_moreAdvancedOrSth)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111010);
@@ -614,7 +693,8 @@ TEST_F(TEST_6502, ORA_ABSY)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b01010101);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111111);
@@ -629,7 +709,8 @@ TEST_F(TEST_6502, ORA_ABSY_moreAdvancedOrSth)
    mem_.debug_set(0xFFFD, 0x68);
    mem_.debug_set(0xFFFE, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFF, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111010);
@@ -646,7 +727,8 @@ TEST_F(TEST_6502, ORA_INDX)
    mem_.debug_set(0x0069, 0x69);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b01010101);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111111);
@@ -662,7 +744,8 @@ TEST_F(TEST_6502, ORA_INDX_moreAdvancedOrSth)
    mem_.debug_set(0x0069, 0x69);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111010);
@@ -679,7 +762,8 @@ TEST_F(TEST_6502, ORA_INDY)
    mem_.debug_set(0x0069, 0x68);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b01010101);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111111);
@@ -695,7 +779,8 @@ TEST_F(TEST_6502, ORA_INDY_moreAdvancedOrSth)
    mem_.debug_set(0x0069, 0x68);
    mem_.debug_set(0x006A, 0x10);
    mem_.debug_set(0x1069, 0b11110000);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   mem_.debug_set(0xFFFE, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ(cpu_.A, 0b11111010);
@@ -710,7 +795,8 @@ TEST_F(TEST_6502, BIT_ZP)
     mem_.debug_set(0xFF01, 0x10);
     mem_.debug_set(0x0010, 0b01000000); // Memory operand with overflow flag set
 
-    auto cyclesLeft = cpu_.execute(10, mem_);
+   mem_.debug_set(0xFF02, CPU::INS_NOTHING);
+    auto cyclesLeft = cpu_.execute(40, mem_);
 
     EXPECT_EQ(cyclesLeft, 0);
     EXPECT_EQ(cpu_.A, 0b01110000);
@@ -728,7 +814,8 @@ TEST_F(TEST_6502, BIT_ABS_NoFlags)
     mem_.debug_set(0x8002, 0x20);
     mem_.debug_set(0x2000, 0b00000001); // Memory operand with no flags set
 
-    auto cyclesLeft = cpu_.execute(4, mem_);
+   mem_.debug_set(0x8003, CPU::INS_NOTHING);
+    auto cyclesLeft = cpu_.execute(40, mem_);
 
     EXPECT_EQ(cyclesLeft, 0);
     EXPECT_FALSE(cpu_.CPU::V); // Overflow flag not set
@@ -745,7 +832,8 @@ TEST_F(TEST_6502, BIT_ABS)
     mem_.debug_set(0x8002, 0x20);
     mem_.debug_set(0x2000, 0b10000000); // Memory operand with bit 7 set (negative flag)
 
-    auto cyclesLeft = cpu_.execute(4, mem_);
+   mem_.debug_set(0x8003, CPU::INS_NOTHING);
+    auto cyclesLeft = cpu_.execute(40, mem_);
 
     EXPECT_EQ(cyclesLeft, 0);
     EXPECT_EQ(cpu_.A, 0b00000000);

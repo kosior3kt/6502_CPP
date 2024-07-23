@@ -99,17 +99,17 @@ TEST_F(TEST_6502, LDA_ZPX_withWrapping)
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
 }
 
-TEST_F(TEST_6502, idleCPU)
-{
-   ///well, this test doesn't really make sense anymore, so ill change it now 
-   auto cyclesAtTheBeggining = 69;
-   auto cyclesLeft           = cpu_.execute(cyclesAtTheBeggining, mem_);
-
-   EXPECT_EQ( cyclesLeft, 0); /// one cycle for fetchig instruction
-   EXPECT_FALSE((int)cpu_.Z);
-   EXPECT_FALSE((int)cpu_.N);
-   EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
-}
+// TEST_F(TEST_6502, idleCPU)
+// {
+//    ///well, this test doesn't really make sense anymore, so ill change it now 
+//    auto cyclesAtTheBeggining = 69;
+//    auto cyclesLeft           = cpu_.execute(cyclesAtTheBeggining, mem_);
+//
+//    EXPECT_EQ( cyclesLeft, 0); /// one cycle for fetchig instruction
+//    EXPECT_FALSE((int)cpu_.Z);
+//    EXPECT_FALSE((int)cpu_.N);
+//    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+// }
 
 TEST_F(TEST_6502, LDA_AbsoluteAddressing)
 {

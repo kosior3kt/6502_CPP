@@ -25,7 +25,7 @@ TEST_F(TEST_6502, LDY_ZPX)
    mem_.debug_set(0xFFFC, CPU::INS_LDY_ZPX);
    mem_.debug_set(0xFFFD, 0x42);
    mem_.debug_set(0x0047, 0x69);
-   auto cyclesLeft = cpu_.execute(4, mem_);
+   auto cyclesLeft = cpu_.execute(3, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((int)cpu_.Y, 0x69);
@@ -40,7 +40,7 @@ TEST_F(TEST_6502, LDY_ZPX_withWrapping)
    mem_.debug_set(0xFFFC, CPU::INS_LDY_ZPX);
    mem_.debug_set(0xFFFD, 0x80);
    mem_.debug_set(0x007F, 0x69);
-   auto cyclesLeft = cpu_.execute(4, mem_);
+   auto cyclesLeft = cpu_.execute(3, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((int)cpu_.Y, 0x69);
@@ -87,7 +87,7 @@ TEST_F(TEST_6502, LDY_AbsoluteAddressing_withPageCrossing)
    mem_.debug_set(0xFFFD, 0xFF);
    mem_.debug_set(0xFFFE, 0xFF); /// 0xFFFF + 0x0027 = (in this case we take into considerationg page crossing) = 0x0027 - 0x0001 (for page crossing compensation)
    mem_.debug_set(0x0026, 0x69);
-   auto cyclesLeft = cpu_.execute(5, mem_);
+   auto cyclesLeft = cpu_.execute(4, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((int)cpu_.Y, 0x69);

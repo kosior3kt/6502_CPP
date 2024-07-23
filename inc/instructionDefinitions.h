@@ -77,6 +77,8 @@ void BRK_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode);
 void NOP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode);
 void RTI_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode);
 
+void NOTHING_(u32 &_cycles, Mem &_mem, const Byte& _opCode);
+
 
 
 ///////////////////////////////////////////DEPRECATED

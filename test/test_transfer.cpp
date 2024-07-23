@@ -8,6 +8,7 @@ TEST_F(TEST_6502, TAX_simple)
    mem_.debug_set(0xFF00, CPU::INS_LDA_IM);  
    mem_.debug_set(0xFF01, 0x0069);  
    mem_.debug_set(0xFF02, CPU::INS_TAX);  
+   mem_.debug_set(0xFF03, CPU::INS_NOTHING);  
 
    auto cyclesLeft = cpu_.execute(20, mem_);
 
@@ -24,6 +25,7 @@ TEST_F(TEST_6502, TAY_simple)
    mem_.debug_set(0xFF00, CPU::INS_LDA_IM);  
    mem_.debug_set(0xFF01, 0x0069);  
    mem_.debug_set(0xFF02, CPU::INS_TAY);  
+   mem_.debug_set(0xFF03, CPU::INS_NOTHING);  
 
    auto cyclesLeft = cpu_.execute(20, mem_);
 
@@ -40,6 +42,7 @@ TEST_F(TEST_6502, TXA_simple)
    mem_.debug_set(0xFF00, CPU::INS_LDX_IM);  
    mem_.debug_set(0xFF01, 0x0069);  
    mem_.debug_set(0xFF02, CPU::INS_TXA);  
+   mem_.debug_set(0xFF03, CPU::INS_NOTHING);  
 
    auto cyclesLeft = cpu_.execute(20, mem_);
 
@@ -56,6 +59,7 @@ TEST_F(TEST_6502, TYA_simple)
    mem_.debug_set(0xFF00, CPU::INS_LDY_IM);  
    mem_.debug_set(0xFF01, 0x0069);  
    mem_.debug_set(0xFF02, CPU::INS_TYA);  
+   mem_.debug_set(0xFF03, CPU::INS_NOTHING);  
 
    auto cyclesLeft = cpu_.execute(20, mem_);
 

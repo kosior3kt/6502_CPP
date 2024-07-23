@@ -24,7 +24,7 @@ TEST_F(TEST_6502, STA_ZPX_SIMPLE)
    mem_.debug_set(0xFFFD, 0x41);
    cpu_.A = 0x69;
    cpu_.X = 0x01;
-   auto cyclesLeft = cpu_.execute(4, mem_);
+   auto cyclesLeft = cpu_.execute(3, mem_);
 
    Byte res = mem_.debug_get(0x0042);
 
@@ -59,7 +59,7 @@ TEST_F(TEST_6502, STA_ABSX_SIMPLE)
    mem_.debug_set(0xFFFE, 0x42);
    cpu_.A = 0x69;
    cpu_.X = 0x0001;
-   auto cyclesLeft = cpu_.execute(5, mem_);
+   auto cyclesLeft = cpu_.execute(4, mem_);
 
    Byte res = mem_.debug_get(0x4242);
 
@@ -77,7 +77,7 @@ TEST_F(TEST_6502, STA_ABSY_SIMPLE)
    mem_.debug_set(0xFFFE, 0x42);
    cpu_.A = 0x69;
    cpu_.Y = 0x0001;
-   auto cyclesLeft = cpu_.execute(5, mem_);
+   auto cyclesLeft = cpu_.execute(4, mem_);
 
    Byte res = mem_.debug_get(0x4242);
 
@@ -117,7 +117,7 @@ TEST_F(TEST_6502, STA_INDY_SIMPLE)
    cpu_.Y = 0x0001;
    mem_.debug_set(0x0042, 0x68);
    mem_.debug_set(0x0043, 0x69);
-   auto cyclesLeft = cpu_.execute(6, mem_);
+   auto cyclesLeft = cpu_.execute(5, mem_);
 
    Byte res = mem_.debug_get(0x6969);
 
@@ -136,7 +136,7 @@ TEST_F(TEST_6502, STX_ZP_SIMPLE)
    mem_.debug_set(0xFFFC, CPU::INS_STX_ZP);
    mem_.debug_set(0xFFFD, 0x42);
    cpu_.X = 0x69;
-   auto cyclesLeft = cpu_.execute(4, mem_);
+   auto cyclesLeft = cpu_.execute(3, mem_);
 
    Byte res = mem_.debug_get(0x0042);
 

@@ -12,7 +12,7 @@ if(BUILD_LEGACY)
    set(CMAKE_BUILD_TYPE Debug)
 else()
    message(STATUS "Building STABLE version")
-   #set(CMAKE_BUILD_TYPE Debug)  #sometiems usefull...
+   set(CMAKE_BUILD_TYPE Debug)  #sometiems usefull...
 endif()
 
 if(VERBOSE)

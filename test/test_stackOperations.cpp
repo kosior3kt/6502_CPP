@@ -27,6 +27,7 @@ TEST_F(TEST_6502, PHA)
 {
    cpu_.A = 0x69;
    mem_.debug_set(0xFFFC, CPU::INS_PHA);
+   mem_.debug_set(0xFFFD, CPU::INS_NOTHING);  
    // cpu_.A = 0x00;
    auto addr = 0x0100 + cpu_.SP;
    HEX_PRINT("searching in location: ", addr);

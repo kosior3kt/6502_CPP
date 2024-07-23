@@ -12,6 +12,10 @@ void CPU::BRK_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    /////now we can do 
    PC = newPCAddr;
    I = 1;
+
+
+   HEX_PRINT("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!BRK CALLED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+   HEX_PRINT("number of cycles: ", _cycles);
 }
 
 void CPU::NOP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
@@ -24,6 +28,12 @@ void CPU::RTI_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    CPU::PLP(_cycles, _mem);
    auto retrievedPC = popWordFromStack(_cycles, _mem);
    PC = retrievedPC;
+}
+
+void CPU::NOTHING_(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+{
+   ///just does nothing, so may as well set _cycles to zero
+   _cycles = 0;
 }
 
 

@@ -35,7 +35,7 @@ void CPU::AND_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
       case CPU::INS_AND_INDX :{
          address = getAddr(_cycles, _mem, adressingMode::INDX);
-         --_cycles;
+         safeCycleDecrement(_cycles);
          break;
       }
       case CPU::INS_AND_INDY :{
@@ -86,7 +86,7 @@ void CPU::EOR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
       case CPU::INS_EOR_INDX :{
          address = getAddr(_cycles, _mem, adressingMode::INDX);
-         --_cycles;
+         safeCycleDecrement(_cycles);
          break;
       }
       case CPU::INS_EOR_INDY :{
@@ -138,7 +138,7 @@ void CPU::ORA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
       case CPU::INS_ORA_INDX :{
          address = getAddr(_cycles, _mem, adressingMode::INDX);
-         --_cycles;
+         safeCycleDecrement(_cycles);
          break;
       }
       case CPU::INS_ORA_INDY :{

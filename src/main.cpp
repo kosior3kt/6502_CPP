@@ -11,19 +11,8 @@ int main()
    CPU cpu;
    cpu.Reset(mem);   ///I want to explicitly reset memory instead of doing it in constructor
    /// end - boot
-
-   createInlineProgram(mem);  /// As of today we need to put our program in memory manually 
-
-   cpu.execute(16, mem);      /// we need to explicitly expecify (minimal) number of cycles needed to finish doing stuff
-
-   /// start - test
    
-   std::cout << cpu.A << std::endl;  ///Dont want to have this now - I will take care of this later
-   /// end - test
-   ///
-
-
-   ///HEX_PRINT(1, "Hello", true, 1.5, 0x69, 100, 0x1ff);
+   cpu.showCycles(mem);
 
    return 0;
 }

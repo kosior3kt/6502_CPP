@@ -18,7 +18,10 @@ TEST_F(TEST_6502, slightlyMoreComplicatedProgram)
    mem_.debug_set(0x4246, 0x69);
    mem_.debug_set(0x6969, CPU::INS_LDA_IM);
    mem_.debug_set(0x696A, 0x6B);
-   auto cyclesLeft = cpu_.execute(18, mem_);
+   mem_.debug_set(0x696B, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
+
+
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((int)cpu_.A, 0x6B);
@@ -40,7 +43,8 @@ TEST_F(TEST_6502, slightlyMoreComplicatedProgramWithMemoryManipulation)
    mem_.debug_set(0x4246, 0x69);
    mem_.debug_set(0x6969, CPU::INS_LDA_IM);
    mem_.debug_set(0x696A, 0x6B);
-   auto cyclesLeft = cpu_.execute(18, mem_);
+   mem_.debug_set(0x696B, CPU::INS_NOTHING);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((int)cpu_.A, 0x6B);
@@ -60,8 +64,9 @@ TEST_F(TEST_6502, forthAndBack)
    mem_.debug_set(0x6000, CPU::INS_RTS);  ///6 cycles
    mem_.debug_set(0xFF03, CPU::INS_LDA_IM);  ///2 cycles?
    mem_.debug_set(0xFF04, 0x42);
+   mem_.debug_set(0xFF05, CPU::INS_NOTHING);
 
-   auto cyclesLeft = cpu_.execute(16, mem_);
+   auto cyclesLeft = cpu_.execute(40, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((int)cpu_.A, 0x42);

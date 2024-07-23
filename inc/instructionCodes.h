@@ -221,5 +221,8 @@ static constexpr Byte INS_BRK       = 0x00;   ///TODO: change this later on into
 static constexpr Byte INS_NOP       = 0xEA;
 static constexpr Byte INS_RTI       = 0x60;
 
+////////////////////////////////////// System Functions
+static constexpr Byte INS_NOTHING   = 0x12;
+
 
 #endif

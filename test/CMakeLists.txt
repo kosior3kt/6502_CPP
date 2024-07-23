@@ -22,6 +22,30 @@ set (TEST_SOURCES
    test_systemInstructions.cpp
    )
 
+set (TEST_SOURCES_DEBUG
+   main.cpp
+   test.hpp
+   test_LDX.cpp
+   test_LDY.cpp
+   test_INC.cpp
+   test_DEC.cpp
+   test_STA.cpp
+   test_MISC.cpp
+   test_JumpingInstructions.cpp
+   test_circularTestCollection.cpp
+   test_MultipleInstructions.cpp
+   test_transfer.cpp
+   test_stackOperations.cpp
+   test_statusFlags.cpp
+   test_logicalOperations.cpp
+   test_branches.cpp
+   test_LDA.cpp
+   test_shifts.cpp
+   test_arithmetics.cpp
+   test_compare.cpp
+   test_systemInstructions.cpp
+   )
+
 
 # set(ALTERNATIVE_TEST_SOURCES
 #    test.hpp
@@ -73,6 +97,7 @@ if(BUILD_LEGACY)
 
 else()
    add_executable(test
+      #${TEST_SOURCES_DEBUG}
       ${TEST_SOURCES}
       )
 

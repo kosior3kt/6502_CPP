@@ -15,7 +15,8 @@ void CPU::ASL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
             C = 1;
          }
          A = A << 1;
-         _cycles -= 2;
+         safeCycleDecrement(_cycles);
+         safeCycleDecrement(_cycles);
          A &= 0b11111110;  //make sure the last bit is beingi filled with 0
          Byte flag = (N_f | Z_f); /// does this work(?)
          SetCustomFlagsWithRegister(Register::A, flag);
@@ -65,7 +66,8 @@ void CPU::LSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
             C = 1;
          }
          A = A >> 1;
-         _cycles -= 2;
+         safeCycleDecrement(_cycles);
+         safeCycleDecrement(_cycles);
          A &= 0b01111111;  //make sure the last bit is beingi filled with 0
          Byte flag =  (N_f | Z_f); /// does this work(?)
          SetCustomFlagsWithRegister(Register::A, flag);
@@ -117,7 +119,8 @@ void CPU::ROL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          }
          A = A << 1;
          A |= tempC;
-         _cycles -= 2;
+         safeCycleDecrement(_cycles);
+         safeCycleDecrement(_cycles);
          Byte flag =  (N_f | Z_f); /// does this work(?)
          SetCustomFlagsWithRegister(Register::A, flag);
          return;
@@ -169,7 +172,8 @@ void CPU::ROR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          }
          A = A >> 1;
          A |= tempC << 7;
-         _cycles -= 2;
+         safeCycleDecrement(_cycles);
+         safeCycleDecrement(_cycles);
          Byte flag =  (N_f | Z_f); /// does this work(?)
          SetCustomFlagsWithRegister(Register::A, flag);
          return;
@@ -218,7 +222,9 @@ void CPU::ASL_ACC(u32& _cycles, Mem &_mem)
       C = 1;
    }
    A = A << 1;
-   --_cycles -= 2;
+   ///TODO: solve this later on
+   safeCycleDecrement(_cycles);
+   safeCycleDecrement(_cycles);
    A &= 0b11111110;  //make sure the last bit is beingi filled with 0
    Byte flag = 0b11111111 & (N_f | Z_f); /// does this work(?)
    SetCustomFlagsWithRegister(Register::A, flag);
@@ -304,7 +310,8 @@ void CPU::LSR_ACC(u32& _cycles, Mem &_mem)
       C = 1;
    }
    A = A >> 1;
-   --_cycles -= 2;
+   safeCycleDecrement(_cycles);
+   safeCycleDecrement(_cycles);
    A &= 0b01111111;  //make sure the first bit is beingi filled with 0
    Byte flag = 0b11111111 & (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
@@ -393,7 +400,8 @@ void CPU::ROL_ACC(u32& _cycles, Mem &_mem)
    }
    A = A << 1;
    A |= tempC; ///this takes care of rotation stuff
-   --_cycles -= 2;
+   safeCycleDecrement(_cycles);
+   safeCycleDecrement(_cycles);
    Byte flag = 0b11111111 & (N_f | Z_f); 
    SetCustomFlagsWithRegister(Register::A, flag);
 }
@@ -486,7 +494,8 @@ void CPU::ROR_ACC(u32& _cycles, Mem &_mem)
    }
    A  = A >> 1;
    A |= tempC << 7;
-   --_cycles -= 2;
+   safeCycleDecrement(_cycles);
+   safeCycleDecrement(_cycles);
    Byte flag =  (N_f | Z_f);
    SetCustomFlagsWithRegister(Register::A, flag);
 
