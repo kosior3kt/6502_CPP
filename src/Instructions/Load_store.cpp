@@ -1,7 +1,7 @@
 #include "CPU.h"
 
 //////////////////////////////////// test
-void CPU::LDA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::LDA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    bool immediete = false;
    Word address{};
@@ -59,13 +59,11 @@ void CPU::LDA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 }
 
 
-void CPU::LDX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::LDX(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    bool immediete = false;
    Word address{};
 
-
-   std::cout<<"here "<<std::endl;
    switch(_opCode){
       case CPU::INS_LDX_IM :{
          Byte val  = fetchByte(_cycles, _mem);
@@ -108,7 +106,7 @@ void CPU::LDX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithRegister(Register::X, flag);
 }
 
-void CPU::LDY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::LDY(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    bool immediete = false;
    Word address{};
@@ -147,7 +145,7 @@ void CPU::LDY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 }
 
 
-void CPU::STA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::STA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 
@@ -186,7 +184,7 @@ void CPU::STA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    writeByte(_cycles, address, _mem, CPU::A);
 }
 
-void CPU::STX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::STX(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 
@@ -209,7 +207,7 @@ void CPU::STX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
 }
 
-void CPU::STY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::STY(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 

@@ -4,7 +4,7 @@
 #define BINARY_ONE      0b00000001
 
 
-void CPU::ASL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::ASL(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 
@@ -55,7 +55,7 @@ void CPU::ASL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    );
 }
 
-void CPU::LSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::LSR(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 
@@ -106,7 +106,7 @@ void CPU::LSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    );
 }
 
-void CPU::ROL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::ROL(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 
@@ -159,7 +159,7 @@ void CPU::ROL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    );
 }
 
-void CPU::ROR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::ROR(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 

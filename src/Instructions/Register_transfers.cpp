@@ -1,7 +1,7 @@
 #include "CPU.h"
 
 
-void CPU::TYA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::TYA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    A = Y;
    Y = 0;
@@ -9,7 +9,7 @@ void CPU::TYA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithRegister(Register::A, flag);
 }
 
-void CPU::TAY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::TAY(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Y = A;
    A = 0;
@@ -17,7 +17,7 @@ void CPU::TAY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithRegister(Register::Y, flag);
 }
 
-void CPU::TXA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::TXA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    A = X;
    X = 0;
@@ -25,7 +25,7 @@ void CPU::TXA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithRegister(Register::A, flag);
 }
 
-void CPU::TAX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::TAX(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    X = A;
    A = 0;

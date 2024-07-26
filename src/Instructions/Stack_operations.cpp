@@ -25,39 +25,39 @@ void CPU::setCurrentFlags(const uint8_t& _flags)
 
 
 
-void CPU::TSX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::TSX(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    X = SP;
   safeCycleDecrement(_cycles);   ///TODO: measure later how many cycles this thing should even use
 }
 
-void CPU::TXS_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::TXS(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
   SP = X;
   safeCycleDecrement(_cycles);
 }
 
-void CPU::PHA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::PHA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    pushByteToStack(_cycles, _mem, A);
   safeCycleDecrement(_cycles);
 }
 
-void CPU::PHP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::PHP(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    auto flags = getCurrentFlags();
    pushByteToStack(_cycles, _mem, flags);
    safeCycleDecrement(_cycles);
 }
 
-void CPU::PLA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::PLA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Byte value = popByteFromStack(_cycles, _mem);
    safeCycleDecrement(_cycles);
    A = value;
 }
 
-void CPU::PLP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::PLP(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    auto flags = popByteFromStack(_cycles, _mem);
    setCurrentFlags(flags);

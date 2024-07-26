@@ -462,75 +462,75 @@ struct CPU
 
          ///TODO: now the same thing for the rest of functions =3
 
-         //instructionMap_test[bindMemberFunction(&CPU::LDA_TEST)] = opcodes_LDA;
-         instructionMap[opcodes_LDA] = bindMemberFunction(&CPU::LDA_TEST);
-         instructionMap[opcodes_LDX] = bindMemberFunction(&CPU::LDX_TEST);
-         instructionMap[opcodes_LDY] = bindMemberFunction(&CPU::LDY_TEST);
+         //instructionMap_test[bindMemberFunction(&CPU::LDA)] = opcodes_LDA;
+         instructionMap[opcodes_LDA] = bindMemberFunction(&CPU::LDA);
+         instructionMap[opcodes_LDX] = bindMemberFunction(&CPU::LDX);
+         instructionMap[opcodes_LDY] = bindMemberFunction(&CPU::LDY);
 
-         instructionMap[opcodes_STA] = bindMemberFunction(&CPU::STA_TEST);
-         instructionMap[opcodes_STX] = bindMemberFunction(&CPU::STX_TEST);
-         instructionMap[opcodes_STY] = bindMemberFunction(&CPU::STY_TEST);
+         instructionMap[opcodes_STA] = bindMemberFunction(&CPU::STA);
+         instructionMap[opcodes_STX] = bindMemberFunction(&CPU::STX);
+         instructionMap[opcodes_STY] = bindMemberFunction(&CPU::STY);
 
-         instructionMap[opcodes_INC] = bindMemberFunction(&CPU::INC_TEST);
-         instructionMap[opcodes_INX] = bindMemberFunction(&CPU::INX_TEST);
-         instructionMap[opcodes_INY] = bindMemberFunction(&CPU::INY_TEST);
+         instructionMap[opcodes_INC] = bindMemberFunction(&CPU::INC);
+         instructionMap[opcodes_INX] = bindMemberFunction(&CPU::INX);
+         instructionMap[opcodes_INY] = bindMemberFunction(&CPU::INY);
 
-         instructionMap[opcodes_DEC] = bindMemberFunction(&CPU::DEC_TEST);
-         instructionMap[opcodes_DEX] = bindMemberFunction(&CPU::DEX_TEST);
-         instructionMap[opcodes_DEY] = bindMemberFunction(&CPU::DEY_TEST);
+         instructionMap[opcodes_DEC] = bindMemberFunction(&CPU::DEC);
+         instructionMap[opcodes_DEX] = bindMemberFunction(&CPU::DEX);
+         instructionMap[opcodes_DEY] = bindMemberFunction(&CPU::DEY);
 
-         instructionMap[opcodes_JSR] = bindMemberFunction(&CPU::JSR_TEST);
-         instructionMap[opcodes_RTS] = bindMemberFunction(&CPU::RTS_TEST);
-         instructionMap[opcodes_JMP] = bindMemberFunction(&CPU::JMP_TEST);
+         instructionMap[opcodes_JSR] = bindMemberFunction(&CPU::JSR);
+         instructionMap[opcodes_RTS] = bindMemberFunction(&CPU::RTS);
+         instructionMap[opcodes_JMP] = bindMemberFunction(&CPU::JMP);
 
-         instructionMap[opcodes_TSX] = bindMemberFunction(&CPU::TSX_TEST);
-         instructionMap[opcodes_TXS] = bindMemberFunction(&CPU::TXS_TEST);
-         instructionMap[opcodes_PHA] = bindMemberFunction(&CPU::PHA_TEST);
-         instructionMap[opcodes_PHP] = bindMemberFunction(&CPU::PHP_TEST);
-         instructionMap[opcodes_PLA] = bindMemberFunction(&CPU::PLA_TEST);
-         instructionMap[opcodes_PLP] = bindMemberFunction(&CPU::PLP_TEST);
+         instructionMap[opcodes_TSX] = bindMemberFunction(&CPU::TSX);
+         instructionMap[opcodes_TXS] = bindMemberFunction(&CPU::TXS);
+         instructionMap[opcodes_PHA] = bindMemberFunction(&CPU::PHA);
+         instructionMap[opcodes_PHP] = bindMemberFunction(&CPU::PHP);
+         instructionMap[opcodes_PLA] = bindMemberFunction(&CPU::PLA);
+         instructionMap[opcodes_PLP] = bindMemberFunction(&CPU::PLP);
 
-         instructionMap[opcodes_TAX] = bindMemberFunction(&CPU::TAX_TEST);
-         instructionMap[opcodes_TXA] = bindMemberFunction(&CPU::TXA_TEST);
-         instructionMap[opcodes_TAY] = bindMemberFunction(&CPU::TAY_TEST);
-         instructionMap[opcodes_TYA] = bindMemberFunction(&CPU::TYA_TEST);
+         instructionMap[opcodes_TAX] = bindMemberFunction(&CPU::TAX);
+         instructionMap[opcodes_TXA] = bindMemberFunction(&CPU::TXA);
+         instructionMap[opcodes_TAY] = bindMemberFunction(&CPU::TAY);
+         instructionMap[opcodes_TYA] = bindMemberFunction(&CPU::TYA);
 
-         instructionMap[opcodes_AND] = bindMemberFunction(&CPU::AND_TEST);
-         instructionMap[opcodes_EOR] = bindMemberFunction(&CPU::EOR_TEST);
-         instructionMap[opcodes_ORA] = bindMemberFunction(&CPU::ORA_TEST);
-         instructionMap[opcodes_BIT] = bindMemberFunction(&CPU::BIT_TEST);
+         instructionMap[opcodes_AND] = bindMemberFunction(&CPU::AND);
+         instructionMap[opcodes_EOR] = bindMemberFunction(&CPU::EOR);
+         instructionMap[opcodes_ORA] = bindMemberFunction(&CPU::ORA);
+         instructionMap[opcodes_BIT] = bindMemberFunction(&CPU::BIT);
 
-         instructionMap[opcodes_BCC] = bindMemberFunction(&CPU::BCC_TEST);
-         instructionMap[opcodes_BCS] = bindMemberFunction(&CPU::BCS_TEST);
-         instructionMap[opcodes_BEQ] = bindMemberFunction(&CPU::BEQ_TEST);
-         instructionMap[opcodes_BMI] = bindMemberFunction(&CPU::BMI_TEST);
-         instructionMap[opcodes_BNE] = bindMemberFunction(&CPU::BNE_TEST);
-         instructionMap[opcodes_BPL] = bindMemberFunction(&CPU::BPL_TEST);
-         instructionMap[opcodes_BVC] = bindMemberFunction(&CPU::BVC_TEST);
-         instructionMap[opcodes_BVS] = bindMemberFunction(&CPU::BVS_TEST);
+         instructionMap[opcodes_BCC] = bindMemberFunction(&CPU::BCC);
+         instructionMap[opcodes_BCS] = bindMemberFunction(&CPU::BCS);
+         instructionMap[opcodes_BEQ] = bindMemberFunction(&CPU::BEQ);
+         instructionMap[opcodes_BMI] = bindMemberFunction(&CPU::BMI);
+         instructionMap[opcodes_BNE] = bindMemberFunction(&CPU::BNE);
+         instructionMap[opcodes_BPL] = bindMemberFunction(&CPU::BPL);
+         instructionMap[opcodes_BVC] = bindMemberFunction(&CPU::BVC);
+         instructionMap[opcodes_BVS] = bindMemberFunction(&CPU::BVS);
 
-         instructionMap[opcodes_ASL] = bindMemberFunction(&CPU::ASL_TEST);
-         instructionMap[opcodes_LSR] = bindMemberFunction(&CPU::LSR_TEST);
-         instructionMap[opcodes_ROR] = bindMemberFunction(&CPU::ROR_TEST);
-         instructionMap[opcodes_ROL] = bindMemberFunction(&CPU::ROL_TEST);
+         instructionMap[opcodes_ASL] = bindMemberFunction(&CPU::ASL);
+         instructionMap[opcodes_LSR] = bindMemberFunction(&CPU::LSR);
+         instructionMap[opcodes_ROR] = bindMemberFunction(&CPU::ROR);
+         instructionMap[opcodes_ROL] = bindMemberFunction(&CPU::ROL);
 
-         instructionMap[opcodes_ADC] = bindMemberFunction(&CPU::ADC_TEST);
-         instructionMap[opcodes_SBC] = bindMemberFunction(&CPU::SBC_TEST);
-         instructionMap[opcodes_CMP] = bindMemberFunction(&CPU::CMP_TEST);
-         instructionMap[opcodes_CPX] = bindMemberFunction(&CPU::CPX_TEST);
-         instructionMap[opcodes_CPY] = bindMemberFunction(&CPU::CPY_TEST);
+         instructionMap[opcodes_ADC] = bindMemberFunction(&CPU::ADC);
+         instructionMap[opcodes_SBC] = bindMemberFunction(&CPU::SBC);
+         instructionMap[opcodes_CMP] = bindMemberFunction(&CPU::CMP);
+         instructionMap[opcodes_CPX] = bindMemberFunction(&CPU::CPX);
+         instructionMap[opcodes_CPY] = bindMemberFunction(&CPU::CPY);
 
-         instructionMap[opcodes_CLC] = bindMemberFunction(&CPU::CLC_TEST);
-         instructionMap[opcodes_CLD] = bindMemberFunction(&CPU::CLD_TEST);
-         instructionMap[opcodes_CLI] = bindMemberFunction(&CPU::CLI_TEST);
-         instructionMap[opcodes_CLV] = bindMemberFunction(&CPU::CLV_TEST);
-         instructionMap[opcodes_SEC] = bindMemberFunction(&CPU::SEC_TEST);
-         instructionMap[opcodes_SED] = bindMemberFunction(&CPU::SED_TEST);
-         instructionMap[opcodes_SEI] = bindMemberFunction(&CPU::SEI_TEST);
+         instructionMap[opcodes_CLC] = bindMemberFunction(&CPU::CLC);
+         instructionMap[opcodes_CLD] = bindMemberFunction(&CPU::CLD);
+         instructionMap[opcodes_CLI] = bindMemberFunction(&CPU::CLI);
+         instructionMap[opcodes_CLV] = bindMemberFunction(&CPU::CLV);
+         instructionMap[opcodes_SEC] = bindMemberFunction(&CPU::SEC);
+         instructionMap[opcodes_SED] = bindMemberFunction(&CPU::SED);
+         instructionMap[opcodes_SEI] = bindMemberFunction(&CPU::SEI);
 
-         instructionMap[opcodes_BRK] = bindMemberFunction(&CPU::BRK_TEST);
-         instructionMap[opcodes_NOP] = bindMemberFunction(&CPU::NOP_TEST);
-         instructionMap[opcodes_RTI] = bindMemberFunction(&CPU::RTI_TEST);
+         instructionMap[opcodes_BRK] = bindMemberFunction(&CPU::BRK);
+         instructionMap[opcodes_NOP] = bindMemberFunction(&CPU::NOP);
+         instructionMap[opcodes_RTI] = bindMemberFunction(&CPU::RTI);
                                                                                                                      
          instructionMap[opcodes_NOTHING] = bindMemberFunction(&CPU::NOTHING_);
          ///instructionMap[opcodes_NOTHING] = bindMemberFunction(&CPU::NOTHING_);

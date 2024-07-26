@@ -27,7 +27,7 @@ static std::ostream& operator<<(std::ostream& os, const result& Token) noexcept 
   return os;
 }
 
-void CPU::ADC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::ADC(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    bool immediete = false;
    Word address{};
@@ -109,7 +109,7 @@ void CPU::ADC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithRegister(Register::A, flag);
 }
 
-void CPU::SBC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::SBC(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    bool immediete = false;
    Word address{};
@@ -189,7 +189,7 @@ void CPU::SBC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
 }
 
-void CPU::CMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::CMP(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    
    bool immediete = false;
@@ -249,7 +249,7 @@ void CPU::CMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithValue(res, flag);
 }
 
-void CPU::CPX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::CPX(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    
    bool immediete = false;
@@ -289,7 +289,7 @@ void CPU::CPX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
 }
 
-void CPU::CPY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::CPY(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    
    bool immediete = false;

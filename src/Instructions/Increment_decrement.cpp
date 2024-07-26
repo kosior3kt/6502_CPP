@@ -11,7 +11,7 @@
 //////////////////////////////////// TEST
 
 
-void CPU::INC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::INC(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 
@@ -45,7 +45,7 @@ void CPU::INC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    );
 }
 
-void CPU::INX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::INX(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    ++X;  ///this should be wrapping
    safeCycleDecrement(_cycles);
@@ -53,7 +53,7 @@ void CPU::INX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithRegister(Register::X, flag);
 }
 
-void CPU::INY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::INY(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    ++Y; //this as well should be wrapping
    safeCycleDecrement(_cycles);
@@ -62,7 +62,7 @@ void CPU::INY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 }
 
 
-void CPU::DEC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::DEC(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 
@@ -96,7 +96,7 @@ void CPU::DEC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    );
 }
 
-void CPU::DEX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::DEX(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    --X;
    safeCycleDecrement(_cycles);
@@ -105,7 +105,7 @@ void CPU::DEX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithRegister(Register::X, flag);
 }
 
-void CPU::DEY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::DEY(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    --Y;
    safeCycleDecrement(_cycles);

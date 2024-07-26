@@ -1,11 +1,11 @@
 #include "CPU.h"
 
 
-void CPU::BRK_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::BRK(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    PC++; //this thing is 2 cycle instruction or sth, blah balh blah
    pushWordToStack(_cycles, _mem, PC);
-   CPU::PHP_TEST(_cycles, _mem, static_cast<const Byte>(NULL));   ///yeah, sure, why not?
+   CPU::PHP(_cycles, _mem, static_cast<const Byte>(NULL));   ///yeah, sure, why not?
 
    Word interruptVectorAddr = 0xFFFE;
    auto newPCAddr = readWord(_cycles, interruptVectorAddr, _mem);
@@ -18,14 +18,14 @@ void CPU::BRK_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    HEX_PRINT("number of cycles: ", _cycles);
 }
 
-void CPU::NOP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::NOP(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    PC++;       //just spinning bby
 }
 
-void CPU::RTI_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::RTI(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
-   CPU::PLP_TEST(_cycles, _mem, static_cast<const Byte>(NULL));
+   CPU::PLP(_cycles, _mem, static_cast<const Byte>(NULL));
    auto retrievedPC = popWordFromStack(_cycles, _mem);
    PC = retrievedPC;
 }

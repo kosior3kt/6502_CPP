@@ -1,7 +1,7 @@
 #include "CPU.h"
 
 
-void CPU::AND_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::AND(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    bool immediete = false;
    Word address{};
@@ -52,7 +52,7 @@ void CPU::AND_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithRegister(Register::A, flag);
 }
 
-void CPU::EOR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::EOR(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    bool immediete = false;
    Word address{};
@@ -104,7 +104,7 @@ void CPU::EOR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
 }
 
-void CPU::ORA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::ORA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    bool immediete = false;
    Word address{};
@@ -155,7 +155,7 @@ void CPU::ORA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    setCustomFlagsWithRegister(Register::A, flag);
 }
 
-void CPU::BIT_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::BIT(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address{};
 

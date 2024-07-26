@@ -1,6 +1,6 @@
 #include "CPU.h"
 
-void CPU::JSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::JSR(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address = getAddr(_cycles, _mem, adressingMode::ABS);
    pushWordToStack(_cycles, _mem, PC);
@@ -8,7 +8,7 @@ void CPU::JSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    PC = address;
 }
 
-void CPU::RTS_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::RTS(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    auto retAddr = popWordFromStack(_cycles, _mem);
    PC = retAddr;
@@ -16,7 +16,7 @@ void CPU::RTS_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    safeCycleDecrement(_cycles);
 }
 
-void CPU::JMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
+void CPU::JMP(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    Word address;
    switch(_opCode){
