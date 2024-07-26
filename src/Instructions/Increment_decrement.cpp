@@ -34,12 +34,12 @@ void CPU::INC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
    }
    safeCycleDecrement(_cycles);
-   ApplyToMemory(
+   applyToMemory(
        _cycles, address, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to capture "this", so that it can manipulate NZ flags
          Byte flag = (N_f | Z_f); 
-         SetCustomFlagsWithValue(_val, flag);
+         setCustomFlagsWithValue(_val, flag);
           return (_val + 1);
        }
    );
@@ -50,7 +50,7 @@ void CPU::INX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    ++X;  ///this should be wrapping
    safeCycleDecrement(_cycles);
    Byte flag = (N_f | Z_f); 
-   SetCustomFlagsWithRegister(Register::X, flag);
+   setCustomFlagsWithRegister(Register::X, flag);
 }
 
 void CPU::INY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
@@ -58,7 +58,7 @@ void CPU::INY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    ++Y; //this as well should be wrapping
    safeCycleDecrement(_cycles);
    Byte flag = (N_f | Z_f); 
-   SetCustomFlagsWithRegister(Register::Y, flag);
+   setCustomFlagsWithRegister(Register::Y, flag);
 }
 
 
@@ -85,12 +85,12 @@ void CPU::DEC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
    }
    safeCycleDecrement(_cycles);
-   ApplyToMemory(
+   applyToMemory(
        _cycles, address, _mem,
        [this](const Byte &_val
        ) -> Byte { /// need to capture "this", so that it can manipulate NZ flags
          Byte flag = (N_f | Z_f); 
-         SetCustomFlagsWithValue(_val, flag);
+         setCustomFlagsWithValue(_val, flag);
           return (_val - 1);
        }
    );
@@ -102,7 +102,7 @@ void CPU::DEX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    safeCycleDecrement(_cycles);
    HEX_PRINT("here");
    Byte flag = (N_f | Z_f); 
-   SetCustomFlagsWithRegister(Register::X, flag);
+   setCustomFlagsWithRegister(Register::X, flag);
 }
 
 void CPU::DEY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
@@ -111,6 +111,6 @@ void CPU::DEY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    safeCycleDecrement(_cycles);
    HEX_PRINT("here");
    Byte flag = (N_f | Z_f);
-   SetCustomFlagsWithRegister(Register::Y, flag);
+   setCustomFlagsWithRegister(Register::Y, flag);
 }
 

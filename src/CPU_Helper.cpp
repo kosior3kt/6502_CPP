@@ -11,11 +11,11 @@ void CPU::Reset(Mem &_mem, const Word& _PC_start)  ///_PC_start is by deafult 0x
    SP = 0xFF;
    C = Z = I = D = B = V = N = 0;
    A = X = Y = 0;
-   _mem.Initialise();
+   _mem.initialise();
 }
 
 [[nodiscard]] 
-Byte CPU::FetchByte(u32 &_cycles, const Mem &_mem)
+Byte CPU::fetchByte(u32 &_cycles, const Mem &_mem)
 {
    Byte data = _mem[PC];
    HEX_PRINT("address of the next fetched byte: ", (int)PC);
@@ -26,7 +26,7 @@ Byte CPU::FetchByte(u32 &_cycles, const Mem &_mem)
 }
 
 [[nodiscard]] 
-Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
+Word CPU::fetchWord(u32 &_cycles, const Mem &_mem)
 {
    // 6502 is little endian - so the first is the least significant byte
    auto dataLow = _mem[PC];
@@ -41,7 +41,7 @@ Word CPU::FetchWord(u32 &_cycles, const Mem &_mem)
 }
 
 [[nodiscard]] 
-Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+Byte CPU::readByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    safeCycleDecrement(_cycles);
@@ -49,26 +49,26 @@ Byte CPU::ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 }
 
 [[nodiscard]] 
-Byte CPU::ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
+Byte CPU::readByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    Byte data = _mem[_addr];
    safeCycleDecrement(_cycles);
    return data;
 }
 
-void CPU::WriteByte( u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val)
+void CPU::writeByte( u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val)
 {
    _mem.debug_set(_addr, _val);  ///TODO: create different mechanism for this later
    safeCycleDecrement(_cycles);
 }
 
-void CPU::WriteByte( u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val)
+void CPU::writeByte( u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val)
 {
    _mem.debug_set(_addr, _val);
    safeCycleDecrement(_cycles);
 }
 
-void CPU::WriteWord( u32 &_cycles, const Byte &_addr, Mem &_mem, const Word&_val)
+void CPU::writeWord( u32 &_cycles, const Byte &_addr, Mem &_mem, const Word&_val)
 {
    _mem.debug_set(_addr, (_val & 0xFF));
    _mem.debug_set(_addr + 1, (_val << 8));
@@ -76,7 +76,7 @@ void CPU::WriteWord( u32 &_cycles, const Byte &_addr, Mem &_mem, const Word&_val
    safeCycleDecrement(_cycles);
 }
 
-void CPU::WriteWord( u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val)
+void CPU::writeWord( u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val)
 {
    _mem.debug_set(_addr, (_val & 0xFF));
    _mem.debug_set(_addr + 1, (_val << 8));
@@ -85,12 +85,12 @@ void CPU::WriteWord( u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val
 }
 
 [[nodiscard]] 
-Word CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
+Word CPU::readWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 {
    assert(_addr + 0x0001 < Mem::MAX_MEM);
    Word ea; /// ea => effective address
-   Byte eaHigh  = ReadByte(_cycles, _addr, _mem);
-   Byte eaLow   = ReadByte(_cycles, _addr, _mem);
+   Byte eaHigh  = readByte(_cycles, _addr, _mem);
+   Byte eaLow   = readByte(_cycles, _addr, _mem);
    ea          = eaLow + (eaHigh << 8);
    safeCycleDecrement(_cycles);
    safeCycleDecrement(_cycles);
@@ -98,37 +98,37 @@ Word CPU::ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem)
 }
 
 [[nodiscard]]
-Word CPU::ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
+Word CPU::readWord(u32 &_cycles, const Word &_addr, const Mem &_mem)
 {
    Word ea;
-   Byte eaLow = ReadByte(_cycles, _addr, _mem);
-   Byte eaHigh  = ReadByte(_cycles, (Word)(_addr + 1), _mem);
+   Byte eaLow = readByte(_cycles, _addr, _mem);
+   Byte eaHigh  = readByte(_cycles, (Word)(_addr + 1), _mem);
    ea          = eaLow + (eaHigh << 8);
    safeCycleDecrement(_cycles);
    safeCycleDecrement(_cycles);
    return ea;
 }
 
-void CPU::ApplyToMemory(
+void CPU::applyToMemory(
     u32 &_cycles, const Word &_addr, Mem &_mem,
     std::function<Byte(const Byte &)> _fun
 )
 {
-   Byte tempVal = ReadByte(_cycles, _addr, _mem);
-   WriteByte(_cycles, _addr, _mem, _fun(tempVal));
+   Byte tempVal = readByte(_cycles, _addr, _mem);
+   writeByte(_cycles, _addr, _mem, _fun(tempVal));
 }
 
-void CPU::ApplyToMemory(
+void CPU::applyToMemory(
     u32 &_cycles, const Byte &_addr, Mem &_mem,
     std::function<Byte(const Byte &)> _fun
 )
 {
-   Byte tempVal = ReadByte(_cycles, _addr, _mem);
-   WriteByte(_cycles, _addr, _mem, _fun(tempVal));
+   Byte tempVal = readByte(_cycles, _addr, _mem);
+   writeByte(_cycles, _addr, _mem, _fun(tempVal));
 }
 
 ///depricated
-void CPU::SetNZWithRegister(const Register &_reg)
+void CPU::setNZWithRegister(const Register &_reg)
 {
    Byte temp;
    switch(_reg)
@@ -148,14 +148,14 @@ void CPU::SetNZWithRegister(const Register &_reg)
 }
 
 ///depricated
-void CPU::SetNZWithValue(const Byte &_val
+void CPU::setNZWithValue(const Byte &_val
 ) /// this thing exists only so that I can do less in lambdas
 {
    Z = (_val == 0);
    N = ((Byte)(_val & 0b10000000)) > 0;
 }
 
-void CPU::SetCustomFlagsWithValue(const Byte &_val, Byte &_flags)
+void CPU::setCustomFlagsWithValue(const Byte &_val, Byte &_flags)
 {
    /// will fill this later on
    if(_flags & C_f)
@@ -183,7 +183,7 @@ void CPU::SetCustomFlagsWithValue(const Byte &_val, Byte &_flags)
    }
 }
 
-void CPU::SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
+void CPU::setCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
 {
 
    ///TODO: fix this garbage later...
@@ -273,17 +273,17 @@ Word CPU::popWordFromStack(u32& _cycles, Mem& _mem) ///those should use one more
    return retAddr;
 }
 
-Byte CPU::ReadByteFromStack(u32& _cycles, Mem& _mem)
+Byte CPU::readByteFromStack(u32& _cycles, Mem& _mem)
 {
    auto addr = 0x0100 + SP + 1;   ///we dont want to modify SP cause we are just reading, not poping or pushing
    return _mem.debug_get(addr);
 }
 
-Word CPU::ReadWordFromStack(u32& _cycles, Mem& _mem)
+Word CPU::readWordFromStack(u32& _cycles, Mem& _mem)
 {
-    const Byte retAddrHigh = ReadByteFromStack(_cycles, _mem);
+    const Byte retAddrHigh = readByteFromStack(_cycles, _mem);
     SP++;
-    const Byte retAddrLow = ReadByteFromStack(_cycles, _mem);
+    const Byte retAddrLow = readByteFromStack(_cycles, _mem);
     SP--;
     ///be carefull, I will need to remove this if I ever want to go multithreaded
 
@@ -291,21 +291,21 @@ Word CPU::ReadWordFromStack(u32& _cycles, Mem& _mem)
     return retAddr;
 }
 
-void CPU::OverwriteByteOnStack(u32& _cycles, Mem& _mem, const Word& _val)
+void CPU::overwriteByteOnStack(u32& _cycles, Mem& _mem, const Word& _val)
 {
    auto addr = 0x0100 + SP;
    _mem.debug_set(addr, _val);
 }
 
-void CPU::OverwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val)
+void CPU::overwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val)
 {
    Byte lowToWrite = _val & 0b11110000;
    Byte highToWrite = _val & 0b00001111;
 
    SP--;
-   OverwriteByteOnStack(_cycles, _mem, lowToWrite);
+   overwriteByteOnStack(_cycles, _mem, lowToWrite);
    SP++;
-   OverwriteByteOnStack(_cycles, _mem, highToWrite);
+   overwriteByteOnStack(_cycles, _mem, highToWrite);
 }
 
 /////////////////////////////////addressing
@@ -316,30 +316,30 @@ Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
    ///TODO: figure out cycles for these things later - all of these take at least one I guess...
    switch(_am){
       case adressingMode::ZP:{
-         Byte temp = FetchByte(_cycles, _mem);
+         Byte temp = fetchByte(_cycles, _mem);
          HEX_PRINT("number of cycles: ", _cycles);
          return temp;
       }
       case adressingMode::ZPX:{
          safeCycleDecrement(_cycles);
-         Byte temp = FetchByte(_cycles, _mem) + X;
+         Byte temp = fetchByte(_cycles, _mem) + X;
          HEX_PRINT("number of cycles: ", _cycles);
          return temp;
       }
       case adressingMode::ZPY:{
          safeCycleDecrement(_cycles);
-         Byte temp = FetchByte(_cycles, _mem) + Y;
+         Byte temp = fetchByte(_cycles, _mem) + Y;
          HEX_PRINT("number of cycles: ", _cycles);
          return temp;
       }
       case adressingMode::REL:{
-         return FetchByte(_cycles, _mem); ///this just return relative address
+         return fetchByte(_cycles, _mem); ///this just return relative address
          HEX_PRINT("number of cycles: ", _cycles);
       }
       case adressingMode::ABS:{
          safeCycleDecrement(_cycles);
          HEX_PRINT("number of cycles: ", _cycles);
-         return FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8;
+         return fetchByte(_cycles, _mem) | fetchByte(_cycles, _mem) << 8;
       }
       case adressingMode::ABSX:{
          // safeCycleDecrement(_cycles);
@@ -352,7 +352,7 @@ Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
          // HEX_PRINT("address: ", adress, ", X: ", X);
          // return adress + X;
          HEX_PRINT("number of cycles: ", _cycles);
-         return (FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8) + X;
+         return (fetchByte(_cycles, _mem) | fetchByte(_cycles, _mem) << 8) + X;
       }
       case adressingMode::ABSY:{ ///I will take care of crossing page later...
          // safeCycleDecrement(_cycles);
@@ -366,20 +366,20 @@ Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
          // //HEX_PRINT("address: ", (int)adress, ", X: ", (int)X);
          // return adress + Y;
          HEX_PRINT("number of cycles: ", _cycles);
-         return (FetchByte(_cycles, _mem) | FetchByte(_cycles, _mem) << 8) + Y;
+         return (fetchByte(_cycles, _mem) | fetchByte(_cycles, _mem) << 8) + Y;
       }
       case adressingMode::IND:{
          safeCycleDecrement(_cycles);
          HEX_PRINT("number of cycles: ", _cycles);
-         return FetchWord(_cycles, _mem); ///this takes two cycles
+         return fetchWord(_cycles, _mem); ///this takes two cycles
       }
       case adressingMode::INDX:{
          safeCycleDecrement(_cycles);
          safeCycleDecrement(_cycles);
          safeCycleDecrement(_cycles);
-         Byte adress = FetchByte(_cycles, _mem) + X;
-         Byte eaLow  = ReadByte(_cycles, adress, _mem);
-         Byte eaHigh = ReadByte(_cycles, ++adress, _mem);
+         Byte adress = fetchByte(_cycles, _mem) + X;
+         Byte eaLow  = readByte(_cycles, adress, _mem);
+         Byte eaHigh = readByte(_cycles, ++adress, _mem);
          if(eaLow + X > 0xFF)
             safeCycleDecrement(_cycles);
          HEX_PRINT("number of cycles: ", _cycles);
@@ -388,9 +388,9 @@ Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
       case adressingMode::INDY:{
          safeCycleDecrement(_cycles);
          safeCycleDecrement(_cycles);
-         Word adress = FetchByte(_cycles, _mem);
-         Byte eaLow  = ReadByte(_cycles, adress, _mem);
-         Byte eaHigh = ReadByte( _cycles, ++adress, _mem); 
+         Word adress = fetchByte(_cycles, _mem);
+         Byte eaLow  = readByte(_cycles, adress, _mem);
+         Byte eaHigh = readByte( _cycles, ++adress, _mem); 
          if(eaLow + Y > 0xFF)
             safeCycleDecrement(_cycles);
          HEX_PRINT("number of cycles: ", _cycles);

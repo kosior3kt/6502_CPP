@@ -3,9 +3,6 @@
 
 #include "defines.h"
 
-////////////////////////////////////// Empty instruction (this is my happy invention)
-static constexpr Byte INS_NULL     = 0xFF;
-
 ////////////////////////////////////// Load/Store
 /// LDA instructions
 static constexpr Byte INS_LDA_IM   = 0xA9;
@@ -217,12 +214,12 @@ static constexpr Byte INS_SED       = 0xF8;
 static constexpr Byte INS_SEI       = 0x78;
 
 ////////////////////////////////////// System Functions
-static constexpr Byte INS_BRK       = 0x00;   ///TODO: change this later on into 0x00. For now I prefer to have a 0x00 as an idle instruction
+static constexpr Byte INS_BRK       = 0x00;   
 static constexpr Byte INS_NOP       = 0xEA;
 static constexpr Byte INS_RTI       = 0x60;
 
-////////////////////////////////////// System Functions
-static constexpr Byte INS_NOTHING   = 0x12;
+////////////////////////////////////// SANITY RESCUER
+static constexpr Byte INS_NOTHING   = 0xFF;
 
 
 #endif

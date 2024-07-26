@@ -8,7 +8,7 @@ void CPU::AND_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    switch(_opCode){
       case CPU::INS_AND_IM :{
-         Byte val  = FetchByte(_cycles, _mem);
+         Byte val  = fetchByte(_cycles, _mem);
          A         &= val;
          immediete = true;
          break;
@@ -46,10 +46,10 @@ void CPU::AND_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    if(!immediete)
    {
-      A  &= ReadByte(_cycles, address, _mem);
+      A  &= readByte(_cycles, address, _mem);
    }
    Byte flag = (N_f | Z_f);
-   SetCustomFlagsWithRegister(Register::A, flag);
+   setCustomFlagsWithRegister(Register::A, flag);
 }
 
 void CPU::EOR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
@@ -59,7 +59,7 @@ void CPU::EOR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    switch(_opCode){
       case CPU::INS_EOR_IM :{
-         Byte val  = FetchByte(_cycles, _mem);
+         Byte val  = fetchByte(_cycles, _mem);
          A         ^= val;
          immediete = true;
          break;
@@ -97,10 +97,10 @@ void CPU::EOR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    if(!immediete)
    {
-      A  ^= ReadByte(_cycles, address, _mem);
+      A  ^= readByte(_cycles, address, _mem);
    }
    Byte flag = (N_f | Z_f);
-   SetCustomFlagsWithRegister(Register::A, flag);
+   setCustomFlagsWithRegister(Register::A, flag);
 
 }
 
@@ -111,7 +111,7 @@ void CPU::ORA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    switch(_opCode){
       case CPU::INS_ORA_IM :{
-         Byte val  = FetchByte(_cycles, _mem);
+         Byte val  = fetchByte(_cycles, _mem);
          A         |= val;
          immediete = true;
          break;
@@ -149,10 +149,10 @@ void CPU::ORA_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    if(!immediete)
    {
-      A  |= ReadByte(_cycles, address, _mem);
+      A  |= readByte(_cycles, address, _mem);
    }
    Byte flag = (N_f | Z_f);
-   SetCustomFlagsWithRegister(Register::A, flag);
+   setCustomFlagsWithRegister(Register::A, flag);
 }
 
 void CPU::BIT_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
@@ -170,7 +170,7 @@ void CPU::BIT_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
    }
     
-   Byte operand = ReadByte(_cycles, address, _mem);
+   Byte operand = readByte(_cycles, address, _mem);
    Byte temp = A & operand; 
    Byte flag = 0b00000000;
    if(temp == 0){
@@ -188,7 +188,7 @@ void CPU::BIT_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    else{
       V = 0;   
    }
-   SetCustomFlagsWithRegister(Register::A, flag);
+   setCustomFlagsWithRegister(Register::A, flag);
 }
 
 

@@ -13,7 +13,7 @@ struct Mem
 
       Byte Data[MAX_MEM];
 
-      void Initialise();
+      void initialise();
 
       Byte operator[](const u32& _addr) const;
 
@@ -24,6 +24,9 @@ struct Mem
       Byte debug_get(const u32& _addr);
 
       void debug_dumpMemory(const std::string& _fileName);
+
+      ///prolly need a way to change binary data into a memory for the program. Need serializer and deserializer then...
+      void loadFromFile(std::string_view _path);
 };
 
 #endif

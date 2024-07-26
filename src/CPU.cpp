@@ -6,7 +6,7 @@ s32 CPU::execute(u32 _cycles, Mem &_mem)
 {
     while(_cycles > 0)
    {
-      Byte inst         = FetchByte(_cycles, _mem);
+      Byte inst         = fetchByte(_cycles, _mem);
       bool found = false;
       for(auto x : instructionMap)
       {

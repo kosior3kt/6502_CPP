@@ -5,7 +5,7 @@
 
 void CPU::NULL_INS(u32 &_cycles, Mem &_mem)
 {
-   [[maybe_unused]] Byte val = FetchByte(_cycles, _mem);
+   [[maybe_unused]] Byte val = fetchByte(_cycles, _mem);
    return;
 }
 

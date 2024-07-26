@@ -10,7 +10,7 @@ use File::Spec;
 use Term::ANSIColor;
 
 # Command-line flags
-my $legacy       = 0;
+my $alternative  = 0;
 my $build        = 0;
 my $run          = 0;
 my $test         = 0;
@@ -18,7 +18,7 @@ my $verbose      = 0;
 my $output_dir   = 'build';
 
 GetOptions(
-    "legacy"       => \$legacy,
+    "alternative"  => \$alternative,
     "build"        => \$build,
     "run"          => \$run,
     "test"         => \$test,
@@ -31,13 +31,13 @@ $output_dir = File::Spec->rel2abs($output_dir);  # Convert to absolute path for 
 
 # Define CMake arguments based on flags
 my @cmake_args;
-if ($legacy) 
+if ($alternative) 
 {
-   @cmake_args = ("-DBUILD_LEGACY=ON");
+   @cmake_args = ("-DALTERNATIVE=ON");
 }
 else
 {
-   @cmake_args = ("-DBUILD_LEGACY=OFF");  #just to be sure
+   @cmake_args = ("-DALTERNATIVE=OFF");  #just to be sure
 }
 
 if($verbose)
@@ -73,10 +73,10 @@ if ($build) {
 }
 
 # Run optional post-build steps
-if ($run) {
-    print "Running ./src/dupa\n";
-    system("./src/dupa") == 0 or warn("Failed to run ./src/dupa: $!\n");
-}
+# if ($run) {
+#     print "Running ./src/dupa\n";
+#     system("./src/dupa") == 0 or warn("Failed to run ./src/dupa: $!\n");
+# }
 
 if ($test) {
     print "Running ./test/test\n";

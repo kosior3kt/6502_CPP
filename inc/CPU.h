@@ -64,23 +64,23 @@ struct CPU
       void safeCycleDecrement(u32& _cycles);
 
       /////////////////////////////////////////////////logic and memory
-      Byte FetchByte(u32 &_cycles, const Mem &_mem);
-      Word FetchWord(u32 &_cycles, const Mem &_mem);
+      Byte fetchByte(u32 &_cycles, const Mem &_mem);
+      Word fetchWord(u32 &_cycles, const Mem &_mem);
 
-      Byte ReadByte(u32 &_cycles, const Byte &_addr, const Mem &_mem);
-      Byte ReadByte(u32 &_cycles, const Word &_addr, const Mem &_mem);
-      Word ReadWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
-      Word ReadWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
+      Byte readByte(u32 &_cycles, const Byte &_addr, const Mem &_mem);
+      Byte readByte(u32 &_cycles, const Word &_addr, const Mem &_mem);
+      Word readWord(u32 &_cycles, const Byte &_addr, const Mem &_mem);
+      Word readWord(u32 &_cycles, const Word &_addr, const Mem &_mem);
 
-      void WriteByte(u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val);
-      void WriteByte(u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val);
-      void WriteWord(u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val);
-      void WriteWord(u32 &_cycles, const Byte&_addr, Mem &_mem, const Word&_val);
+      void writeByte(u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val);
+      void writeByte(u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val);
+      void writeWord(u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val);
+      void writeWord(u32 &_cycles, const Byte&_addr, Mem &_mem, const Word&_val);
 
 
       /////////////////////////////////////////////////even I - the creator fear this thing...
-      void ApplyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
-      void ApplyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
+      void applyToMemory(u32 &_cycles, const Word &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
+      void applyToMemory(u32 &_cycles, const Byte &_addr, Mem &_mem, std::function<Byte(const Byte &)>);
 
       /////////////////////////////////////////////////stack
       Byte popByteFromStack(u32& _cycles, Mem& _mem);
@@ -89,11 +89,11 @@ struct CPU
       void pushWordToStack(u32& _cycles, Mem& _mem, const Word& _val);
       void pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val);
 
-      Byte ReadByteFromStack(u32& _cycles, Mem& _mem);
-      Word ReadWordFromStack(u32& _cycles, Mem& _mem);
+      Byte readByteFromStack(u32& _cycles, Mem& _mem);
+      Word readWordFromStack(u32& _cycles, Mem& _mem);
 
-      void OverwriteByteOnStack(u32& _cycles, Mem& _mem, const Word& _val);
-      void OverwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val);
+      void overwriteByteOnStack(u32& _cycles, Mem& _mem, const Word& _val);
+      void overwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val);
    public:
 
       void Reset(Mem &_mem, const Word& _PC_start = 0xFFFC);
@@ -107,13 +107,13 @@ struct CPU
 
       /////////////////////////////////////////////////flags managment
       [[deprecated("Use SetCustomFlags...() instead")]] 
-      void SetNZWithRegister(const Register &_reg);
+      void setNZWithRegister(const Register &_reg);
 
       [[deprecated("Use SetCustomFlags...() instead")]]
-      void SetNZWithValue(const Byte &_val);
+      void setNZWithValue(const Byte &_val);
 
-      void SetCustomFlagsWithValue(const Byte &_val, Byte &_flags);
-      void SetCustomFlagsWithRegister(const Register &_reg, Byte &_flags);
+      void setCustomFlagsWithValue(const Byte &_val, Byte &_flags);
+      void setCustomFlagsWithRegister(const Register &_reg, Byte &_flags);
 
    
    private:      

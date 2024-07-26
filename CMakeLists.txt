@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.15)
 project(dupa CXX)
 
 #this thing is used for different builds so that i cen test new solutinos without destroing old ones...
-option(BUILD_LEGACY "build project in legacy mode for backwards compatibility" OFF)
+option(ALTERNATIVE "build project in alternative (debug) mode " OFF)
 option(VERBOSE "all the printing macros in code will show what's happening in memory" OFF)
 
 
-if(BUILD_LEGACY)
-   add_definitions(-DALTERNATIVE)
+if(ALTERNATIVE)
+   # add_definitions(-DALTERNATIVE)
    message(STATUS "Building LEGACY version")
    set(CMAKE_BUILD_TYPE Debug)
 else()

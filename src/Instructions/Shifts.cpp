@@ -19,7 +19,7 @@ void CPU::ASL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          safeCycleDecrement(_cycles);
          A &= 0b11111110;  //make sure the last bit is beingi filled with 0
          Byte flag = (N_f | Z_f); /// does this work(?)
-         SetCustomFlagsWithRegister(Register::A, flag);
+         setCustomFlagsWithRegister(Register::A, flag);
          return;
       }
       case CPU::INS_ASL_ZP :{
@@ -40,7 +40,7 @@ void CPU::ASL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
    }
    
-   ApplyToMemory(_cycles, address, _mem, 
+   applyToMemory(_cycles, address, _mem, 
        [this](const Byte &_val) -> Byte 
        { 
             if(_val >= ALMOST_OVERFLOW) {
@@ -49,7 +49,7 @@ void CPU::ASL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
             auto temp = _val << 1;
             temp &= 0b11111110;  //make sure the last bit is beingi filled with 0
             Byte flag = (N_f | Z_f); 
-            SetCustomFlagsWithValue(_val, flag);
+            setCustomFlagsWithValue(_val, flag);
             return temp;
         }
    );
@@ -70,7 +70,7 @@ void CPU::LSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          safeCycleDecrement(_cycles);
          A &= 0b01111111;  //make sure the last bit is beingi filled with 0
          Byte flag =  (N_f | Z_f); /// does this work(?)
-         SetCustomFlagsWithRegister(Register::A, flag);
+         setCustomFlagsWithRegister(Register::A, flag);
          return;
       }
       case CPU::INS_LSR_ZP :{
@@ -91,7 +91,7 @@ void CPU::LSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
    }
    
-   ApplyToMemory(_cycles, address, _mem, 
+   applyToMemory(_cycles, address, _mem, 
        [this](const Byte &_val) -> Byte 
        { 
             if(_val & BINARY_ONE) {
@@ -100,7 +100,7 @@ void CPU::LSR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
             auto temp = _val >> 1;
             temp &= 0b01111111;  //make sure the last bit is beingi filled with 0
             Byte flag = (N_f | Z_f); 
-            SetCustomFlagsWithValue(_val, flag);
+            setCustomFlagsWithValue(_val, flag);
             return temp;
          }
    );
@@ -122,7 +122,7 @@ void CPU::ROL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          safeCycleDecrement(_cycles);
          safeCycleDecrement(_cycles);
          Byte flag =  (N_f | Z_f); /// does this work(?)
-         SetCustomFlagsWithRegister(Register::A, flag);
+         setCustomFlagsWithRegister(Register::A, flag);
          return;
       }
       case CPU::INS_ROL_ZP :{
@@ -143,7 +143,7 @@ void CPU::ROL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
    }
    
-   ApplyToMemory(_cycles, address, _mem, 
+   applyToMemory(_cycles, address, _mem, 
        [this](const Byte &_val) -> Byte 
        { 
             auto tempC = C;
@@ -153,7 +153,7 @@ void CPU::ROL_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
             auto temp = _val << 1;
             temp |= tempC;
             Byte flag = (N_f | Z_f); 
-            SetCustomFlagsWithValue(_val, flag);
+            setCustomFlagsWithValue(_val, flag);
             return temp;
          }
    );
@@ -175,7 +175,7 @@ void CPU::ROR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          safeCycleDecrement(_cycles);
          safeCycleDecrement(_cycles);
          Byte flag =  (N_f | Z_f); /// does this work(?)
-         SetCustomFlagsWithRegister(Register::A, flag);
+         setCustomFlagsWithRegister(Register::A, flag);
          return;
       }
       case CPU::INS_ROR_ZP :{
@@ -196,7 +196,7 @@ void CPU::ROR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
    }
    
-   ApplyToMemory(_cycles, address, _mem, 
+   applyToMemory(_cycles, address, _mem, 
        [this](const Byte &_val) -> Byte 
        { 
             auto tempC = C;
@@ -206,7 +206,7 @@ void CPU::ROR_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
             auto temp = _val >> 1; 
             temp |= tempC << 7;
             Byte flag = (N_f | Z_f); 
-            SetCustomFlagsWithValue(_val, flag);
+            setCustomFlagsWithValue(_val, flag);
             return temp;
          }
    );

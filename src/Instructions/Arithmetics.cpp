@@ -35,7 +35,7 @@ void CPU::ADC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    switch(_opCode){
       case CPU::INS_ADC_IM :{
-         operand = FetchByte(_cycles, _mem);
+         operand = fetchByte(_cycles, _mem);
          immediete = true;
          break;
       }
@@ -73,7 +73,7 @@ void CPU::ADC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    if(!immediete)
    {
-      operand = ReadByte(_cycles, address, _mem);
+      operand = readByte(_cycles, address, _mem);
    }
 
    if(!((A>>7) ^ (operand>>7)))   ///dude...  basically this guarantees that only two same singned numbers that would overflow overflow flag set
@@ -106,7 +106,7 @@ void CPU::ADC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    A = wideA_temp & 0b11111111;
 
    Byte flag = (N_f | Z_f);
-   SetCustomFlagsWithRegister(Register::A, flag);
+   setCustomFlagsWithRegister(Register::A, flag);
 }
 
 void CPU::SBC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
@@ -117,7 +117,7 @@ void CPU::SBC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    switch(_opCode){
       case CPU::INS_SBC_IM :{
-         operand = FetchByte(_cycles, _mem);
+         operand = fetchByte(_cycles, _mem);
          immediete = true;
          break;
       }
@@ -154,7 +154,7 @@ void CPU::SBC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    if(!immediete)
    {
-      operand = ReadByte(_cycles, address, _mem);
+      operand = readByte(_cycles, address, _mem);
    }
 
    auto signA       = (A       & OVERFLOW_MASK);
@@ -185,7 +185,7 @@ void CPU::SBC_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    A = wideA_temp & 0b11111111;
 
    Byte flag = (N_f | Z_f);
-   SetCustomFlagsWithRegister(Register::A, flag);
+   setCustomFlagsWithRegister(Register::A, flag);
 
 }
 
@@ -198,7 +198,7 @@ void CPU::CMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    switch(_opCode){
       case CPU::INS_CMP_IM :{
-         operand = FetchByte(_cycles, _mem);
+         operand = fetchByte(_cycles, _mem);
          immediete = true;
          break;
       }
@@ -235,7 +235,7 @@ void CPU::CMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    if(!immediete)
    {
-      operand = ReadByte(_cycles, address, _mem);
+      operand = readByte(_cycles, address, _mem);
    }
    
    auto res = A - operand;
@@ -246,7 +246,7 @@ void CPU::CMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    ///TODO: fix location of places in which we change flags later
 
    Byte flag = (N_f);   ///zero is being handled earlier
-   SetCustomFlagsWithValue(res, flag);
+   setCustomFlagsWithValue(res, flag);
 }
 
 void CPU::CPX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
@@ -258,7 +258,7 @@ void CPU::CPX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    switch(_opCode){
       case CPU::INS_CPX_IM :{
-         operand = FetchByte(_cycles, _mem);
+         operand = fetchByte(_cycles, _mem);
          immediete = true;
          break;
       }
@@ -274,7 +274,7 @@ void CPU::CPX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    if(!immediete)
    {
-      operand = ReadByte(_cycles, address, _mem);
+      operand = readByte(_cycles, address, _mem);
    }
    
    auto res =  X - operand;
@@ -285,7 +285,7 @@ void CPU::CPX_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    ///TODO: fix location of places in which we change flags later
 
    Byte flag = (N_f);   ///zero is being handled earlier
-   SetCustomFlagsWithValue(res, flag);
+   setCustomFlagsWithValue(res, flag);
 
 }
 
@@ -298,7 +298,7 @@ void CPU::CPY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    switch(_opCode){
       case CPU::INS_CPY_IM :{
-         operand = FetchByte(_cycles, _mem);
+         operand = fetchByte(_cycles, _mem);
          immediete = true;
          break;
       }
@@ -314,7 +314,7 @@ void CPU::CPY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
    if(!immediete)
    {
-      operand = ReadByte(_cycles, address, _mem);
+      operand = readByte(_cycles, address, _mem);
    }
    
    auto res =  Y - operand;
@@ -325,7 +325,7 @@ void CPU::CPY_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    ///TODO: fix location of places in which we change flags later
 
    Byte flag = (N_f);   ///zero is being handled earlier
-   SetCustomFlagsWithValue(res, flag);
+   setCustomFlagsWithValue(res, flag);
 }
 
 #undef OVERFLOW_MASK

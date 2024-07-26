@@ -26,7 +26,7 @@ void CPU::JMP_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
       }
       case INS_JMP_IND:{
          address = getAddr(_cycles, _mem, adressingMode::IND);
-         address = ReadWord(_cycles, address, _mem);
+         address = readWord(_cycles, address, _mem);
          break;
       }
    }

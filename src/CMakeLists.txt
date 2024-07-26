@@ -24,6 +24,10 @@ add_executable(${PROJECT_NAME}
    main.cpp
    )
 
+add_library(${PROJECT_NAME}_lib 
+   main.cpp
+   )
+
 target_include_directories(CPU
    PUBLIC
    ${INC}
@@ -37,3 +41,12 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
    CPU
    )
+
+target_include_directories(${PROJECT_NAME}_lib
+   PUBLIC
+   ${INC}
+)
+
+target_link_libraries(${PROJECT_NAME}_lib
+   CPU
+)

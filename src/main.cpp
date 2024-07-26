@@ -12,7 +12,9 @@ int main()
    cpu.Reset(mem);   ///I want to explicitly reset memory instead of doing it in constructor
    /// end - boot
    
-   cpu.showCycles(mem);
+   std::cout<<"starting loading from file\n";
+   mem.loadFromFile("testFile");
+   std::cout<<"ending loading from file\n";
 
    return 0;
 }

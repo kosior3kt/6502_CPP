@@ -8,7 +8,7 @@ void CPU::BRK_TEST(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    CPU::PHP_TEST(_cycles, _mem, static_cast<const Byte>(NULL));   ///yeah, sure, why not?
 
    Word interruptVectorAddr = 0xFFFE;
-   auto newPCAddr = ReadWord(_cycles, interruptVectorAddr, _mem);
+   auto newPCAddr = readWord(_cycles, interruptVectorAddr, _mem);
    /////now we can do 
    PC = newPCAddr;
    I = 1;
