@@ -12,7 +12,6 @@ use Term::ANSIColor;
 # Command-line flags
 my $alternative  = 0;
 my $build        = 0;
-my $run          = 0;
 my $test         = 0;
 my $verbose      = 0;
 my $output_dir   = 'build';
@@ -20,7 +19,6 @@ my $output_dir   = 'build';
 GetOptions(
     "alternative"  => \$alternative,
     "build"        => \$build,
-    "run"          => \$run,
     "test"         => \$test,
     "verbose"      => \$verbose,
     "output_dir=s" => \$output_dir,
@@ -72,15 +70,9 @@ if ($build) {
    system($make_command) == 0 or die("Failed to run make: $!\n");
 }
 
-# Run optional post-build steps
-# if ($run) {
-#     print "Running ./src/dupa\n";
-#     system("./src/dupa") == 0 or warn("Failed to run ./src/dupa: $!\n");
-# }
-
 if ($test) {
-    print "Running ./test/test\n";
-    system("./test/test") == 0 or warn("Failed to run ./test/test: $!\n");
+    print "Running ./ProcessorModel/test/test\n";
+    system("./ProcessorModel/test/test") == 0 or warn("Failed to run ./test/test: $!\n");
 }
 
 print color('magenta'),"Build and post-build steps completed successfully.\n", color('reset'), "\n";

@@ -1,0 +1,12 @@
+/Users/jk/Programming/CPP/6502/build/CMakeFiles/edit_cache.dir
+/Users/jk/Programming/CPP/6502/build/CMakeFiles/rebuild_cache.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/CMakeFiles/edit_cache.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/CMakeFiles/rebuild_cache.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/src/CMakeFiles/CPU.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/src/CMakeFiles/dupa.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/src/CMakeFiles/dupa_lib.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/src/CMakeFiles/edit_cache.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/src/CMakeFiles/rebuild_cache.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/test/CMakeFiles/test.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/test/CMakeFiles/edit_cache.dir
+/Users/jk/Programming/CPP/6502/build/ProcessorModel/test/CMakeFiles/rebuild_cache.dir

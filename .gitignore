@@ -9,4 +9,6 @@ pleaseWork.txt
 assets
 fileLoader
 test/test_fileLoading.cpp
+.build_old
+testFile
 

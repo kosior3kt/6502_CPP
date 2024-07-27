@@ -22,10 +22,10 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 23)
 
-set(INC ${CMAKE_CURRENT_SOURCE_DIR}/inc/)
-set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+set(COMMON_INC ${CMAKE_CURRENT_SOURCE_DIR}/common/inc/)
 
 #add_subdirectory(inc) #not needed for now
-add_subdirectory(src)
-add_subdirectory(test)
+add_subdirectory(ProcessorModel)
+add_subdirectory(AutisticAssembler)   #nto ready yet
+
 
