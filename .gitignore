@@ -10,5 +10,6 @@ assets
 fileLoader
 test/test_fileLoading.cpp
 .build_old
+build_old
 testFile
 
