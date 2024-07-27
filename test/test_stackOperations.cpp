@@ -3,7 +3,7 @@
 TEST_F(TEST_6502, TSX)
 {
    cpu_.SP = 0x69;
-   mem_.debug_set(0xFFFC, CPU::INS_TSX);
+   mem_.set(0xFFFC, CPU::INS_TSX);
    auto cyclesLeft = cpu_.execute(2, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
@@ -14,7 +14,7 @@ TEST_F(TEST_6502, TSX)
 TEST_F(TEST_6502, TXS)
 {
    cpu_.X = 0x69;
-   mem_.debug_set(0xFFFC, CPU::INS_TXS);
+   mem_.set(0xFFFC, CPU::INS_TXS);
    auto cyclesLeft = cpu_.execute(2, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
@@ -26,15 +26,15 @@ TEST_F(TEST_6502, TXS)
 TEST_F(TEST_6502, PHA)
 {
    cpu_.A = 0x69;
-   mem_.debug_set(0xFFFC, CPU::INS_PHA);
-   mem_.debug_set(0xFFFD, CPU::INS_NOTHING);  
+   mem_.set(0xFFFC, CPU::INS_PHA);
+   mem_.set(0xFFFD, CPU::INS_NOTHING);  
    // cpu_.A = 0x00;
    auto addr = 0x0100 + cpu_.SP;
    HEX_PRINT("searching in location: ", addr);
    //mem_.debug_dumpMemory("PHA");
 
    auto cyclesLeft = cpu_.execute(10, mem_);
-   auto retValue = mem_.debug_get(addr);
+   auto retValue = mem_.at(addr);
 
    //EXPECT_EQ(cyclesLeft, 0);
    EXPECT_EQ((int)retValue, 0x69);
@@ -49,12 +49,12 @@ TEST_F(TEST_6502, PHP)
 
    uint8_t currentFlags = cpu_.getCurrentFlags();
 
-   mem_.debug_set(0xFFFC, CPU::INS_PHP);
+   mem_.set(0xFFFC, CPU::INS_PHP);
    auto addr = 0x0100 + cpu_.SP;
    HEX_PRINT("searching in location: ", addr);
 
    auto cyclesLeft = cpu_.execute(10, mem_);
-   auto retValue = mem_.debug_get(addr);
+   auto retValue = mem_.at(addr);
 
    cpu_.N = 0;   
    cpu_.D = 0;   
@@ -69,10 +69,10 @@ TEST_F(TEST_6502, PLA)
 {   
    cpu_.Reset(mem_, 0xFF00);
    cpu_.A = 0x69;
-   mem_.debug_set(0xFF00, CPU::INS_PHA);
-   mem_.debug_set(0xFF01, CPU::INS_LDA_IM);
-   mem_.debug_set(0xFF02, 0x00);
-   mem_.debug_set(0xFF03, CPU::INS_PLA);
+   mem_.set(0xFF00, CPU::INS_PHA);
+   mem_.set(0xFF01, CPU::INS_LDA_IM);
+   mem_.set(0xFF02, 0x00);
+   mem_.set(0xFF03, CPU::INS_PLA);
 
    auto cyclesLeft = cpu_.execute(10, mem_);
 
@@ -97,10 +97,10 @@ TEST_F(TEST_6502, PLP)
    HEX_PRINT("those are the falgs before: ", before);
 
 
-   mem_.debug_set(0xFF00, CPU::INS_PHP);
-   mem_.debug_set(0xFF01, CPU::INS_LDA_IM);  ///this thing changes Z flag into 1
-   mem_.debug_set(0xFF02, 0x00);
-   mem_.debug_set(0xFF03, CPU::INS_PLP);
+   mem_.set(0xFF00, CPU::INS_PHP);
+   mem_.set(0xFF01, CPU::INS_LDA_IM);  ///this thing changes Z flag into 1
+   mem_.set(0xFF02, 0x00);
+   mem_.set(0xFF03, CPU::INS_PLP);
 
    auto cyclesLeft = cpu_.execute(10, mem_);
 

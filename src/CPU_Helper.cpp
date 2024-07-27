@@ -58,28 +58,28 @@ Byte CPU::readByte(u32 &_cycles, const Word &_addr, const Mem &_mem)
 
 void CPU::writeByte( u32 &_cycles, const Word &_addr, Mem &_mem, const Byte &_val)
 {
-   _mem.debug_set(_addr, _val);  ///TODO: create different mechanism for this later
+   _mem.set(_addr, _val);  ///TODO: create different mechanism for this later
    safeCycleDecrement(_cycles);
 }
 
 void CPU::writeByte( u32 &_cycles, const Byte &_addr, Mem &_mem, const Byte &_val)
 {
-   _mem.debug_set(_addr, _val);
+   _mem.set(_addr, _val);
    safeCycleDecrement(_cycles);
 }
 
 void CPU::writeWord( u32 &_cycles, const Byte &_addr, Mem &_mem, const Word&_val)
 {
-   _mem.debug_set(_addr, (_val & 0xFF));
-   _mem.debug_set(_addr + 1, (_val << 8));
+   _mem.set(_addr, (_val & 0xFF));
+   _mem.set(_addr + 1, (_val << 8));
    safeCycleDecrement(_cycles);
    safeCycleDecrement(_cycles);
 }
 
 void CPU::writeWord( u32 &_cycles, const Word &_addr, Mem &_mem, const Word&_val)
 {
-   _mem.debug_set(_addr, (_val & 0xFF));
-   _mem.debug_set(_addr + 1, (_val << 8));
+   _mem.set(_addr, (_val & 0xFF));
+   _mem.set(_addr + 1, (_val << 8));
    safeCycleDecrement(_cycles);
    safeCycleDecrement(_cycles);
 }
@@ -234,7 +234,7 @@ void CPU::setCustomFlagsWithRegister(const Register &_reg, Byte &_flags)
 void CPU::pushByteToStack(u32& _cycles, Mem& _mem, const Byte& _val) ///those should use one more cycle i believ
 {
    auto addr = 0x0100 + SP;   ///safe, cause SP is Byte now
-   _mem.debug_set(addr, _val);
+   _mem.set(addr, _val);
    safeCycleDecrement(_cycles);
    --SP;
    safeCycleDecrement(_cycles);
@@ -259,7 +259,7 @@ Byte CPU::popByteFromStack(u32& _cycles, Mem& _mem) ///those should use one more
    safeCycleDecrement(_cycles);
    if(SP > 255) return 0; ///and cry in the darkness. Alone
    safeCycleDecrement(_cycles);
-   return _mem.debug_get(addr);
+   return _mem.at(addr);
 }
 
 [[nodiscard]]
@@ -276,7 +276,7 @@ Word CPU::popWordFromStack(u32& _cycles, Mem& _mem) ///those should use one more
 Byte CPU::readByteFromStack(u32& _cycles, Mem& _mem)
 {
    auto addr = 0x0100 + SP + 1;   ///we dont want to modify SP cause we are just reading, not poping or pushing
-   return _mem.debug_get(addr);
+   return _mem.at(addr);
 }
 
 Word CPU::readWordFromStack(u32& _cycles, Mem& _mem)
@@ -294,7 +294,7 @@ Word CPU::readWordFromStack(u32& _cycles, Mem& _mem)
 void CPU::overwriteByteOnStack(u32& _cycles, Mem& _mem, const Word& _val)
 {
    auto addr = 0x0100 + SP;
-   _mem.debug_set(addr, _val);
+   _mem.set(addr, _val);
 }
 
 void CPU::overwriteWordOnStack(u32& _cycles, Mem& _mem, const Word& _val)

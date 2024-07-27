@@ -46,6 +46,8 @@ void CPU::PHA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 void CPU::PHP(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
    auto flags = getCurrentFlags();
+   std::bitset<8> flags_bit(flags);
+   HEX_PRINT("those are flags that I've pushed: ", (flags_bit));
    pushByteToStack(_cycles, _mem, flags);
    safeCycleDecrement(_cycles);
 }
@@ -59,7 +61,11 @@ void CPU::PLA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 
 void CPU::PLP(u32 &_cycles, Mem &_mem, const Byte& _opCode)
 {
+   HEX_PRINT("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!PLP CALLED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
    auto flags = popByteFromStack(_cycles, _mem);
+   std::bitset<8> flags_bit(flags);
+   HEX_PRINT("those are flags that I've read: ", (flags_bit));
    setCurrentFlags(flags);
    safeCycleDecrement(_cycles);
 }

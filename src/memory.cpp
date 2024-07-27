@@ -20,6 +20,59 @@ Byte &Mem::operator[](const u32 &_addr)
    return Data[_addr];
 }
 
+
+void Mem::set(const u32& _addr, const u32& _val)
+{
+   assert(_addr < MAX_MEM);
+   Data[_addr] = _val;
+}
+
+Byte Mem::at(const u32& _addr) const
+{
+   assert(_addr < MAX_MEM);
+   return Data[_addr];
+}
+
+///TODO: change all of these cout things into a Logger later
+void Mem::loadFromFile(std::string_view _path) {
+    std::ifstream srcFile(_path.data(), std::ios::binary);
+
+    if (!srcFile.is_open()) 
+    {
+        std::cerr << "Failed to open file: " << _path << std::endl;
+        return;
+    }
+
+    // Read the version (first 4 bytes)   ----> format definition
+    uint32_t version;
+    srcFile.read(reinterpret_cast<char*>(&version), sizeof(version));
+    if (!srcFile) 
+    {
+        std::cerr << "Error reading the version from the file." << std::endl;
+        return;
+    }
+
+    srcFile.read(reinterpret_cast<char*>(Data), sizeof(Data));
+
+    if (!srcFile) 
+    {
+        std::cerr << "Error reading data from the file." << std::endl;
+        return;
+    }
+
+    ///std::cout << "Data read successfully." << std::endl;
+
+    srcFile.close();
+
+    ///std::cout << "Generating memory map..." << std::endl;
+    ///debug_dumpMemory(std::string(_path.begin(), _path.end()) + "_generated");
+}
+
+void Mem::saveInFile(std::string_view _path)
+{
+   ///TODO: finish this later    
+}
+
 void Mem::debug_set(const u32 &_addr, const u32 &_val)
 {
    assert(_addr < MAX_MEM);
@@ -30,6 +83,7 @@ void Mem::debug_set(const u32 &_addr, const u32 &_val)
 Byte Mem::debug_get(const u32 &_addr)
 {
    assert(_addr < MAX_MEM);
+   HEX_PRINT("location of memory ", _addr, "value of memory ", Data[_addr]);
    return Data[_addr];
 }
 
@@ -49,69 +103,3 @@ void Mem::debug_dumpMemory(const std::string& _fileName){
    _file.close();
 }
 
-// ///so this thing should load progam state from memory. First 4 bytes will be for version and other BS. Then all CPU flags will be added
-// ///then PC and SP values. Then rest of the memory will be raw dogged
-// void Mem::loadFromFile(std::string_view _path)
-// {
-//    struct damn
-//    {
-//       Byte data[1024*64]{};
-//       int version{};
-//    };
-//
-//    damn dupa;
-//    std::ifstream srcFile(_path, std::ios::binary);
-//    if(!srcFile.is_open())
-//    {
-//       HEX_PRINT("unlucky, doesnt work =c");
-//       return;
-//    }
-//
-//    srcFile.read(reinterpret_cast<char*>(&dupa), sizeof(dupa));
-//    HEX_PRINT("this is the general size of the file: ", sizeof(dupa));
-//
-//    HEX_PRINT("version if not casted and bitset_f: ", bitset_f(dupa.version));
-//
-//
-//    for(int i = 0; i < 1024*64; ++i)
-//    {
-//       Data[i] = (Byte)dupa.data[i];
-//    }
-//    HEX_PRINT("this is the size of the data: ", sizeof Data);
-//    HEX_PRINT("generating memory map...");
-//    debug_dumpMemory(std::string(_path.begin(), _path.end()) + "_generated");
-// }
-
-void Mem::loadFromFile(std::string_view _path) {
-    std::ifstream srcFile(_path.data(), std::ios::binary); // Open file in binary mode
-    if (!srcFile.is_open()) {
-        std::cerr << "Failed to open file: " << _path << std::endl;
-        return;
-    }
-
-    // Read the version (first 4 bytes)
-    uint32_t version;
-    srcFile.read(reinterpret_cast<char*>(&version), sizeof(version));
-    if (!srcFile) {
-        std::cerr << "Error reading the version from the file." << std::endl;
-        return;
-    }
-
-    // Output the version in hex to match the byte order in the file
-    std::cout << "Version: " << std::hex << version << std::dec << std::endl;
-
-    // Read the data (next 1024 * 64 bytes)
-    srcFile.read(reinterpret_cast<char*>(Data), sizeof(Data));
-    if (!srcFile) {
-        std::cerr << "Error reading data from the file." << std::endl;
-        return;
-    }
-
-    std::cout << "Data read successfully." << std::endl;
-
-    // Close the file
-    srcFile.close();
-
-    std::cout << "Generating memory map..." << std::endl;
-    debug_dumpMemory(std::string(_path.begin(), _path.end()) + "_generated");
-}

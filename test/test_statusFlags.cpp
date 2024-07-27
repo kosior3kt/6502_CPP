@@ -3,7 +3,7 @@
 TEST_F(TEST_6502, CLC)
 {
    cpu_.C = 1;
-   mem_.debug_set(0xFFFC, CPU::INS_CLC);
+   mem_.set(0xFFFC, CPU::INS_CLC);
    auto cyclesLeft = cpu_.execute(3, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
@@ -13,7 +13,7 @@ TEST_F(TEST_6502, CLC)
 TEST_F(TEST_6502, CLD)
 {
    cpu_.D = 1;
-   mem_.debug_set(0xFFFC, CPU::INS_CLD);
+   mem_.set(0xFFFC, CPU::INS_CLD);
    auto cyclesLeft = cpu_.execute(3, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
@@ -23,7 +23,7 @@ TEST_F(TEST_6502, CLD)
 TEST_F(TEST_6502, CLI)
 {
    cpu_.I = 1;
-   mem_.debug_set(0xFFFC, CPU::INS_CLI);
+   mem_.set(0xFFFC, CPU::INS_CLI);
    auto cyclesLeft = cpu_.execute(3, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
@@ -33,7 +33,7 @@ TEST_F(TEST_6502, CLI)
 TEST_F(TEST_6502, CLV)
 {
    cpu_.V = 1;
-   mem_.debug_set(0xFFFC, CPU::INS_CLV);
+   mem_.set(0xFFFC, CPU::INS_CLV);
    auto cyclesLeft = cpu_.execute(3, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
@@ -43,7 +43,7 @@ TEST_F(TEST_6502, CLV)
 TEST_F(TEST_6502, SEC)
 {
    cpu_.C = 0;
-   mem_.debug_set(0xFFFC, CPU::INS_SEC);
+   mem_.set(0xFFFC, CPU::INS_SEC);
    auto cyclesLeft = cpu_.execute(3, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
@@ -53,7 +53,7 @@ TEST_F(TEST_6502, SEC)
 TEST_F(TEST_6502, SED)
 {
    cpu_.D = 0;
-   mem_.debug_set(0xFFFC, CPU::INS_SED);
+   mem_.set(0xFFFC, CPU::INS_SED);
    auto cyclesLeft = cpu_.execute(3, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);
@@ -63,7 +63,7 @@ TEST_F(TEST_6502, SED)
 TEST_F(TEST_6502, SEI)
 {
    cpu_.I = 0;
-   mem_.debug_set(0xFFFC, CPU::INS_SEI);
+   mem_.set(0xFFFC, CPU::INS_SEI);
    auto cyclesLeft = cpu_.execute(3, mem_);
 
    EXPECT_EQ(cyclesLeft, 0);

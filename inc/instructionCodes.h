@@ -1,7 +1,7 @@
 #ifndef __INSTRUCTION_CODES__
 #define __INSTRUCTION_CODES__
 
-#include "defines.h"
+#define Byte unsigned char
 
 ////////////////////////////////////// Load/Store
 /// LDA instructions
@@ -221,5 +221,6 @@ static constexpr Byte INS_RTI       = 0x60;
 ////////////////////////////////////// SANITY RESCUER
 static constexpr Byte INS_NOTHING   = 0xFF;
 
+#undef Byte
 
 #endif

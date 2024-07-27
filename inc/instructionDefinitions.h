@@ -4,9 +4,9 @@
 #include "defines.h"
 #include "memory.h"
 
-//////READ ME
-///yeah. It aint pretty, but this was my idea and we roll with it now. Also we are in the middle of porting, sooo...
 
+//////READ ME
+///yeah. It aint pretty, but this was my idea and we roll with it now. Also we are in the middle of porting, sooo... Maybe one day this will be JSON
 
 void LDA(u32 &_cycles, Mem &_mem, const Byte& _opCode);
 void LDX(u32 &_cycles, Mem &_mem, const Byte& _opCode);

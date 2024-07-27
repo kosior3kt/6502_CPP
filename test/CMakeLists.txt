@@ -21,12 +21,13 @@ set (TEST_SOURCES
    test_compare.cpp
    test_systemInstructions.cpp
    test_loop.cpp
+   test_fileLoading.cpp
    )
 
 set (TEST_SOURCES_DEBUG
    main.cpp
    test.hpp
-   test_loop.cpp
+   test_fileLoading.cpp
    )
 
 

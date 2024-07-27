@@ -101,6 +101,7 @@ struct CPU
       /////////////////////////////////////////////////execution 
       s32 execute(u32 _cycles, Mem &_mem);
       void showCycles( Mem &_mem);
+      void showCPUState(const Mem& _mem, const bool _showPCMem, const bool showSPMem, const unsigned _num = 0);
 
       [[deprecated("Use execute() instead")]] 
       s32 execute_alternative(u32 _cycles, Mem &_mem);
@@ -141,34 +142,32 @@ struct CPU
    public:
       explicit CPU()
       {
-
-         ///////test
          std::set<Byte> opcodes_LDA = {
-            INS_LDA_IM  ,
-            INS_LDA_ZP  ,
-            INS_LDA_ABS ,
-            INS_LDA_ZPX ,
-            INS_LDA_ABSY,
-            INS_LDA_ABSX,
-            INS_LDA_INDX,
-            INS_LDA_INDY
-         };
+                     INS_LDA_IM  ,
+                     INS_LDA_ZP  ,
+                     INS_LDA_ABS ,
+                     INS_LDA_ZPX ,
+                     INS_LDA_ABSY,
+                     INS_LDA_ABSX,
+                     INS_LDA_INDX,
+                     INS_LDA_INDY
+                  };
 
          std::set<Byte> opcodes_LDX = {
-            INS_LDX_IM  ,
-            INS_LDX_ZP  ,
-            INS_LDX_ZPY ,
-            INS_LDX_ABS ,
-            INS_LDX_ABSY
-         };
+                     INS_LDX_IM  ,
+                     INS_LDX_ZP  ,
+                     INS_LDX_ZPY ,
+                     INS_LDX_ABS ,
+                     INS_LDX_ABSY
+                  };
 
          std::set<Byte> opcodes_LDY = {
-            INS_LDY_IM  ,
-            INS_LDY_ZP  ,
-            INS_LDY_ZPX ,
-            INS_LDY_ABS ,
-            INS_LDY_ABSX
-         };
+                     INS_LDY_IM  ,
+                     INS_LDY_ZP  ,
+                     INS_LDY_ZPX ,
+                     INS_LDY_ABS ,
+                     INS_LDY_ABSX
+                  };
 
 
          std::set<Byte> opcodes_STA = {
@@ -460,9 +459,6 @@ struct CPU
                      INS_NOTHING
          };
 
-         ///TODO: now the same thing for the rest of functions =3
-
-         //instructionMap_test[bindMemberFunction(&CPU::LDA)] = opcodes_LDA;
          instructionMap[opcodes_LDA] = bindMemberFunction(&CPU::LDA);
          instructionMap[opcodes_LDX] = bindMemberFunction(&CPU::LDX);
          instructionMap[opcodes_LDY] = bindMemberFunction(&CPU::LDY);
@@ -533,7 +529,6 @@ struct CPU
          instructionMap[opcodes_RTI] = bindMemberFunction(&CPU::RTI);
                                                                                                                      
          instructionMap[opcodes_NOTHING] = bindMemberFunction(&CPU::NOTHING_);
-         ///instructionMap[opcodes_NOTHING] = bindMemberFunction(&CPU::NOTHING_);
          ///////Do I even want to do this here - this should be more of a static thing? - Lets say it's fine for now
       }
 };
