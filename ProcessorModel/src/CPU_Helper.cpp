@@ -382,4 +382,6 @@ Word CPU::getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am)
          break;
       }
    }
+   exit(-1);   ///please dont use exceptions kids... just crush this way
+   return {};  ///shuold be unreachable, so I want code to crush anyways
 }

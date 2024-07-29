@@ -2,6 +2,7 @@
 #define __AUTISTIC_ASM
 
 #include "defines.h"
+#include "parser.h"
 
 //What does this need to do?
 //get file contents - this whuold be done in constructor

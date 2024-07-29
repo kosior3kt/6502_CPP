@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+
 ///when this is defined all the debug info's take effect
 #ifdef VERBOSE
 #define DEBUG_PRINT  
@@ -108,5 +109,22 @@ inline std::ostream& operator<<(std::ostream& _os, const bitset_f& _val) {
 }
 
 
+
+enum class adressingMode : uint8_t
+{
+   ACC,
+   IMP,
+   IM,
+   ZP,
+   ZPX,
+   ZPY,
+   REL,
+   ABS,
+   ABSX,
+   ABSY,
+   IND,
+   INDX,
+   INDY, 
+};
 
 #endif

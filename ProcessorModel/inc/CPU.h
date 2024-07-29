@@ -7,6 +7,7 @@
 #include <map>
 #include <list>
 #include <set>
+#include "defines.h"
 
 struct CPU
 {
@@ -33,20 +34,6 @@ struct CPU
          A,
          X,
          Y
-      };
-
-      enum class adressingMode : uint8_t
-      {
-         ZP,
-         ZPX,
-         ZPY,
-         REL,
-         ABS,
-         ABSX,
-         ABSY,
-         IND,
-         INDX,
-         INDY, 
       };
 
       Word getAddr(u32& _cycles, const Mem& _mem, const adressingMode& _am);
