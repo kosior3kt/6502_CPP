@@ -72,7 +72,8 @@ if ($build) {
 
 if ($test) {
     print "Running ./ProcessorModel/test/test\n";
-    system("./ProcessorModel/test/test") == 0 or warn("Failed to run ./test/test: $!\n");
+    system("./ProcessorModel/test/test") == 0 or warn("Failed to run tests for CPU: $!\n");
+    system("./AutisticAssembler/test/test_asm") == 0 or warn("Failed to run tests for ASM: $!\n");
 }
 
 print color('magenta'),"Build and post-build steps completed successfully.\n", color('reset'), "\n";

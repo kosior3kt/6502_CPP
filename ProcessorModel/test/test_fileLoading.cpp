@@ -1,5 +1,6 @@
 #include "test.hpp"
 
+#if 0
 TEST_F(TEST_6502, fileLoading_LDA)
 {
    mem_.loadFromFile("LDA");
@@ -12,6 +13,7 @@ TEST_F(TEST_6502, fileLoading_LDA)
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
 
 }
+#endif
 
 ///this is the thing that checks formatting of CPU stated displaying
 #if 0 

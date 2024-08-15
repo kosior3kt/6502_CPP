@@ -7,7 +7,6 @@ add_library(
    asm.cpp   
    parser.cpp
    tokenizer.cpp
-   analyzer.cpp
 )
 
 add_executable(
