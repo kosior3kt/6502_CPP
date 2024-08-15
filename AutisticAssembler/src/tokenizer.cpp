@@ -60,6 +60,8 @@ std::vector<token> Tokenizer::tokenize(const std::vector<token>& _inputVec) cons
 {
 
    std::vector<token> resVec = this->splitTokens(_inputVec);
+   std::vector<token> retVec{};
+
    
    for(auto tok: resVec)
    {
@@ -71,7 +73,7 @@ std::vector<token> Tokenizer::tokenize(const std::vector<token>& _inputVec) cons
       {
          ///std::cout<<"got to label\n";
          temp.type       = token::tokenType::label;
-         temp.contents   = std::string(str.begin(), str.end() - 2);
+         temp.contents   = std::string(str.begin(), str.end() - 1);
          ///TODO: add this to label vec later when I figure out how I want to go about it
       }
       else if(utils::isAddress(str))
@@ -96,9 +98,9 @@ std::vector<token> Tokenizer::tokenize(const std::vector<token>& _inputVec) cons
          //std::unreachable();   ///ofc my fucking linter can't recognize this...
       }
 
-      resVec.push_back(temp); 
+      retVec.push_back(temp); 
    }
 
-   return resVec;
+   return retVec;
 }
 
