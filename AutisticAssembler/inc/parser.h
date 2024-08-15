@@ -23,7 +23,7 @@ struct parser
    void trim();
    std::vector<std::string>& getLines();
 
-   //3. resolve the labels
+   //3. resolve the labels 
    void resolveTokens(); 
 
    //4. validate, that such configuration is actually possible in the 6502 - adressing modes and branching range mostly
@@ -32,4 +32,4 @@ struct parser
 };
 
 
-#endif
+#endif   //__PARSER

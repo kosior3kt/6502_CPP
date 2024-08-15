@@ -14,12 +14,16 @@ struct token
    enum tokenType : int8_t
    {
       EMPTY = -1,
-      label,
+      labelInstance,
+      labelDefinition,
+      variable,
       instruction,
       operand,
+      unresolved,
    }type{EMPTY};
 
    token(const std::string_view _val) : contents(_val), type(EMPTY){};
+   token(const std::string_view _val, const tokenType _type) : contents(_val), type(_type){};
 
    token() = default;
    ~token() = default;
