@@ -27,7 +27,6 @@ struct ASM
    //5. final machine code generation
    void generateMachineCode();
 
-
    //1.1 preprocess - get rid of redundant stuff, and load program from file into a vector of strings
    void loadAndPreprocess(std::ifstream&);
 

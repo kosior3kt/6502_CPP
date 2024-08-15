@@ -6,44 +6,72 @@
 
 static std::unordered_set<std::string_view> knowsLabels {};
 
+// std::vector<token> Tokenizer::splitTokens(const std::vector<token>& _inputVec)const noexcept
+// {
+//    std::vector<token> resVec{};
+//
+//    for(auto x: _inputVec)  //not need to make it a reference since on average it's cheaper to make copy
+//    {
+//       std::istringstream stream(x.contents);
+//
+//       std::string temp;
+//       while(stream >> temp)
+//       {
+//          utils::trimString(temp);   //is this needed?
+//          if(!temp.empty()) [[likely]]
+//             resVec.push_back(token(temp)); 
+//       }
+//    }
+//
+//    return resVec;
+// }
+
 std::vector<token> Tokenizer::splitTokens(const std::vector<token>& _inputVec)const noexcept
 {
    std::vector<token> resVec{};
 
    for(auto x: _inputVec)  //not need to make it a reference since on average it's cheaper to make copy
    {
-      std::istringstream stream(x.contents);
-
-      std::string temp;
-      while(stream >> temp)
+      std::string buf{};
+      for(const auto ch: x.contents)
       {
-         utils::trimString(temp);   //is this needed?
-         resVec.push_back(token(temp)); 
+         if(!std::isspace(ch))
+         {
+            buf += ch;
+         }
+         else if(!buf.empty())
+         {
+            resVec.push_back(token(buf));
+            buf = "";
+         }
+      }
+      if(!buf.empty())
+      {
+         resVec.push_back(token(buf));
       }
    }
 
    return resVec;
 }
 
+
 ///this method does 2 things - splits lines into proper tokens and then assigns correct type to them
 std::vector<token> Tokenizer::tokenize(const std::vector<token>& _inputVec) const noexcept
 {
 
-   std::vector<token> resVec = this->splitTokens(_inputVec);   ///do I want to resize it first?
+   std::vector<token> resVec = this->splitTokens(_inputVec);
    
-   ///shuold be split now
-   ///
-   ///now I need to assign correct type to them
-   
-   for(auto tok: _inputVec)
+   for(auto tok: resVec)
    {
       std::string str = tok.contents;
+      if(str.empty()) continue;
 
       token temp{};
-      if(*str.end() == ':')   //shuold be shifted, cause end returns after the last char?
+      if(*(str.end() - 1) == ':' && str.size() >= 2)   //shuold be shifted, cause end returns after the last char?
       {
+         ///std::cout<<"got to label\n";
          temp.type       = token::tokenType::label;
-         temp.contents   = std::string(str.begin(), str.end() - 1);
+         temp.contents   = std::string(str.begin(), str.end() - 2);
          ///TODO: add this to label vec later when I figure out how I want to go about it
       }
       else if(utils::isAddress(str))

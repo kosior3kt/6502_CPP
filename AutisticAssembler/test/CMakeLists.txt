@@ -6,6 +6,7 @@ set (TEST_SOURCES
    test_tokenizerStuff.cpp
    test_OPCodes.cpp
    test_adressing.cpp
+   test_through.cpp
    )
 
 set (TEST_SOURCES_DEBUG

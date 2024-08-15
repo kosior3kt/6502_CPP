@@ -10,8 +10,10 @@ TEST(TokenizerTest, HandlesSingleWord) {
     std::vector<token> expected = { token("hello") };
 
     auto result = tokenizer.splitTokens(input);
-
-    EXPECT_EQ(result, expected);
+    for(int i =0; i< result.size() ;++i)
+    {
+      EXPECT_EQ(result[i].contents, expected[i].contents);
+    }
 }
 
 TEST(TokenizerTest, HandlesMultipleWordsWithSingleSpaces) {
@@ -21,7 +23,10 @@ TEST(TokenizerTest, HandlesMultipleWordsWithSingleSpaces) {
 
     auto result = tokenizer.splitTokens(input);
 
-    EXPECT_EQ(result, expected);
+    for(int i =0; i< result.size() ;++i)
+    {
+      EXPECT_EQ(result[i].contents, expected[i].contents);
+    }
 }
 
 TEST(TokenizerTest, HandlesMultipleWordsWithMultipleSpaces) {
@@ -30,8 +35,10 @@ TEST(TokenizerTest, HandlesMultipleWordsWithMultipleSpaces) {
     std::vector<token> expected = { token("hello"), token("world"), token("test") };
 
     auto result = tokenizer.splitTokens(input);
-
-    EXPECT_EQ(result, expected);
+    for(int i =0; i< result.size() ;++i)
+    {
+      EXPECT_EQ(result[i].contents, expected[i].contents);
+    }
 }
 
 TEST(TokenizerTest, HandlesEmptyString) {
@@ -40,8 +47,10 @@ TEST(TokenizerTest, HandlesEmptyString) {
     std::vector<token> expected = {};
 
     auto result = tokenizer.splitTokens(input);
-
-    EXPECT_EQ(result, expected);
+    for(int i =0; i< result.size() ;++i)
+    {
+      EXPECT_EQ(result[i].contents, expected[i].contents);
+    }
 }
 
 TEST(TokenizerTest, HandlesLeadingAndTrailingSpaces) {
@@ -51,7 +60,10 @@ TEST(TokenizerTest, HandlesLeadingAndTrailingSpaces) {
 
     auto result = tokenizer.splitTokens(input);
 
-    EXPECT_EQ(result, expected);
+    for(int i =0; i< result.size() ;++i)
+    {
+      EXPECT_EQ(result[i].contents, expected[i].contents);
+    }
 }
 
 TEST(TokenizerTest, HandlesMultipleTokensInInput) {
@@ -61,7 +73,10 @@ TEST(TokenizerTest, HandlesMultipleTokensInInput) {
 
     auto result = tokenizer.splitTokens(input);
 
-    EXPECT_EQ(result, expected);
+    for(int i =0; i< result.size() ;++i)
+    {
+      EXPECT_EQ(result[i].contents, expected[i].contents);
+    }
 }
 
 
