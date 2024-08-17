@@ -34,43 +34,68 @@ std::vector<token> Tokenizer::splitTokens(const std::vector<token>& _inputVec)co
 }
 
 
-///this method does 2 things - splits lines into proper tokens and then assigns correct type to them
-std::vector<token> Tokenizer::tokenize_firstPass(const std::vector<token>& _inputVec) const noexcept
+void Tokenizer::safevPCIncreament(uint32_t& _val) const noexcept
 {
+   if(_val >= std::numeric_limits<uint32_t>::max())   [[unlikely]]
+   {
+      std::cerr<<"max number of operations reached - vPC would overflow\n";
+      exit(-1);
+   }
+   ++_val;
+};
 
-   std::vector<token> resVec = this->splitTokens(_inputVec);
-   std::vector<token> retVec{};
+
+///this method does 2 things - splits lines into proper tokens and then assigns correct type to them
+std::vector<token> Tokenizer::tokenize_firstPass(const std::vector<token>& _inputVec) noexcept
+{
+   ///maybe I want to mutate this instead of returning something, so that it is transparent this is mutation type function
+   ///TODO: decideif I want to keep this as a function that can mutate vPC
+
+   std::vector<token> resultingVec = this->splitTokens(_inputVec);
+   std::vector<token> returnVec{};
 
    
-   for(auto tok: resVec)
+   for(const auto& [contents, type]: resultingVec)
    {
-      std::string str = tok.contents;
-      if(str.empty()) continue;
+      if(contents.empty()) continue;
 
       token temp{};
       ///TODO: check if this mothersucker is not a variable or sth ;v
-      if(*(str.end() - 1) == ':' && str.size() >= 2)   //shuold be shifted, cause end returns after the last char?
+      if(*(contents.end() - 1) == ':' && contents.size() >= 2)   //shuold be shifted, cause end returns after the last char?
       {
+         std::cout<<"adding kown label";
          temp.type       = token::tokenType::labelDefinition;
-         temp.contents   = std::string(str.begin(), str.end() - 1);
-         knownLabels.emplace(label(std::string(str.begin(), str.end() - 1), vPC));
+         temp.contents   = std::string(contents.begin(), contents.end() - 1);
+         safevPCIncreament(vPC);
+         knownLabels.emplace(label(std::string(contents.begin(), contents.end() - 1), vPC));   //TODO: IMPORTANT - check if vPC +1 or not
+         --vPC;   ///safe to decrement here this way since not mutated after last increament
       }
-      else if(utils::isAddress(str))
+      else if(utils::isAddress(contents))
       {
          temp.type       = token::tokenType::operand;
-         temp.contents   = str;
+         temp.contents   = contents;
       }
-      else if(utils::isInstruction(str))
+      else if(utils::isInstruction(contents))
       {
          temp.type       = token::tokenType::instruction;
-         temp.contents   = str;
-         ++vPC;   //make it a safe increment later?
-                  //take into consideration that some instruction do +2
+         temp.contents   = contents;
+         if(utils::matches_any(contents, "JSR", "RTS"))   ///those instructions should take more vPC because reasons I guess (im actually not sure if thats even the case)
+         {
+            std::cout<<"mathed somthign here =0\n";
+            safevPCIncreament(vPC);
+            safevPCIncreament(vPC);
+         }
+         else
+         {
+            safevPCIncreament(vPC);
+         }
+         //make it a safe increment later?
+         //take into consideration that some instruction do +2
       }
-      else if(knownLabels.find(label{str, 0}) != knownLabels.end())
+      else if(knownLabels.find(label{contents, 0}) != knownLabels.end())
       {
          temp.type       = token::tokenType::labelInstance;
-         temp.contents   = str;
+         temp.contents   = contents;
       }
       else
       {
@@ -80,16 +105,16 @@ std::vector<token> Tokenizer::tokenize_firstPass(const std::vector<token>& _inpu
          //std::unreachable();   ///ofc my fucking linter can't recognize this...
          
          temp.type       = token::tokenType::unresolved;
-         temp.contents   = str;
+         temp.contents   = contents;
       }
 
-      retVec.push_back(temp); 
+      returnVec.push_back(temp); 
    }
 
-   return retVec;
+   return returnVec;
 }
 
-void Tokenizer::tokenize_secondPass(std::vector<token>& _inputVec)const noexcept
+void Tokenizer::tokenize_secondPass(std::vector<token>& _inputVec)noexcept
 {
    for(auto& [val, type]: _inputVec)
    {

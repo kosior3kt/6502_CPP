@@ -7,6 +7,7 @@ set (TEST_SOURCES
    test_OPCodes.cpp
    test_adressing.cpp
    test_through.cpp
+   test_vPC.cpp
    )
 
 set (TEST_SOURCES_DEBUG

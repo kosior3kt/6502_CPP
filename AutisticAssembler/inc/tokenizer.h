@@ -43,33 +43,56 @@ struct label
 
 };
 
-static auto hash = [](const label& _label)
-{
-      size_t localHash{};
-      for(const auto ch: _label.name)
-      {
-         localHash += localHash * (ch * ch) * std::abs(10 - ch);
-      }
-      return localHash;
-};
-
-static auto equal = [](const label& _lhs, const label& _rhs ) -> bool
-{
-   return _lhs.name == _rhs.name;   
-};
-
-static uint32_t                              vPC{0};
-static std::unordered_set<label, decltype(hash), decltype(equal)>  knownLabels(7, hash, equal);
-
 struct Tokenizer
 {
-          
+   private:
+   struct labelHash 
+   {
+      std::size_t operator()(const label& _other) const 
+      {
+        //return std::hash<std::string>()(_other.name) ^ std::hash<int>()(_other.vPC);
+        return std::hash<std::string>()(_other.name);
+      }
+   };
+
+   struct labelEquality
+   {
+      std::size_t operator()(const label& _lhs, const label& _rhs) const 
+      {
+         return _lhs.name == _rhs.name;
+      }
+   };
+   public:
+
+
+   static auto hash(const label& _label) -> size_t
+   {
+         size_t localHash{};
+         for(const auto ch: _label.name)
+         {
+            localHash += localHash * (ch * ch) * std::abs(10 - ch);  ///god forgive me for this xD
+         }
+         return localHash;
+   };
+
+   static auto equal(const label& _lhs, const label& _rhs ) -> bool
+   {
+      return _lhs.name == _rhs.name;   
+   };
+
+   uint32_t             vPC{0};
+
+   void safevPCIncreament(uint32_t& _val) const noexcept;
+
+   std::unordered_set<label, labelHash, labelEquality> knownLabels;
+
+ 
    std::vector<token> splitTokens(const std::vector<token>& _inputVec)const noexcept;
 
    //2. tokenize
-   std::vector<token> tokenize_firstPass(const std::vector<token>& _inputVec)const noexcept;
+   std::vector<token> tokenize_firstPass(const std::vector<token>& _inputVec)noexcept;
 
-   void tokenize_secondPass(std::vector<token>& _inputVec)const noexcept;
+   void tokenize_secondPass(std::vector<token>& _inputVec)noexcept;
 
 };
 

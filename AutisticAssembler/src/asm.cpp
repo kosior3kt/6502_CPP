@@ -3,7 +3,7 @@
 
 void ASM::loadAndPreprocess(std::ifstream& _inputFile)
 {
-   if(!_inputFile.good()) panic
+   if(!_inputFile.good()) $panic$
 
    std::string buf{};
 

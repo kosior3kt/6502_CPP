@@ -3,13 +3,13 @@
 #include "tokenizer.h"
 //#include "PGH/traits.hpp"
 
-class TokenizerTests : public ::testing::Test {
+class ThroughTest : public ::testing::Test {
      
 protected:
     Tokenizer tokenizer;
 };
 
-TEST_F(TokenizerTests, aplittingTest)
+TEST_F(ThroughTest, splittingTest)
 {
    auto input = std::vector<token>
    {
@@ -33,7 +33,7 @@ TEST_F(TokenizerTests, aplittingTest)
    }
 }
 
-TEST_F(TokenizerTests, splittingMore)
+TEST_F(ThroughTest, splittingMore)
 {
    std::vector<token> inputTokens
    {
@@ -63,7 +63,7 @@ TEST_F(TokenizerTests, splittingMore)
 };
 
 
-TEST_F(TokenizerTests, splittingAndAssigningType)
+TEST_F(ThroughTest, splittingAndAssigningType)
 {
    std::vector<token> inputTokens
    {
@@ -94,7 +94,7 @@ TEST_F(TokenizerTests, splittingAndAssigningType)
 
 
 
-TEST_F(TokenizerTests, splittingAndAssigningTypeLablezzzzz)
+TEST_F(ThroughTest, splittingAndAssigningTypeLablezzzzz)
 {
    std::vector<token> inputTokens
    {
@@ -131,7 +131,7 @@ TEST_F(TokenizerTests, splittingAndAssigningTypeLablezzzzz)
 
 
 
-TEST_F(TokenizerTests, splittingAndAssigningTypeLablezWithTypesChecked)
+TEST_F(ThroughTest, splittingAndAssigningTypeLablezWithTypesChecked)
 {
    std::vector<token> inputTokens
    {
@@ -170,7 +170,7 @@ TEST_F(TokenizerTests, splittingAndAssigningTypeLablezWithTypesChecked)
 
 
 
-TEST_F(TokenizerTests, splittingAndAssigningTypeLablezWithTypesCheckedAdvanced)
+TEST_F(ThroughTest, splittingAndAssigningTypeLablezWithTypesCheckedAdvanced)
 {
    std::vector<token> inputTokens
    {
@@ -205,13 +205,14 @@ TEST_F(TokenizerTests, splittingAndAssigningTypeLablezWithTypesCheckedAdvanced)
 
    for(int i =0; i <  resToken.size(); ++i)
    {
+      std::cout<<i<<" - name: "<<resToken[i].contents<<", type: "<<resToken[i].type<<"\n";
       EXPECT_EQ(resToken[i].contents, expextedTokens[i].contents);
       EXPECT_EQ(resToken[i].type, expextedTokens[i].type);
    }
 };
 
 
-TEST_F(TokenizerTests, splittingAndAssigningTypeLablezWithTypesCheckedAdvancedSecondPass)
+TEST_F(ThroughTest, splittingAndAssigningTypeLablezWithTypesCheckedAdvancedSecondPass)
 {
    std::vector<token> inputTokens
    {
@@ -279,3 +280,28 @@ TEST_F(TokenizerTests, splittingAndAssigningTypeLablezWithTypesCheckedAdvancedSe
 
 };
 
+
+TEST(util, utilz)
+{
+   bool a{false};
+   bool b{false};
+   bool c{false};
+   std::string dupa{"dupaaaa"};
+
+   if(utils::matches_any(dupa, "test", "test2", "dupaaaa"))
+   {
+      a = true;
+   }
+   if(utils::matches_any(dupa, "test", "test2", "dupa"))
+   {
+      b = true;
+   }
+   if(utils::matches_any(dupa))
+   {
+      c = true;
+   }
+
+   EXPECT_TRUE(a);
+   EXPECT_FALSE(b);
+   EXPECT_FALSE(c);
+}

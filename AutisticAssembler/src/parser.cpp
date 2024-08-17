@@ -57,7 +57,7 @@ std::vector<std::string>& parser::getLines() ///returning reference here is terr
 
 
 
-///soooo... this thing should just look into the token vector ffor lables, then search what address in memory they should correspond, and then insert this number
+///soooo... this thing should just look into the token vector for lables, then search what address in memory they should correspond, and then insert this number
 //changed my mind - this isn't gonna be this easy, it depends what is the instruction that label works on...
 //maybe this thing shuold be just doing virtual programm counter???
 void parser::resolveTokens()

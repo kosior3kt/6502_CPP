@@ -7,9 +7,11 @@
 #include <format>
 #include <unordered_set>
 
-#define panic { std::cout<<"somthing went horribly wrong in function: "<<__FUNCTION__<<" in line:"<<__LINE__<<std::endl; return; }
 
+//////////////////////////////////////////////////////utils
+#define $panic$ { std::cout<<"somthing went horribly wrong in function: "<<__FUNCTION__<<" in line:"<<__LINE__<<std::endl; return; }
 
+//////////////////////////////////////////////////////common data
 static const std::unordered_set<std::string_view> instructions = {
     "ADC", "AND", "ASL", "BCC", "BCS", "BEQ", "BIT", "BMI", "BNE", "BPL",
     "BRK", "BVC", "BVS", "CLC", "CLD", "CLI", "CLV", "CMP", "CPX", "CPY",
@@ -20,7 +22,6 @@ static const std::unordered_set<std::string_view> instructions = {
     "SRE", "RRA", "SAX", "DCP", "ISC", "RLA", "SLO", "SRE", "RRA", "ASR"
 };
 
-///TODO: change this into map with corresponding addressing modes - will be usefull for the next part, which validates
 const std::vector<std::regex> address_regex
 {
    std::regex(R"(^#\$([a-fA-F0-9]{1,2})$)"),                //immediete
@@ -42,7 +43,7 @@ const std::vector<std::regex> address_regex
 namespace utils
 {
 
-   static void trimString(std::string& _str) noexcept
+   inline void trimString(std::string& _str) noexcept
    {
          auto isNotSpace = [](const char ch) { return !std::isspace(static_cast<unsigned char>(ch)); };
 
@@ -52,7 +53,7 @@ namespace utils
          _str = (iterBeg <= iterEnd) ? std::string(iterBeg, iterEnd) : ""; //if only white characters return empty string, else return trimmed
    }
 
-   static bool isAddress(const std::string_view str) noexcept
+   inline bool isAddress(const std::string_view str) noexcept
    {
       for(const auto& reg: address_regex)
       {
@@ -61,9 +62,31 @@ namespace utils
       return false;
    }
 
-   static bool isInstruction(const std::string_view _str) noexcept
+   inline bool isInstruction(const std::string_view _str) noexcept
    {
       return (instructions.find(_str) != instructions.end());
+   }
+
+
+
+   inline bool matches_helper(const std::string&) 
+   {
+       return false;
+   }
+
+   template <typename... Args>
+   bool matches_helper(const std::string& original, const std::string& first, const Args&... rest) 
+   {
+       if (original == first) {
+           return true;
+       }
+       return matches_helper(original, rest...);
+   }
+
+   template <typename... Args>
+   bool matches_any(const std::string& original, const Args&... args) 
+   {
+       return matches_helper(original, args...);
    }
 
 }
