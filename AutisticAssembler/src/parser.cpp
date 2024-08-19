@@ -2,66 +2,79 @@
 #include <stdio.h>
 #include <algorithm>
 
-void parser::parse(std::string _path)
+bool isAMValidForIns(const std::string& _ins, const AddressingMode& _am)
 {
-   std::ifstream sourceFile(_path);
-   std::string buf{};
-   while(getline(sourceFile, buf))
+   auto legalInsVec = legalAddressings.find(_ins);
+
+   ///shuold panic prolly
+   if(legalInsVec == legalAddressings.end()) {exit(-1);}
+
+   for(const auto& instruction: legalInsVec->second)
    {
-      std::string temp;
-      auto it = std::find_if(buf.begin(), buf.end(), 
-                     [](const char _ch) -> bool
-                     {
-                        return _ch == ';';
-                     });
-      // if (it != buf.cend())   temp = std::string(buf.begin(), it);
-      // else                    temp = buf;
-
-      temp = it != buf.end() ? std::string(buf.begin(), it) : buf;
-      this->lineVec_.push_back(temp);
+      if(instruction == _am) return true;
    }
+
+   return false;
 }
-
-void parser::trim() 
-{
-    if (this->lineVec_.empty()) 
-    {
-        std::cout << "found empty vector array. did you call parse before?\n";
-        return;
-    }
-
-    auto isNotSpace = [](const char ch) { return !std::isspace(static_cast<unsigned char>(ch)); };
-
-    for (auto iter = this->lineVec_.begin(); iter != this->lineVec_.end(); ) 
-    {
-        auto iterBeg = std::find_if(iter->cbegin(), iter->cend(), isNotSpace);
-
-        auto iterEnd = std::find_if(iter->crbegin(), iter->crend(), isNotSpace).base();
-
-        if (iterBeg >= iterEnd) 
-        {
-            iter = this->lineVec_.erase(iter);
-        } 
-        else 
-        {
-            *iter = std::string(iterBeg, iterEnd);
-            ++iter;
-        }
-    }
-}
-
-std::vector<std::string>& parser::getLines() ///returning reference here is terrible idea, but imma do it anyways
-{
-   return this->lineVec_;
-}
-
-
 
 ///soooo... this thing should just look into the token vector for lables, then search what address in memory they should correspond, and then insert this number
 //changed my mind - this isn't gonna be this easy, it depends what is the instruction that label works on...
 //maybe this thing shuold be just doing virtual programm counter???
-void parser::resolveTokens()
+void parser::resolveTokens(std::vector<token>& _inputVec, const label::labelSet& _labels)
 {
-   
+   uint32_t vPC{0};
+   std::string previousInstruction{};
+
+   for(auto& tok: _inputVec)
+   {
+      //if(tok.type != token::labelInstance) continue;
+
+      switch(tok.type)
+      {
+         case token::EMPTY:
+         case token::unresolved:       ///TODO: handle this case
+               ///maybe rise error here?
+         case token::variable:         ///unused for now, but might use it one day
+         case token::labelDefinition:  ///w.e prolly just break
+            break;
+         case token::instruction:      ///this is nice, we want to save this one, so that we can see if it has a operand and if it's the corret addressing mode
+         {
+            ///TODO: some instructions need a value, so I will need to take care of that later
+            utils::safevPCIncreament(vPC);
+            if(utils::matches_any(tok.contents, "JSR", "RTS"))
+            {
+               utils::safevPCIncreament(vPC);   ///in this case it should be incremented twice
+            }
+            previousInstruction = tok.contents;
+            break;
+         }
+         case token::labelInstance:    ///this is juicy we want to match against this, resolve it & then change it into operand depending on prev instruction
+         {
+            ///TODO: take care of relative indirect and indexed addressing that label can signify. for now it's just absolute and relative
+            //1. check if previous instruction exists - otherwise we have nothing to do here and there is parsing error   
+            if(previousInstruction.empty())  {$parsing_panic$} 
+               
+            //2. match against branching methods. For now I will only support relative shift in here
+            if(!utils::matches_any(previousInstruction, "BNE", "BEQ", "BCC", "BCS", "BNE", "BMI", "BPL", "BVC", "BVS")) {$parsing_panic$}
+            
+
+            int shift = (*_labels.find(label{tok.contents, 0})).vPC - vPC;
+
+            tok.contents = std::to_string(shift); //TODO: uncomment this later
+            //std::cout << shift <<std::endl;
+            tok.type = token::variable;
+            break;
+         }
+         case token::operand:          ///TODO: match for the right instruction and save it's type somewhere 
+         {
+            const auto am = utils::returnAddressingMode(tok.contents);
+
+            if(!isAMValidForIns(previousInstruction, am))  {$parsing_panic$};
+
+            break;
+         }
+      }
+   }
 }
+
 

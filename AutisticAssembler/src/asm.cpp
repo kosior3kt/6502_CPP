@@ -18,6 +18,12 @@ void ASM::loadAndPreprocess(std::ifstream& _inputFile)
 }
 
 
+void ASM::generateMachineCode(std::vector<token>& _inputVec)
+{
+   ///I could do two pass 
+}
+
+
 //this is the entry point for this assembly
 void ASM::generate(const std::string& _inputFile, const std::string& _outputFile)
 {
@@ -35,3 +41,4 @@ void ASM::generate(const std::string& _inputFile, const std::string& _outputFile
 
    
 }
+

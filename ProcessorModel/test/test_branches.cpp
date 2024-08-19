@@ -97,9 +97,9 @@ TEST_F(TEST_6502, BVC_simple)
     cpu_.Reset(mem_, 0x8000);
     cpu_.V = 0;
     mem_.set(0x8000, CPU::INS_BVC);
-    mem_.set(0x8001, 0b00001000);
-    mem_.set(0x800A, CPU::INS_LDA_IM);
-    mem_.set(0x800B, 0x69);
+    mem_.set(0x8001, 0b00001001);
+    mem_.set(0x800B, CPU::INS_LDA_IM);
+    mem_.set(0x800C, 0x69);
 
     auto cyclesLeft = cpu_.execute(10, mem_);
 

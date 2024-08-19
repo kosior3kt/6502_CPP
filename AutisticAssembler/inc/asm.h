@@ -6,11 +6,6 @@
 
 #include "token.hpp"
 
-//What does this need to do?
-//get file contents - this whuold be done in constructor
-
-
-
 struct ASM
 {
    using line = token;
@@ -19,13 +14,8 @@ struct ASM
    
    Byte Data[MAX_MEM];           ///this thing is tossed around as a reference =3
 
-   ///should probably have insider Parser, Tokenizer and Analyzer
-   //ASM(std::string_view _fileName);
-   
-
-
    //5. final machine code generation
-   void generateMachineCode();
+   void generateMachineCode(std::vector<token>& _inputVec);
 
    //1.1 preprocess - get rid of redundant stuff, and load program from file into a vector of strings
    void loadAndPreprocess(std::ifstream&);

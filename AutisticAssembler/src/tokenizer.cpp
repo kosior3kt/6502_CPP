@@ -34,23 +34,9 @@ std::vector<token> Tokenizer::splitTokens(const std::vector<token>& _inputVec)co
 }
 
 
-void Tokenizer::safevPCIncreament(uint32_t& _val) const noexcept
-{
-   if(_val >= std::numeric_limits<uint32_t>::max())   [[unlikely]]
-   {
-      std::cerr<<"max number of operations reached - vPC would overflow\n";
-      exit(-1);
-   }
-   ++_val;
-};
-
-
 ///this method does 2 things - splits lines into proper tokens and then assigns correct type to them
 std::vector<token> Tokenizer::tokenize_firstPass(const std::vector<token>& _inputVec) noexcept
 {
-   ///maybe I want to mutate this instead of returning something, so that it is transparent this is mutation type function
-   ///TODO: decideif I want to keep this as a function that can mutate vPC
-
    std::vector<token> resultingVec = this->splitTokens(_inputVec);
    std::vector<token> returnVec{};
 
@@ -60,13 +46,12 @@ std::vector<token> Tokenizer::tokenize_firstPass(const std::vector<token>& _inpu
       if(contents.empty()) continue;
 
       token temp{};
-      ///TODO: check if this mothersucker is not a variable or sth ;v
       if(*(contents.end() - 1) == ':' && contents.size() >= 2)   //shuold be shifted, cause end returns after the last char?
       {
          std::cout<<"adding kown label";
          temp.type       = token::tokenType::labelDefinition;
          temp.contents   = std::string(contents.begin(), contents.end() - 1);
-         safevPCIncreament(vPC);
+         utils::safevPCIncreament(vPC);
          knownLabels.emplace(label(std::string(contents.begin(), contents.end() - 1), vPC));   //TODO: IMPORTANT - check if vPC +1 or not
          --vPC;   ///safe to decrement here this way since not mutated after last increament
       }
@@ -81,16 +66,13 @@ std::vector<token> Tokenizer::tokenize_firstPass(const std::vector<token>& _inpu
          temp.contents   = contents;
          if(utils::matches_any(contents, "JSR", "RTS"))   ///those instructions should take more vPC because reasons I guess (im actually not sure if thats even the case)
          {
-            std::cout<<"mathed somthign here =0\n";
-            safevPCIncreament(vPC);
-            safevPCIncreament(vPC);
+            utils::safevPCIncreament(vPC);
+            utils::safevPCIncreament(vPC);
          }
          else
          {
-            safevPCIncreament(vPC);
+            utils::safevPCIncreament(vPC);
          }
-         //make it a safe increment later?
-         //take into consideration that some instruction do +2
       }
       else if(knownLabels.find(label{contents, 0}) != knownLabels.end())
       {
@@ -99,11 +81,6 @@ std::vector<token> Tokenizer::tokenize_firstPass(const std::vector<token>& _inpu
       }
       else
       {
-         ///this still may be just a predefined lable on first pass
-         //std::cout<<"unlucky very much bby from file: "<<__FILE__<<" in function: " << __FUNCTION__<<std::endl;
-         //exit(-1);
-         //std::unreachable();   ///ofc my fucking linter can't recognize this...
-         
          temp.type       = token::tokenType::unresolved;
          temp.contents   = contents;
       }
@@ -124,6 +101,19 @@ void Tokenizer::tokenize_secondPass(std::vector<token>& _inputVec)noexcept
          {
             type = token::tokenType::labelInstance;
          }
+         else  [[unlikely]]
+         {
+            exit(-1);
+         }
       }
    }
+}
+
+
+
+std::vector<token> Tokenizer::tokenize(const std::vector<token>& _inputVector) noexcept
+{
+   auto resVec = tokenize_firstPass(_inputVector);
+   tokenize_secondPass(resVec);   
+   return resVec;
 }

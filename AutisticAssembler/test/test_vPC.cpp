@@ -2,6 +2,7 @@
 #include "asm.h"
 #include "tokenizer.h"
 
+
 class vPCTest : public ::testing::Test {
      
 protected:
@@ -38,17 +39,13 @@ TEST_F(vPCTest, vPCtest_dupa)
 
       if(resToken[i].contents == "label")
       {
-         std::cout<<"in if\n";
-         std::cout<<tokenizer.knownLabels.size()<<std::endl;
          for(const auto& _label: tokenizer.knownLabels)
          {
-            std::cout<<"name: "<<_label.name<<" vPC: "<<_label.vPC<<std::endl;
             if(_label.vPC == 4 && _label.name == "label") passed = true;
          }
       }
    }
 
    EXPECT_TRUE(passed);
-
 
 };

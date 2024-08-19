@@ -1,7 +1,6 @@
 #include "test.hpp"
 #include "asm.h"
 #include "tokenizer.h"
-//#include "PGH/traits.hpp"
 
 class ThroughTest : public ::testing::Test {
      
@@ -305,3 +304,151 @@ TEST(util, utilz)
    EXPECT_FALSE(b);
    EXPECT_FALSE(c);
 }
+
+
+
+///============================================================test_experimental
+
+class ParserTokenizerTest : public ::testing::Test {
+protected:
+    Tokenizer tokenizer;
+    parser p;
+};
+
+TEST_F(ParserTokenizerTest, SimpleProgram) 
+{
+    std::vector<token> input
+    {
+        {"START:", token::EMPTY},
+        {"LDA #$10", token::EMPTY},
+        {"BNE END", token::EMPTY},
+        {"LDA #$20", token::EMPTY},
+        {"END:", token::EMPTY},
+        {"RTS", token::EMPTY}
+    };
+
+    auto tokens = tokenizer.tokenize(input);
+    label::labelSet labels = tokenizer.knownLabels;
+    p.resolveTokens(tokens, labels);
+
+
+    int i{0};
+    for(auto [str, type]: tokens)
+    {
+         std::cout<< i <<"- name: "<<str<<", type: "<<type<<std::endl;
+         ++i;
+    }
+
+    ASSERT_EQ(tokens.size(), 9);
+    EXPECT_EQ(tokens[0].type, token::labelDefinition);
+    EXPECT_EQ(tokens[0].contents, "START");
+    EXPECT_EQ(tokens[2].type, token::operand);
+    EXPECT_EQ(tokens[3].contents, "BNE");
+    EXPECT_EQ(tokens[3].type, token::instruction);
+    EXPECT_EQ(std::stoi(tokens[4].contents), 2); // END is 3 bytes ahead
+    EXPECT_EQ(tokens[4].type, token::variable);
+}
+
+TEST_F(ParserTokenizerTest, ForwardAndBackwardReferences) {
+    std::vector<token> input = {
+        {"BNE MIDDLE", token::EMPTY},
+        {"START:", token::EMPTY},
+        {"LDA #$10", token::EMPTY},
+        {"BEQ END", token::EMPTY},
+        {"MIDDLE:", token::EMPTY},
+        {"STA $2000", token::EMPTY},
+        {"BNE START", token::EMPTY},
+        {"END:", token::EMPTY},
+        {"RTS", token::EMPTY}
+    };
+
+    auto tokens = tokenizer.tokenize(input);
+    label::labelSet labels = tokenizer.knownLabels;
+    p.resolveTokens(tokens, labels);
+
+
+
+    int i{0};
+    for(const auto& [str, type]: tokens)
+    {
+         std::cout<< i <<"- name: "<<str<<", type: "<<type<<std::endl;
+         ++i;
+    }
+
+
+
+    ASSERT_EQ(tokens.size(), 14);
+    EXPECT_EQ(tokens[1].type, token::variable);
+    EXPECT_EQ(std::stoi(tokens[1].contents), 3); // MIDDLE is 4 bytes ahead
+    EXPECT_EQ(tokens[6].type, token::variable);
+    EXPECT_EQ(std::stoi(tokens[6].contents), 3); // END is 3 bytes ahead
+    EXPECT_EQ(tokens[11].type, token::variable);
+    EXPECT_EQ(std::stoi(tokens[11].contents), -3); // START is 5 bytes behind
+}
+
+TEST_F(ParserTokenizerTest, LongBranch) {
+    std::vector<token> input = {
+        {"START:", token::EMPTY},
+        {"LDA #$01", token::EMPTY}
+    };
+    // Add 126 NOP instructions
+    for (int i = 0; i < 126; ++i) {
+        input.push_back({"NOP", token::EMPTY});
+    }
+    input.push_back({"BNE START", token::EMPTY});
+
+    auto tokens = tokenizer.tokenize(input);
+    label::labelSet labels = tokenizer.knownLabels;
+    p.resolveTokens(tokens, labels);
+
+    ASSERT_EQ(tokens.size(), 131);
+    EXPECT_EQ(tokens[128].type, token::instruction);
+    EXPECT_EQ(tokens[129].contents, "BNE");
+    EXPECT_EQ(tokens[130].type, token::variable);
+    EXPECT_EQ(std::stoi(tokens[130].contents), -127); // Maximum negative branch
+}
+
+TEST_F(ParserTokenizerTest, MultipleLabelsAndInstructions) {
+    std::vector<token> input = {
+        {"INIT:", token::EMPTY},
+        {"LDX #$00", token::EMPTY},
+        {"LOOP:", token::EMPTY},
+        {"LDA $2000,X", token::EMPTY},
+        {"BEQ END", token::EMPTY},
+        {"INX", token::EMPTY},
+        {"BEQ LOOP", token::EMPTY},
+        {"END:", token::EMPTY},
+        {"RTS", token::EMPTY}
+    };
+
+    auto tokens = tokenizer.tokenize(input);
+    label::labelSet labels = tokenizer.knownLabels;
+    p.resolveTokens(tokens, labels);
+
+    ASSERT_EQ(tokens.size(), 13);
+    EXPECT_EQ(tokens[0].type, token::labelDefinition);
+    EXPECT_EQ(tokens[0].contents, "INIT");
+    EXPECT_EQ(tokens[3].type, token::labelDefinition);
+    EXPECT_EQ(tokens[3].contents, "LOOP");
+    EXPECT_EQ(tokens[7].type, token::variable);
+    EXPECT_EQ(std::stoi(tokens[7].contents), 3); // END is 3 bytes ahead
+    EXPECT_EQ(tokens[10].type, token::variable);
+    EXPECT_EQ(std::stoi(tokens[10].contents), -3); // LOOP is 5 bytes behind
+}
+
+////trust me bruh it's incredibly robust - no need to test that
+
+// TEST_F(ParserTokenizerTest, InvalidLabelUsage) {
+//     std::vector<token> input = {
+//         {"JMP NONEXISTENT", token::EMPTY},
+//         {"RTS", token::EMPTY}
+//     };
+//
+//     auto tokens = tokenizer.tokenize(input);
+//     label::labelSet labels = tokenizer.knownLabels;
+//     //EXPECT_DEATH(p.resolveTokens(tokens, labels), std::runtime_error);
+//     EXPECT_DEATH(p.resolveTokens(tokens, labels), "");
+// }
+
+
+
