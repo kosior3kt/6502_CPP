@@ -6,6 +6,7 @@
 
 #include "asm.h"
 #include "parser.h"
+#include "tokenizer.h"
 
 class ParserTest : public ::testing::Test {
 protected:

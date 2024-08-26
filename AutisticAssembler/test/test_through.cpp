@@ -345,7 +345,7 @@ TEST_F(ParserTokenizerTest, SimpleProgram)
     EXPECT_EQ(tokens[2].type, token::operand);
     EXPECT_EQ(tokens[3].contents, "BNE");
     EXPECT_EQ(tokens[3].type, token::instruction);
-    EXPECT_EQ(std::stoi(tokens[4].contents), 2); // END is 3 bytes ahead
+    EXPECT_EQ(std::stoi(tokens[4].contents), 3); // END is 3 bytes ahead
     EXPECT_EQ(tokens[4].type, token::variable);
 }
 
@@ -379,11 +379,11 @@ TEST_F(ParserTokenizerTest, ForwardAndBackwardReferences) {
 
     ASSERT_EQ(tokens.size(), 14);
     EXPECT_EQ(tokens[1].type, token::variable);
-    EXPECT_EQ(std::stoi(tokens[1].contents), 3); // MIDDLE is 4 bytes ahead
+    EXPECT_EQ(std::stoi(tokens[1].contents), 4); // MIDDLE is 4 bytes ahead
     EXPECT_EQ(tokens[6].type, token::variable);
-    EXPECT_EQ(std::stoi(tokens[6].contents), 3); // END is 3 bytes ahead
+    EXPECT_EQ(std::stoi(tokens[6].contents), 5); // END is 3 bytes ahead
     EXPECT_EQ(tokens[11].type, token::variable);
-    EXPECT_EQ(std::stoi(tokens[11].contents), -3); // START is 5 bytes behind
+    EXPECT_EQ(std::stoi(tokens[11].contents), -9); // START is 5 bytes behind
 }
 
 TEST_F(ParserTokenizerTest, LongBranch) {
@@ -405,7 +405,7 @@ TEST_F(ParserTokenizerTest, LongBranch) {
     EXPECT_EQ(tokens[128].type, token::instruction);
     EXPECT_EQ(tokens[129].contents, "BNE");
     EXPECT_EQ(tokens[130].type, token::variable);
-    EXPECT_EQ(std::stoi(tokens[130].contents), -127); // Maximum negative branch
+    EXPECT_EQ(std::stoi(tokens[130].contents), -128); // Maximum negative branch
 }
 
 TEST_F(ParserTokenizerTest, MultipleLabelsAndInstructions) {

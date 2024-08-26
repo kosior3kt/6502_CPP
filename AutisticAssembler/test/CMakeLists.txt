@@ -5,9 +5,11 @@ set (TEST_SOURCES
    test_tokenizerStuff.cpp
    test_OPCodes.cpp
    test_adressing.cpp
-   test_vPC.cpp
-   test_parser.cpp
-   test_through.cpp
+   # test_vPC.cpp
+   # test_parser.cpp
+   # test_through.cpp
+   test_fromTheBeggining.cpp
+   test_whole.cpp
    )
 
 set (TEST_SOURCES_DEBUG

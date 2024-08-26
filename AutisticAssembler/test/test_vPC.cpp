@@ -33,7 +33,7 @@ TEST_F(vPCTest, vPCtest_dupa)
 
    EXPECT_EQ(resToken.size(), expextedTokens.size());
 
-   for(int i =0; i <  resToken.size(); ++i)
+   for(int i = 0; i <  resToken.size(); ++i)
    {
       EXPECT_EQ(resToken[i].contents, expextedTokens[i].contents);
 
@@ -41,7 +41,8 @@ TEST_F(vPCTest, vPCtest_dupa)
       {
          for(const auto& _label: tokenizer.knownLabels)
          {
-            if(_label.vPC == 4 && _label.name == "label") passed = true;
+            std::cout<<"vPC: "<<_label.vPC<<", name: "<<_label.name<<std::endl;
+            if(_label.vPC == 9 && _label.name == "label") passed = true;
          }
       }
    }

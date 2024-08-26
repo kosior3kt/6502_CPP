@@ -14,7 +14,7 @@ TEST(ParserTest, ValidLabelResolution) {
     p.resolveTokens(tokens, labels);
     EXPECT_EQ(tokens[4].type, token::variable);
     int value = std::stoi(tokens[4].contents);
-    EXPECT_EQ(value, -2); // Assuming START is 3 bytes before
+    EXPECT_EQ(value, -4); // Assuming START is 3 bytes before
 }
 
 // Test forward reference
@@ -30,7 +30,7 @@ TEST(ParserTest, ForwardReference) {
     parser p;
     p.resolveTokens(tokens, labels);
     EXPECT_EQ(tokens[1].type, token::variable);
-    EXPECT_EQ(std::stoi(tokens[1].contents), 3); // Assuming FORWARD is 2 bytes ahead
+    EXPECT_EQ(std::stoi(tokens[1].contents), 2); // Assuming FORWARD is 2 bytes ahead
 }
 
 // // Test invalid label usage

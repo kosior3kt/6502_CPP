@@ -1,5 +1,5 @@
-#ifndef __INSTRUCTION_CODES__
-#define __INSTRUCTION_CODES__
+#ifndef __INSTRUCTION_CODES
+#define __INSTRUCTION_CODES
 
 #define Byte unsigned char
 
@@ -223,4 +223,4 @@ static constexpr Byte INS_NOTHING   = 0xFF;
 
 #undef Byte
 
-#endif
+#endif //__INSTRUCTION_CODES

@@ -15,6 +15,7 @@ my $build        = 0;
 my $test         = 0;
 my $verbose      = 0;
 my $output_dir   = 'build';
+my $inv          = 0;
 
 GetOptions(
     "alternative"  => \$alternative,
@@ -22,6 +23,7 @@ GetOptions(
     "test"         => \$test,
     "verbose"      => \$verbose,
     "output_dir=s" => \$output_dir,
+    "inv"          => \$inv
 ) or die("Error in command line arguments\n");
 
 # Ensure the output directory is set
@@ -71,10 +73,20 @@ if ($build) {
 }
 
 if ($test) {
-    print "Running ./ProcessorModel/test/test\n";
-    system("./ProcessorModel/test/test") == 0 or warn("Failed to run tests for CPU: $!\n");
-    system("./AutisticAssembler/test/test_asm") == 0 or warn("Failed to run tests for ASM: $!\n");
+   if ($inv)
+   {
+       print "Running tests inversed\n";
+       system("./AutisticAssembler/test/test_asm") == 0 or warn("Failed to run tests for ASM: $!\n");
+       system("./ProcessorModel/test/test") == 0 or warn("Failed to run tests for CPU: $!\n");
+   }
+   else
+   {
+       print "Running tests\n";
+       system("./ProcessorModel/test/test") == 0 or warn("Failed to run tests for CPU: $!\n");
+       system("./AutisticAssembler/test/test_asm") == 0 or warn("Failed to run tests for ASM: $!\n");
+   }
 }
+
 
 print color('magenta'),"Build and post-build steps completed successfully.\n", color('reset'), "\n";
 

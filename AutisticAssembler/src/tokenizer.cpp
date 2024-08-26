@@ -40,6 +40,8 @@ std::vector<token> Tokenizer::tokenize_firstPass(const std::vector<token>& _inpu
    std::vector<token> resultingVec = this->splitTokens(_inputVec);
    std::vector<token> returnVec{};
 
+   std::string prevInstruction{};
+
    
    for(const auto& [contents, type]: resultingVec)
    {
@@ -48,39 +50,54 @@ std::vector<token> Tokenizer::tokenize_firstPass(const std::vector<token>& _inpu
       token temp{};
       if(*(contents.end() - 1) == ':' && contents.size() >= 2)   //shuold be shifted, cause end returns after the last char?
       {
-         std::cout<<"adding kown label";
+         //std::cout<<"adding kown label";
          temp.type       = token::tokenType::labelDefinition;
          temp.contents   = std::string(contents.begin(), contents.end() - 1);
-         utils::safevPCIncreament(vPC);
+         //utils::safevPCIncreament(vPC);
          knownLabels.emplace(label(std::string(contents.begin(), contents.end() - 1), vPC));   //TODO: IMPORTANT - check if vPC +1 or not
-         --vPC;   ///safe to decrement here this way since not mutated after last increament
+         std::cout<<"emplacing label: " << contents <<", type: "<< type << ", value: "<< vPC <<"\n";
+         //--vPC;   ///safe to decrement here this way since not mutated after last increament
       }
       else if(utils::isAddress(contents))
       {
          temp.type       = token::tokenType::operand;
          temp.contents   = contents;
+         utils::safevPCIncreament(vPC);
+         const auto am = utils::returnAddressingMode(contents);
+
+         if(am == AddressingMode::Absolute  ||
+            am == AddressingMode::AbsoluteY ||
+            am == AddressingMode::AbsoluteX ||
+            am == AddressingMode::Indirect)
+         {
+            std::cout<<"came into additional increament due to abs instruction \n";
+            utils::safevPCIncreament(vPC);
+         }
       }
       else if(utils::isInstruction(contents))
       {
          temp.type       = token::tokenType::instruction;
          temp.contents   = contents;
-         if(utils::matches_any(contents, "JSR", "RTS"))   ///those instructions should take more vPC because reasons I guess (im actually not sure if thats even the case)
-         {
-            utils::safevPCIncreament(vPC);
-            utils::safevPCIncreament(vPC);
-         }
-         else
-         {
-            utils::safevPCIncreament(vPC);
-         }
+         utils::safevPCIncreament(vPC);
       }
       else if(knownLabels.find(label{contents, 0}) != knownLabels.end())
       {
+         utils::safevPCIncreament(vPC);
+         if(utils::matches_any(prevInstruction, "JMP", "JSR", "RTS"))
+         {
+            utils::safevPCIncreament(vPC);
+         }
          temp.type       = token::tokenType::labelInstance;
          temp.contents   = contents;
       }
       else
       {
+         utils::safevPCIncreament(vPC);   ///pressumably
+         ///if prev instruction was Jumping then we need to increment by 2 here
+         if(utils::matches_any(prevInstruction, "JMP", "JSR", "RTS"))
+         {
+            utils::safevPCIncreament(vPC);
+         }
          temp.type       = token::tokenType::unresolved;
          temp.contents   = contents;
       }

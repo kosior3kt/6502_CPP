@@ -6,7 +6,7 @@
 // Test fixture class
 class ASMTest : public ::testing::Test {
 protected:
-    ASM asmObj;
+    myASM asmObj;
 
     // Utility function to create a temporary file with given content
     std::string createTempFile(const std::string& content) {

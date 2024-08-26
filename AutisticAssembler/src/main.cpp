@@ -47,20 +47,6 @@ void generate(std::string_view _path)
    outputFile.close();
 }
 
-
-
-// int main(int argc, char** argv)
-// {
-//    std::string fileName{"testFile"};
-//    if(argc > 1)
-//    {
-//       ///use first arg as file name
-//       fileName = argv[1];
-//    }
-//    generate(fileName);
-//    return 0;
-// }
-
 /*
  * How it should work 
  *    1) we take a path to file as input
@@ -75,10 +61,12 @@ int main(int argc, char** argv)
 {
    ///TODO: change it into filesystem::path later on
    std::string fileName{"testFile"};
+
    if(argc != 2)
    {
       return 0;
    }
+
    fileName = argv[1];
    fileName += ".aa";
    generate(fileName);

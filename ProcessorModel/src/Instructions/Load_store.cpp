@@ -6,7 +6,8 @@ void CPU::LDA(u32 &_cycles, Mem &_mem, const Byte& _opCode)
    bool immediete = false;
    Word address{};
 
-   switch(_opCode){
+   switch(_opCode)
+   {
       case CPU::INS_LDA_IM :{
          Byte val  = fetchByte(_cycles, _mem);
          A         = val;
@@ -69,6 +70,7 @@ void CPU::LDX(u32 &_cycles, Mem &_mem, const Byte& _opCode)
          Byte val  = fetchByte(_cycles, _mem);
          X         = val;
          immediete = true;
+         HEX_PRINT("value of the fetched byte assigned to X: ", (int)val);
          HEX_PRINT("address after addition: ", address);
          break;
       }
