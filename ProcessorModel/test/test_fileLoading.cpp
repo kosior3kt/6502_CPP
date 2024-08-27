@@ -22,6 +22,7 @@ TEST_F(TEST_6502, fileLoading_generatedFromASM)
    cpu_.showCPUState(mem_, 1, 1, 2);
 
 }
+
 #endif
 
 #if 1
@@ -61,6 +62,32 @@ TEST_F(TEST_6502, fileLoading_generatedFromASM_MAYBE_WORKING)
    EXPECT_FALSE((int)cpu_.Z);
    EXPECT_FALSE((int)cpu_.N);
    EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+
+}
+
+#endif
+
+
+#if 1
+
+TEST_F(TEST_6502, fileLoading_realUsageTest)
+{
+   mem_.loadFromFile("file.aa");
+   mem_.debug_dumpMemory("file.dump");
+
+   cpu_.showCPUState(mem_, 1, 1, 0);
+
+   auto cyclesLeft = cpu_.execute(100, mem_);
+
+   cpu_.showCPUState(mem_, 1, 1, 1);
+
+   EXPECT_EQ(cyclesLeft, 0);
+   EXPECT_EQ((int)cpu_.A, 0x69);
+   EXPECT_FALSE((int)cpu_.Z);
+   EXPECT_FALSE((int)cpu_.N);
+   EXPECT_TRUE(testHelper::basicFlagsUnused(cpu_, copyCPU_));
+
+   cpu_.showCPUState(mem_, 1, 1, 2);
 
 }
 

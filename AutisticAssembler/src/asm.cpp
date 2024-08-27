@@ -226,6 +226,7 @@ void myASM::generateMachineCode(const std::vector<token>& _inputVec, const std::
 void myASM::generate2(const std::string& _inputFile, const std::string& _outputFile)
 {
 
+   std::cout<<"started generating2\n";
    fill(69, 0);
 
    std::ifstream inputFile(_inputFile);   //shuold be in binary mode?
