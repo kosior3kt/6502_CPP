@@ -61,28 +61,6 @@ enum class AddressingMode
     Relative          // Branching instructions (e.g., BEQ, BNE)
 };
 
-//inline
-// inline AdressingMode getAddrMode(std::istream& _os, const std::string& _val)
-// {
-//
-//    if(_val == "")
-//    {
-//       
-//    }
-//    switch(_val)
-//    {
-//       case token::EMPTY:            os << "EMPTY";             break;
-//       case token::labelInstance:    os << "labelInstance";     break;
-//       case token::labelDefinition:  os << "labelDefinition";   break;
-//       case token::variable:         os << "variable";          break;
-//       case token::instruction:      os << "instruction";       break;
-//       case token::operand:          os << "operand";           break;
-//       case token::unresolved:       os << "unresolved";        break;
-//    }
-//    return os;
-// }
-
-
 // Overload the >> operator for AddressingMode
 inline std::istream& operator>>(std::istream& is, AddressingMode& mode) {
     static const std::map<std::string, AddressingMode> modeMap = {
@@ -145,8 +123,8 @@ namespace utils
    {
          auto isNotSpace = [](const char ch) { return !std::isspace(static_cast<unsigned char>(ch)); };
 
-         auto iterBeg = std::find_if(_str.cbegin(), _str.cend(), isNotSpace);
-         auto iterEnd = std::find_if(_str.crbegin(), _str.crend(), isNotSpace).base();
+         auto iterBeg    = std::find_if(_str.cbegin(),  _str.cend(),  isNotSpace);
+         auto iterEnd    = std::find_if(_str.crbegin(), _str.crend(), isNotSpace).base();
 
          _str = (iterBeg <= iterEnd) ? std::string(iterBeg, iterEnd) : ""; //if only white characters return empty string, else return trimmed
    }
@@ -170,7 +148,7 @@ namespace utils
        return false;
    }
 
-   static AddressingMode returnAddressingMode(const std::string_view _val) 
+   inline AddressingMode returnAddressingMode(const std::string_view _val) 
    {
        // Iterate through the map and check for regex matches
        for (const auto& [mode, regex] : address_regex_map) 
@@ -545,19 +523,6 @@ inline std::map<std::string, std::vector<std::map<AddressingMode, uint8_t>>> leg
         {{AddressingMode::Absolute, INS_CPY_ABS}}
     }}
 };
-
-
-//
-//
-// LDA -> {{INS_LDA_IM, 0xA9}, ..., {...}}
-// LDX -> {{INS_LDX_IM, 0xB9}, ..., {...}}
-//
-// auto it = find("LDA")...
-// {
-//    *it (("LDA", {{Impplied, int}, {ZeroPage, int}, ...}))
-//    *it.second (({{Immplied, int}, {ZeroPage, int}, ...}))
-//
-// }
 
 
 

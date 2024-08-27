@@ -10,8 +10,6 @@
 
 class ParserTest : public ::testing::Test {
 protected:
-    parser p;
-
     void SetUp() override {
         // This function runs before each test
     }

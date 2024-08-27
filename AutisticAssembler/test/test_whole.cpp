@@ -3,13 +3,11 @@
 #include "tokenizer.h"
 
 
-
-class wholeTest: public ::testing::Test {
+class wholeTest: public ::testing::Test 
+{
      
 protected:
-   myASM my_asm;
-   Tokenizer tokenizer;
-   parser p;
+
 };
 
 
@@ -23,7 +21,7 @@ TEST_F(wholeTest, writingSimpleValuesToFile)
 {
    std::string outputFileName = "test1";
    std::ofstream oFile(outputFileName);
-   my_asm.streamToFile(oFile, 69);
+   Asm::DEBUG::streamToFile(oFile, 69);
 
    oFile.close();
 
@@ -70,7 +68,7 @@ TEST_F(wholeTest, writingSimpleValuesToFile)
 //       {"TXA", token::tokenType::instruction},
 //    };
 //
-//    my_asm.generateMachineCode(tokens, "outputTemp");
+//    Asm::generateMachineCode(tokens, "outputTemp");
 //
 //
 //
@@ -99,7 +97,7 @@ TEST_F(wholeTest, normalWays)
 
    output.close();
 
-   my_asm.generate2("temp2", "outputTemp");
+   Asm::generate("temp2", "outputTemp");
 
    ASSERT_EQ(1, 1);
 }

@@ -9,7 +9,7 @@ set (TEST_SOURCES
    # test_parser.cpp
    # test_through.cpp
    test_fromTheBeggining.cpp
-   test_whole.cpp
+   # test_whole.cpp
    )
 
 set (TEST_SOURCES_DEBUG

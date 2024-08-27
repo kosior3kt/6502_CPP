@@ -26,3 +26,5 @@ temp.cpp
 test1
 *.aa
 file
+*.ignore
+

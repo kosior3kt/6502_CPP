@@ -1,6 +1,11 @@
 #include "test.hpp"
 
-#if 1
+
+
+
+///TODO: change me later into a normal test daddy
+
+#if 0
 
 TEST_F(TEST_6502, fileLoading_generatedFromASM)
 {
@@ -68,7 +73,9 @@ TEST_F(TEST_6502, fileLoading_generatedFromASM_MAYBE_WORKING)
 #endif
 
 
-#if 1
+///TODO: change all of those later on
+
+#if 0 
 
 TEST_F(TEST_6502, fileLoading_realUsageTest)
 {

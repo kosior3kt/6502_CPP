@@ -4,12 +4,11 @@
 class BasicStart : public ::testing::Test {
      
 protected:
-    Tokenizer tokenizer;
-    parser p;
 };
 
 TEST_F(BasicStart, simpleCase)
 {
+   Tokenizer::DEBUG::debug_flush();
    std::vector<token> inputVec
    {
       {"LDA #$69"},
@@ -19,9 +18,9 @@ TEST_F(BasicStart, simpleCase)
       {"BNE START"},
    };
 
-    auto tokens = tokenizer.tokenize(inputVec);
-    label::labelSet labels = tokenizer.knownLabels;
-    p.resolveTokens(tokens, labels);
+    auto [tokens, knownLabels] = Tokenizer::tokenize(inputVec);
+    label::labelSet labels = knownLabels;
+    Parser::resolveTokens(tokens, labels);
 
 
     int i{0};
@@ -41,6 +40,8 @@ TEST_F(BasicStart, simpleCase)
 
 TEST_F(BasicStart, lessSimpleCase)
 {
+
+   Tokenizer::DEBUG::debug_flush();
    std::vector<token> inputVec
    {
       {"LDA #$69"},
@@ -52,9 +53,8 @@ TEST_F(BasicStart, lessSimpleCase)
       {"LDX $8000"},
    };
 
-    auto tokens = tokenizer.tokenize(inputVec);
-    label::labelSet labels = tokenizer.knownLabels;
-    p.resolveTokens(tokens, labels);
+    auto [tokens, knownLabels] = Tokenizer::tokenize(inputVec);
+    Parser::resolveTokens(tokens, knownLabels);
 
 
     int i{0};
@@ -74,6 +74,7 @@ TEST_F(BasicStart, lessSimpleCase)
 
 TEST_F(BasicStart, lessSimpleCase2)
 {
+   Tokenizer::DEBUG::debug_flush();
    std::vector<token> inputVec
    {
       {"LDA #$69"},
@@ -86,9 +87,9 @@ TEST_F(BasicStart, lessSimpleCase2)
       {"BNE START"},
    };
 
-    auto tokens = tokenizer.tokenize(inputVec);
-    label::labelSet labels = tokenizer.knownLabels;
-    p.resolveTokens(tokens, labels);
+    auto [tokens, knownLabels] = Tokenizer::tokenize(inputVec);
+    label::labelSet labels = knownLabels;
+    Parser::resolveTokens(tokens, labels);
 
     int i{0};
     for(auto [str, type]: tokens)

@@ -68,7 +68,7 @@ int main(int argc, char** argv)
       return 0;
    }
 
-   myASM my_asm;
+   //ASM my_asm;
 
    fileName = argv[1];
    
@@ -81,7 +81,7 @@ int main(int argc, char** argv)
       return -1;
    }
 
-   my_asm.generate2(inputFile, outputFile);
+   Asm::generate(inputFile, outputFile);
 
    return 0;
 }

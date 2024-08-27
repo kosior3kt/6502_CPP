@@ -9,7 +9,6 @@
 
 struct token
 {
-
    std::string contents;
 
    enum tokenType : int8_t
