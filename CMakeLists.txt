@@ -5,6 +5,7 @@ project(dupa CXX)
 option(ALTERNATIVE "build project in alternative (debug) mode " OFF)
 option(VERBOSE "all the printing macros in code will show what's happening in memory" OFF)
 
+option(ADD_EXEC "this is for creating executables" OFF)
 
 if(ALTERNATIVE)
    # add_definitions(-DALTERNATIVE)
@@ -24,8 +25,4 @@ set(CMAKE_CXX_STANDARD 23)
 
 set(COMMON_INC ${CMAKE_CURRENT_SOURCE_DIR}/common/inc/)
 
-#add_subdirectory(inc) #not needed for now
 add_subdirectory(ProcessorModel)
-add_subdirectory(AutisticAssembler)   #nto ready yet
-
-

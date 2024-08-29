@@ -1,25 +1,33 @@
-This Project is my interpretation of how does 6502 work.
-It comes with no guarantee and stuff like that 
-However feel free to tinker with it. I may even create assembly for it one day.
-U need to have GTest and CMake istalled to run it 
+#Introduction
+##What even is this project?
 
-List of what works (instruction wise):
-    -LDA
-    -LDX
-    -LDY
-    -JSR
-    -INC
-    -INX
-    -INY
-    -DEC
-    -DEY
-    -DEX
-    -STA
-    -STX
-    -STY
-    -RTS
+Well, this is my take on the 6502 CPU. That's it
 
 
-Well, just do you know, for now all the addressing things will just have seperate functions. I realise it's stupid, but for now it will stay.
-I kinda believe it will be usefull in the future when I will make a lib out of this thing and connect dedicated asm to it
+#Building
+##Existing build script
+That what I would suggest to use, it just build everything for you.
 
+###available flags:
++ --alternative         - this one is used for building alternative solutions. It is used to get experimental results usually
++ --build               - this one is used for building (by default it only generate cmake stuff)
++ --test                - this one invokes tests
++ --verbose             - this one makes all the events in code beign printed to console
++ --output_dir=<name>   - this one takes argument (name of the folder) and build everything in this folder. By deafult it is set to "build" 
+
+##using cmake directly
+You can also use CMake directly and it should work just fine. If you want to use this option you probably know what you are doing
+and need no help from me
+
+#Dependencies
++ cmake 3.15+
++ perl  5       (only for build.pl script)
++ c++   20 
++ GTest (no clue, I use newest)
+
+#Usage
+Well... Use it however you want I guess, it's just a lib. How I use it is I include it into other project which use it somehow.
+Some of more notible examples involve my other projects like ASM_6502 and VisualDebuger_6502(this one is not aired yet)
+
+#Questions?
+if so just ask me directly lol

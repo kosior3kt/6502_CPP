@@ -27,4 +27,5 @@ test1
 *.aa
 file
 *.ignore
+.old
 
